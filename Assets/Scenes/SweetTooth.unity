@@ -5906,6 +5906,7 @@ GameObject:
   - component: {fileID: 570617914}
   - component: {fileID: 570617913}
   - component: {fileID: 570617912}
+  - component: {fileID: 570617917}
   m_Layer: 0
   m_Name: zombie
   m_TagString: Untagged
@@ -5923,7 +5924,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: -1372625422
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 2
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -6023,6 +6024,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &570617917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 570617911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dafe2bedba342f942985b6ae75406bd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Target: {fileID: 1352436074}
+  UpdateSpeed: 0.1
 --- !u!1 &713453896
 GameObject:
   m_ObjectHideFlags: 0
