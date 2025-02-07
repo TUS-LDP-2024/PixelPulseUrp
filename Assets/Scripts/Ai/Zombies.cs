@@ -5,7 +5,6 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class Zombies : MonoBehaviour
 {
-    public float UpdateSpeed = 0.1f; // Frequency of recalculating path
     private Transform Target; // The player's transform
     private NavMeshAgent Agent;
 
@@ -16,15 +15,14 @@ public class Zombies : MonoBehaviour
 
     private void Start()
     {
-        FindPlayer(); // Find the player on spawn
+        FindPlayer(); // Find the player when spawned
+    }
 
+    private void Update()
+    {
         if (Target != null)
         {
-            StartCoroutine(FollowTarget());
-        }
-        else
-        {
-            Debug.LogError("Player not found! Make sure the player has the 'Player' tag.");
+            Agent.SetDestination(Target.position); // Update destination every frame
         }
     }
 
@@ -35,16 +33,10 @@ public class Zombies : MonoBehaviour
         {
             Target = player.transform;
         }
-    }
-
-    private IEnumerator FollowTarget()
-    {
-        WaitForSeconds wait = new WaitForSeconds(UpdateSpeed);
-        
-        while (Target != null && Agent.enabled)
+        else
         {
-            Agent.SetDestination(Target.position);
-            yield return wait;
+            Debug.LogError("Player not found! Make sure the player has the 'Player' tag.");
         }
     }
 }
+
