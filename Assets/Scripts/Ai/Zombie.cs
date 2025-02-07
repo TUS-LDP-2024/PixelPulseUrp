@@ -1,12 +1,13 @@
-using System.Collections;
+﻿using System;
 using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
-public class Zombies : MonoBehaviour
+public class Zombie : MonoBehaviour // ✅ Fixed class name
 {
     private Transform Target; // The player's transform
     private NavMeshAgent Agent;
+    public event Action<GameObject> OnDeath;
 
     private void Awake()
     {
@@ -20,9 +21,9 @@ public class Zombies : MonoBehaviour
 
     private void Update()
     {
-        if (Target != null)
+        if (Target != null && Agent != null && Agent.enabled)
         {
-            Agent.SetDestination(Target.position); // Update destination every frame
+            Agent.SetDestination(Target.position); // ✅ Keeps tracking player movement
         }
     }
 
@@ -35,8 +36,14 @@ public class Zombies : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Player not found! Make sure the player has the 'Player' tag.");
+            Debug.LogError("⚠ Player not found! Make sure the player has the 'Player' tag.");
         }
+    }
+
+    public void Die()
+    {
+        OnDeath?.Invoke(gameObject); // ✅ Safer null check
+        Destroy(gameObject);
     }
 }
 
