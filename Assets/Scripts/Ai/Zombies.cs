@@ -1,36 +1,50 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
 public class Zombies : MonoBehaviour
 {
-    public Transform Target; // The target the zombie will follow
-    public float UpdateSpeed = 0.1f; // How frequently to recalculate path based on Target's position
-
+    public float UpdateSpeed = 0.1f; // Frequency of recalculating path
+    private Transform Target; // The player's transform
     private NavMeshAgent Agent;
 
     private void Awake()
     {
-        Agent = GetComponent<NavMeshAgent>(); // Get the NavMeshAgent component
+        Agent = GetComponent<NavMeshAgent>(); 
     }
 
-    public void Start()
+    private void Start()
     {
-        StartCoroutine(FollowTarget()); // Start the coroutine to follow the target
+        FindPlayer(); // Find the player on spawn
+
+        if (Target != null)
+        {
+            StartCoroutine(FollowTarget());
+        }
+        else
+        {
+            Debug.LogError("Player not found! Make sure the player has the 'Player' tag.");
+        }
+    }
+
+    private void FindPlayer()
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            Target = player.transform;
+        }
     }
 
     private IEnumerator FollowTarget()
     {
-        WaitForSeconds wait = new WaitForSeconds(UpdateSpeed); // Create a wait time based on UpdateSpeed
+        WaitForSeconds wait = new WaitForSeconds(UpdateSpeed);
         
-        while (true) // Continuously follow the target
+        while (Target != null && Agent.enabled)
         {
-            // Set the destination of the NavMeshAgent to the target's position
-            Agent.SetDestination(Target.position); 
-
-            yield return wait; // Wait for the specified time before the next calculation
+            Agent.SetDestination(Target.position);
+            yield return wait;
         }
     }
 }
