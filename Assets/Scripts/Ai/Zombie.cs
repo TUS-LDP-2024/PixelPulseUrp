@@ -57,16 +57,18 @@ public class Zombie : MonoBehaviour
     }
 
     private void Attack()
+{
+    Debug.Log("Attack");
+
+    // Damage the player
+    PlayerHealth playerHealth = Target.GetComponent<PlayerHealth>();
+    if (playerHealth != null)
     {
-        // Log the attack to the console
-        Debug.Log("Attack");
-
-        // Update the last attack time
-        _lastAttackTime = Time.time;
-
-        // Add attack logic here (e.g., damage the player)
-        // Example: Target.GetComponent<PlayerHealth>().TakeDamage(10);
+        playerHealth.TakeDamage(10); // Example: Deal 10 damage
     }
+
+    _lastAttackTime = Time.time;
+}
 
     public void Die()
     {
