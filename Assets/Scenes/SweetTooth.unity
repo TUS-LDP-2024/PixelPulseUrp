@@ -4909,7 +4909,7 @@ GameObject:
   - component: {fileID: 549879369}
   - component: {fileID: 549879368}
   - component: {fileID: 549879367}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: floor
   m_TagString: Floor
   m_Icon: {fileID: 0}
@@ -10544,7 +10544,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.972549, g: 0.95686275, b: 0.92941177, a: 0}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -10758,7 +10758,7 @@ Transform:
   m_GameObject: {fileID: 414613326661538736}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 22.1, y: -8.786317, z: 23.948788}
+  m_LocalPosition: {x: 19.711, y: -8.32, z: 25.419}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -11071,7 +11071,7 @@ Transform:
   m_GameObject: {fileID: 6679630013252694622}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.79, y: 1, z: 3.5}
+  m_LocalPosition: {x: 0, y: 0.944, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -11112,6 +11112,12 @@ MonoBehaviour:
   look: {x: 0, y: 0}
   jump: 0
   sprint: 0
+  fire: 0
+  throwGrenade: 0
+  activateButton: 0
+  interact: 0
+  Aim: 0
+  reload: 0
   analogMovement: 0
   cursorLocked: 1
   cursorInputForLook: 1
@@ -11286,7 +11292,7 @@ MonoBehaviour:
   GroundedRadius: 0.5
   GroundLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   CinemachineCameraTarget: {fileID: 3389198345959087891}
   TopClamp: 89
   BottomClamp: -89
