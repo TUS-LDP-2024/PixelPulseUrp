@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2772837926698373021}
   - component: {fileID: 1674476494916732483}
   - component: {fileID: 7389936457347896806}
+  - component: {fileID: 3400329954022966958}
   m_Layer: 0
   m_Name: Zombie
   m_TagString: Untagged
@@ -143,3 +144,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0bc17ef4e60c384cb1f256b9bf53ebc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AttackRange: 2
+  AttackCooldown: 1
+--- !u!114 &3400329954022966958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5414261012872554043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d07f93cd657d914dabeb8ba3029446f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Method: 3
+  m_Curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.5
+      value: 1
+      inSlope: 0.010815272
+      outSlope: 0.010815272
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.21612172
+      outWeight: 0.19766557
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
