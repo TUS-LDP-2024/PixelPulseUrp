@@ -9,6 +9,8 @@ TagManager:
   - Wall
   - Floor
   - CinemachineTarget
+  - Body
+  - Head
   layers:
   - Default
   - TransparentFX
@@ -17,7 +19,7 @@ TagManager:
   - Water
   - UI
   - GroundLayers
-  - 
+  - enemyLayer
   - 
   - 
   - 
