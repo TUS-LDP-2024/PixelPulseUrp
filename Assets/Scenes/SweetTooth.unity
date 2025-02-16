@@ -4202,7 +4202,7 @@ PrefabInstance:
     - target: {fileID: 6627002675341929623, guid: 4558de5ff9d761f49b5ed7c0ba194511,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6627002675341929623, guid: 4558de5ff9d761f49b5ed7c0ba194511,
         type: 3}
@@ -9736,7 +9736,7 @@ PrefabInstance:
     - target: {fileID: 6627002675341929623, guid: 4558de5ff9d761f49b5ed7c0ba194511,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6627002675341929623, guid: 4558de5ff9d761f49b5ed7c0ba194511,
         type: 3}
@@ -10164,7 +10164,7 @@ GameObject:
   - component: {fileID: 1370574173}
   - component: {fileID: 1370574172}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Key
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
