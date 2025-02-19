@@ -3,15 +3,20 @@ using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour
 {
-    public int Health = 100; // Player's starting health
+    public float maxHealth = 100f;
+    private float currentHealth;
 
-    public void TakeDamage(int damage)
+    private void Start()
     {
-        Health -= damage; // Reduce health by the damage amount
-        Debug.Log($"Player took {damage} damage. Health: {Health}");
+        currentHealth = maxHealth; // Initialize health
+    }
 
-        // Check if the player has died
-        if (Health <= 0)
+    public void TakeDamage(float damage)
+    {
+        currentHealth -= damage;
+        Debug.Log($"Player took {damage} damage! Current Health: {currentHealth}");
+
+        if (currentHealth <= 0)
         {
             Die();
         }
@@ -19,9 +24,15 @@ public class PlayerHealth : MonoBehaviour
 
     private void Die()
     {
-        Debug.Log("Player has died. Restarting scene...");
+        Debug.Log("Player has died! Loading main menu...");
 
-        // Restart the current scene
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        // Load the main menu scene
+        LoadMainMenu();
+    }
+
+    private void LoadMainMenu()
+    {
+        // Replace "MainMenu" with the exact name of your main menu scene
+        SceneManager.LoadScene("EndGameMenu");
     }
 }
