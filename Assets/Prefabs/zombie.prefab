@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3654778099046296088}
   - component: {fileID: 4843461107201196343}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: BodyHitBox
   m_TagString: Body
   m_Icon: {fileID: 0}
@@ -65,7 +65,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6332679365579783616}
   - component: {fileID: 1181289069393170935}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: HeadHitBox
   m_TagString: Head
   m_Icon: {fileID: 0}
@@ -126,7 +126,7 @@ GameObject:
   - component: {fileID: 7389936457347896806}
   - component: {fileID: 5312324620766232865}
   - component: {fileID: 3400329954022966958}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: zombie
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -235,7 +235,7 @@ NavMeshAgent:
   m_Radius: 0.5
   m_Speed: 2
   m_Acceleration: 8
-  avoidancePriority: 50
+  avoidancePriority: 99
   m_AngularSpeed: 120
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
