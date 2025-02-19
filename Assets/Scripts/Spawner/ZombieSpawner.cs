@@ -6,7 +6,7 @@ public class ZombieSpawner : MonoBehaviour
 {
     // List to store all spawners in the scene
     public static List<ZombieSpawner> AllSpawners = new List<ZombieSpawner>();
-    
+
     // Tracking zombie counts
     public static int zombiesAlive = 0;
     public static int zombiesSpawned = 0;
@@ -18,7 +18,7 @@ public class ZombieSpawner : MonoBehaviour
     public GameObject zombiePrefab;
     public Transform spawnPoint;
     public float spawnInterval = 3f; // Time between spawns
-    
+
     private static int spawnerIndex = 0; // Used to cycle through spawners in order
 
     private void Awake()
@@ -41,6 +41,8 @@ public class ZombieSpawner : MonoBehaviour
 
     private static void StartNewRound()
     {
+        Debug.Log($"Starting Round {currentRound}");
+
         zombiesSpawned = 0;
         zombiesAlive = 0;
 
@@ -82,11 +84,13 @@ public class ZombieSpawner : MonoBehaviour
 
                 // Move to the next spawner in order
                 spawnerIndex = (spawnerIndex + 1) % AllSpawners.Count;
-                
+
                 // Wait before the next spawner creates a zombie
                 yield return new WaitForSeconds(currentSpawner.spawnInterval);
             }
         }
+
+        Debug.Log($"All zombies spawned for Round {currentRound - 1}");
     }
 
     private void SpawnZombie()
@@ -98,16 +102,18 @@ public class ZombieSpawner : MonoBehaviour
         {
             // Create a new zombie at the spawner's location
             GameObject newZombie = Instantiate(zombiePrefab, spawnPoint.position, Quaternion.identity);
-            Zombie zombieScript = newZombie.GetComponent<Zombie>();
+            EnemyHealth enemyHealth = newZombie.GetComponent<EnemyHealth>();
 
-            if (zombieScript != null)
+            if (enemyHealth != null)
             {
                 // Subscribe to the zombie's death event
-                zombieScript.OnDeath += OnZombieDeath;
+                enemyHealth.OnDeath += OnZombieDeath;
             }
 
             zombiesSpawned++;
             zombiesAlive++;
+
+            Debug.Log($"Zombie spawned! Total spawned: {zombiesSpawned}, Alive: {zombiesAlive}");
         }
     }
 
@@ -115,9 +121,12 @@ public class ZombieSpawner : MonoBehaviour
     {
         zombiesAlive--;
 
+        Debug.Log($"Zombie died! Zombies alive: {zombiesAlive}");
+
         // When all zombies are dead and the round quota has been met, start a new round
         if (zombiesAlive <= 0 && zombiesSpawned >= maxZombiesThisRound)
         {
+            Debug.Log("All zombies dead. Starting new round...");
             StartNewRound();
         }
     }
