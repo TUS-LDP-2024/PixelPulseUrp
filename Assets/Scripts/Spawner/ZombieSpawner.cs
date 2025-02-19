@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ZombieSpawner : MonoBehaviour
 {
@@ -28,6 +29,27 @@ public class ZombieSpawner : MonoBehaviour
         {
             AllSpawners.Add(this);
         }
+
+        // Subscribe to the sceneLoaded event
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDestroy()
+    {
+        // Unsubscribe from the sceneLoaded event to avoid memory leaks
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // Reset static variables when the scene is reloaded
+        zombiesAlive = 0;
+        zombiesSpawned = 0;
+        maxZombiesThisRound = 8;
+        currentRound = 1;
+        spawnerIndex = 0;
+
+        Debug.Log("Scene reloaded. Static variables reset.");
     }
 
     private void Start()
