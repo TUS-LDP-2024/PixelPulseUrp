@@ -67,8 +67,8 @@ public class PlayerShooting : MonoBehaviour
             // Create visual effect for debugging (raycast visualization)
             Debug.DrawLine(gunBarrel.position, hit.point, Color.red, 1f);
 
-            // Check if the hit object has an EnemyHealth component
-            EnemyHealth enemyHealth = hit.collider.GetComponent<EnemyHealth>();
+               // Look for the EnemyHealth component in the parent hierarchy
+               EnemyHealth enemyHealth = hit.collider.GetComponentInParent<EnemyHealth>();
 
             // If the enemy health component is found, apply damage
             if (enemyHealth != null)
