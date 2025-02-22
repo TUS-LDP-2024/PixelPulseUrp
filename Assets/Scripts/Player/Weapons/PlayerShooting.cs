@@ -3,110 +3,146 @@ using UnityEngine.InputSystem;
 
 public class PlayerShooting : MonoBehaviour
 {
-    [Header("Raycast Settings")]
-    public float range = 100f;
-    public LayerMask enemyLayer;
+    [Header("Weapon Stats")]
+    public int damage = 34;       // Default damage
+    public float range = 100f;    // Default range
+    public float fireRate = 1f;   // Default fire rate
 
     [Header("Shooting Effects")]
     public GameObject impactEffect;
-    public Transform gunBarrel;
 
-    [Header("Points Settings")]
+    [Header("References")]
     public PointsManager pointsManager; // Reference to the PointsManager script
+    public WeaponManager weaponManager; // Reference to the WeaponManager script
 
+    private Transform gunBarrel;   // Transform representing the gun barrel
     private PlayerInput playerInput;
-    private InputAction fireAction;  // Store reference to the action
+    private InputAction fireAction;
+    private float nextFireTime = 0f;
 
     private void Awake()
     {
-        // Get the PlayerInput component
         playerInput = GetComponent<PlayerInput>();
+        fireAction = playerInput.actions["Fire"];
+    }
+
+    private void Start()
+    {
+        // Subscribe to the WeaponManager's weapon change event
+        if (weaponManager != null)
+        {
+            weaponManager.OnWeaponChanged += UpdateGunBarrel;
+        }
+        else
+        {
+            Debug.LogError("WeaponManager reference is missing!");
+        }
+
+        // Initialize the gun barrel for the starting weapon
+        UpdateGunBarrel();
     }
 
     private void OnEnable()
     {
-        // Ensure the action map "Player" and action "Fire" are properly found
-        fireAction = playerInput.actions.FindActionMap("Player").FindAction("Fire");
-
-        if (fireAction != null)
-        {
-            Debug.Log("Fire action found and assigned successfully.");
-            fireAction.performed += ctx => Shoot();
-        }
-        else
-        {
-            Debug.LogError("Fire action not found in Player action map!");
-        }
+        fireAction.performed += OnShoot;
     }
 
     private void OnDisable()
     {
-        // Check if fireAction is not null before unsubscribing
-        if (fireAction != null)
+        fireAction.performed -= OnShoot;
+    }
+
+    private void OnShoot(InputAction.CallbackContext context)
+    {
+        // Check if enough time has passed since the last shot
+        if (Time.time < nextFireTime) return;
+
+        // Set the next fire time based on the fire rate
+        nextFireTime = Time.time + 1f / fireRate;
+
+        // Perform the raycast
+        PerformRaycast();
+    }
+
+    private void PerformRaycast()
+    {
+        if (gunBarrel == null)
         {
-            fireAction.performed -= ctx => Shoot();
+            Debug.LogError("GunBarrel is not assigned!");
+            return;
+        }
+
+        RaycastHit hit;
+        Debug.DrawRay(gunBarrel.position, gunBarrel.forward * range, Color.blue, 1f);
+
+        if (Physics.Raycast(gunBarrel.position, gunBarrel.forward, out hit, range))
+        {
+            HandleHit(hit);
         }
         else
         {
-            Debug.LogError("Fire action is null, cannot unsubscribe.");
+            Debug.DrawRay(gunBarrel.position, gunBarrel.forward * range, Color.green, 1f);
         }
     }
 
-    private void Shoot()
+    private void HandleHit(RaycastHit hit)
     {
-        // Log that the ray is being fired
-        Debug.Log("Ray Fired!");
+        Debug.Log("Hit: " + hit.collider.name);
 
-        RaycastHit hit;
-
-        // Draw the ray to visualize it in the scene
-        Debug.DrawRay(gunBarrel.position, gunBarrel.forward * range, Color.blue, 1f);
-
-        // Perform raycast from the gun barrel forward
-        if (Physics.Raycast(gunBarrel.position, gunBarrel.forward, out hit, range, enemyLayer))
+        // Check if the hit object is a zombie
+        EnemyHealth enemyHealth = hit.collider.GetComponentInParent<EnemyHealth>();
+        if (enemyHealth != null)
         {
-            Debug.Log("Hit: " + hit.collider.name);
+            // Determine if it's a headshot or body shot
+            bool isHeadshot = hit.collider.CompareTag("Head");
+            int damageToApply = isHeadshot ? damage * 2 : damage;
 
-            // Create visual effect for debugging (raycast visualization)
-            Debug.DrawLine(gunBarrel.position, hit.point, Color.red, 1f);
+            // Apply damage to the zombie
+            enemyHealth.TakeDamage(damageToApply);
 
-            // Look for the EnemyHealth component in the parent hierarchy
-            EnemyHealth enemyHealth = hit.collider.GetComponentInParent<EnemyHealth>();
-
-            // If the enemy health component is found, apply damage
-            if (enemyHealth != null)
+            // Award points based on the shot type
+            if (pointsManager != null)
             {
-                if (hit.collider.CompareTag("Head"))
-                {
-                    Debug.Log("Headshot!");
-                    enemyHealth.TakeDamage(67);  // Headshot damage
-
-                    // Award 50 points for a headshot
-                    if (pointsManager != null)
-                    {
-                        pointsManager.AddPoints(50);
-                    }
-                }
-                else if (hit.collider.CompareTag("Body"))
-                {
-                    Debug.Log("Body shot!");
-                    enemyHealth.TakeDamage(34);  // Body shot damage
-
-                    // Award 10 points for a body shot
-                    if (pointsManager != null)
-                    {
-                        pointsManager.AddPoints(10);
-                    }
-                }
+                int pointsToAdd = isHeadshot ? 50 : 10;
+                pointsManager.AddPoints(pointsToAdd);
             }
 
-            // Instantiate impact effect (e.g., blood splatter) on hit location
+            Debug.Log(isHeadshot ? "Headshot!" : "Body shot!");
+        }
+
+        // Instantiate impact effect at the hit location
+        if (impactEffect != null)
+        {
             Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
+        }
+    }
+
+    // Update the weapon stats when a new weapon is equipped
+    public void UpdateWeaponStats(int newDamage, float newRange, float newFireRate)
+    {
+        damage = newDamage;
+        range = newRange;
+        fireRate = newFireRate;
+    }
+
+    // Update the gun barrel transform when the weapon changes
+    private void UpdateGunBarrel()
+    {
+        if (weaponManager == null || weaponManager.currentWeaponModel == null)
+        {
+            Debug.LogError("WeaponManager or currentWeaponModel is missing!");
+            return;
+        }
+
+        // Find the gun barrel transform in the current weapon model
+        gunBarrel = weaponManager.currentWeaponModel.transform.Find("GunBarrel");
+        if (gunBarrel == null)
+        {
+            Debug.LogError("GunBarrel not found in the current weapon model!");
         }
         else
         {
-            // No hit, just show the ray visualization
-            Debug.DrawRay(gunBarrel.position, gunBarrel.forward * range, Color.green, 1f);
+            Debug.Log("GunBarrel updated: " + gunBarrel.name);
         }
     }
 }

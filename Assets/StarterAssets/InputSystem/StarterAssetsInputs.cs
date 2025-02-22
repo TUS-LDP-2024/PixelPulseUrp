@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 namespace StarterAssets
 {
-  public class StarterAssetsInputs : MonoBehaviour
+    public class StarterAssetsInputs : MonoBehaviour
     {
         [Header("Character Input Values")]
         public Vector2 move;
@@ -18,6 +18,7 @@ namespace StarterAssets
         public bool interact; // State for interacting with objects or NPCs
         public bool Aim; // State for aiming down sights or focusing
         public bool reload; // State for reloading the weapon
+        public bool switchWeapon; // State for switching weapons
 
         [Header("Movement Settings")]
         public bool analogMovement;
@@ -64,6 +65,7 @@ namespace StarterAssets
         {
             AimInput(value.isPressed);
         }
+
         public void OnInteract(InputValue value)
         {
             InteractInput(value.isPressed);
@@ -72,6 +74,11 @@ namespace StarterAssets
         public void OnReload(InputValue value)
         {
             ReloadInput(value.isPressed);
+        }
+
+        public void OnSwitchWeapon(InputValue value)
+        {
+            SwitchWeaponInput(value.isPressed);
         }
 #endif
 
@@ -119,6 +126,11 @@ namespace StarterAssets
         public void ReloadInput(bool newReloadState)
         {
             reload = newReloadState; // Update the reloading state based on player input
+        }
+
+        public void SwitchWeaponInput(bool newSwitchWeaponState)
+        {
+            switchWeapon = newSwitchWeaponState; // Update the weapon switching state based on player input
         }
 
         private void OnApplicationFocus(bool hasFocus)
