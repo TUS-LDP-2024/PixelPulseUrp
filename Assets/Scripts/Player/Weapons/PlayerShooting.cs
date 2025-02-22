@@ -11,6 +11,9 @@ public class PlayerShooting : MonoBehaviour
     public GameObject impactEffect;
     public Transform gunBarrel;
 
+    [Header("Points Settings")]
+    public PointsManager pointsManager; // Reference to the PointsManager script
+
     private PlayerInput playerInput;
     private InputAction fireAction;  // Store reference to the action
 
@@ -67,8 +70,8 @@ public class PlayerShooting : MonoBehaviour
             // Create visual effect for debugging (raycast visualization)
             Debug.DrawLine(gunBarrel.position, hit.point, Color.red, 1f);
 
-               // Look for the EnemyHealth component in the parent hierarchy
-               EnemyHealth enemyHealth = hit.collider.GetComponentInParent<EnemyHealth>();
+            // Look for the EnemyHealth component in the parent hierarchy
+            EnemyHealth enemyHealth = hit.collider.GetComponentInParent<EnemyHealth>();
 
             // If the enemy health component is found, apply damage
             if (enemyHealth != null)
@@ -77,11 +80,23 @@ public class PlayerShooting : MonoBehaviour
                 {
                     Debug.Log("Headshot!");
                     enemyHealth.TakeDamage(67);  // Headshot damage
+
+                    // Award 50 points for a headshot
+                    if (pointsManager != null)
+                    {
+                        pointsManager.AddPoints(50);
+                    }
                 }
                 else if (hit.collider.CompareTag("Body"))
                 {
                     Debug.Log("Body shot!");
                     enemyHealth.TakeDamage(34);  // Body shot damage
+
+                    // Award 10 points for a body shot
+                    if (pointsManager != null)
+                    {
+                        pointsManager.AddPoints(10);
+                    }
                 }
             }
 

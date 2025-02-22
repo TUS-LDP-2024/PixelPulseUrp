@@ -1,11 +1,11 @@
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro; // Add this namespace for TextMeshPro
 
 public class PointsManager : MonoBehaviour
 {
     [Header("Points Settings")]
     public int points = 0;              // Current points
-    public Text pointsText;             // UI element to display points
+    public TextMeshProUGUI pointsText; // UI element to display points (TextMeshPro)
 
     private void Start()
     {
