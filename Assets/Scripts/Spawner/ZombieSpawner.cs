@@ -44,10 +44,10 @@ public class ZombieSpawner : MonoBehaviour
             Debug.Log($"Added spawner to active list: {this.name}");
         }
 
-        // Check if we need to start spawning
-        if (zombiesSpawned < maxZombiesThisRound && spawnCoroutine == null)
+        // Start the spawning logic if it's not already running
+        if (spawnCoroutine == null && ActiveSpawners.Count > 0 && ActiveSpawners[0] == this)
         {
-            StartSpawning();
+            StartNewRound();
         }
     }
 
@@ -68,12 +68,30 @@ public class ZombieSpawner : MonoBehaviour
         }
     }
 
-    private void StartSpawning()
+    private static void StartNewRound()
     {
-        // Start the spawning coroutine if it's not already running
-        if (spawnCoroutine == null && ActiveSpawners.Count > 0 && ActiveSpawners[0] == this)
+        Debug.Log($"Starting Round {currentRound}");
+
+        // Reset zombie counts for the new round
+        zombiesSpawned = 0;
+        zombiesAlive = 0;
+
+        // Increase the number of zombies for the next round
+        if (currentRound == 1)
         {
-            spawnCoroutine = StartCoroutine(StaggeredSpawn());
+            maxZombiesThisRound = 8; // First round starts with 8 zombies
+        }
+        else
+        {
+            maxZombiesThisRound = Mathf.RoundToInt(maxZombiesThisRound * spawnIncreaseFactor);
+        }
+
+        Debug.Log($"Max zombies for this round: {maxZombiesThisRound}");
+
+        // Start the spawning coroutine using the first active spawner
+        if (ActiveSpawners.Count > 0)
+        {
+            ActiveSpawners[0].spawnCoroutine = ActiveSpawners[0].StartCoroutine(StaggeredSpawn());
         }
     }
 
@@ -104,7 +122,14 @@ public class ZombieSpawner : MonoBehaviour
             }
         }
 
-        Debug.Log($"All zombies spawned for Round {currentRound - 1}");
+        Debug.Log($"All zombies spawned for Round {currentRound}");
+
+        // Wait until all zombies are dead before starting the next round
+        yield return new WaitUntil(() => zombiesAlive <= 0);
+
+        // Start the next round
+        currentRound++;
+        StartNewRound();
     }
 
     private void SpawnZombie()
@@ -141,35 +166,8 @@ public class ZombieSpawner : MonoBehaviour
         if (zombiesAlive <= 0 && zombiesSpawned >= maxZombiesThisRound)
         {
             Debug.Log("All zombies dead. Starting new round...");
+            currentRound++;
             StartNewRound();
-        }
-    }
-
-    private static void StartNewRound()
-    {
-        Debug.Log($"Starting Round {currentRound}");
-
-        zombiesSpawned = 0;
-        zombiesAlive = 0;
-
-        // First round always has exactly 8 zombies
-        if (currentRound == 1)
-        {
-            maxZombiesThisRound = 8;
-        }
-        else
-        {
-            // Increase zombie count for the next round
-            maxZombiesThisRound = Mathf.RoundToInt(maxZombiesThisRound * spawnIncreaseFactor);
-        }
-
-        currentRound++; // Move to the next round
-        spawnerIndex = 0; // Reset spawner order
-
-        // Start staggered spawning using the first active spawner
-        if (ActiveSpawners.Count > 0)
-        {
-            ActiveSpawners[0].StartSpawning();
         }
     }
 }
