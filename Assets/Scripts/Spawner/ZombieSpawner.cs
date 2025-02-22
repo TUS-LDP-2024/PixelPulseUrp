@@ -6,6 +6,7 @@ public class ZombieSpawner : MonoBehaviour
 {
     // List to store all spawners in the scene
     public static List<ZombieSpawner> AllSpawners = new List<ZombieSpawner>();
+    private static List<ZombieSpawner> ActiveSpawners = new List<ZombieSpawner>(); // Track active spawners
 
     // Tracking zombie counts
     public static int zombiesAlive = 0;
@@ -20,6 +21,7 @@ public class ZombieSpawner : MonoBehaviour
     public float spawnInterval = 3f; // Time between spawns
 
     private static int spawnerIndex = 0; // Used to cycle through spawners in order
+    private Coroutine spawnCoroutine; // Track the spawning coroutine
 
     private void Awake()
     {
@@ -28,14 +30,41 @@ public class ZombieSpawner : MonoBehaviour
         {
             AllSpawners.Add(this);
         }
+
+        // Disable the spawner at start
+        this.enabled = false;
     }
 
-    private void Start()
+    private void OnEnable()
     {
-        // Only the first spawner starts the first round
-        if (AllSpawners.Count > 0 && AllSpawners[0] == this)
+        // Add this spawner to the active spawners list
+        if (!ActiveSpawners.Contains(this))
+        {
+            ActiveSpawners.Add(this);
+            Debug.Log($"Added spawner to active list: {this.name}");
+        }
+
+        // Start the spawning logic if it's not already running
+        if (spawnCoroutine == null && ActiveSpawners.Count > 0 && ActiveSpawners[0] == this)
         {
             StartNewRound();
+        }
+    }
+
+    private void OnDisable()
+    {
+        // Remove this spawner from the active spawners list
+        if (ActiveSpawners.Contains(this))
+        {
+            ActiveSpawners.Remove(this);
+            Debug.Log($"Removed spawner from active list: {this.name}");
+        }
+
+        // Stop the coroutine if this spawner was running it
+        if (spawnCoroutine != null)
+        {
+            StopCoroutine(spawnCoroutine);
+            spawnCoroutine = null;
         }
     }
 
@@ -60,30 +89,34 @@ public class ZombieSpawner : MonoBehaviour
         currentRound++; // Move to the next round
         spawnerIndex = 0; // Reset spawner order
 
-        // Start staggered spawning using the first spawner
-        if (AllSpawners.Count > 0)
+        // Start staggered spawning using the first active spawner
+        if (ActiveSpawners.Count > 0)
         {
-            AllSpawners[0].StartCoroutine(StaggeredSpawn());
+            ActiveSpawners[0].spawnCoroutine = ActiveSpawners[0].StartCoroutine(StaggeredSpawn());
         }
     }
 
     private static IEnumerator StaggeredSpawn()
     {
-        // Spawn zombies in a staggered order across all spawners
+        // Spawn zombies in a staggered order across all active spawners
         while (zombiesSpawned < maxZombiesThisRound)
         {
-            if (AllSpawners.Count > 0)
+            if (ActiveSpawners.Count > 0)
             {
-                ZombieSpawner currentSpawner = AllSpawners[spawnerIndex];
+                ZombieSpawner currentSpawner = ActiveSpawners[spawnerIndex];
 
-                // Ensure we do not exceed max zombies
-                if (zombiesSpawned < maxZombiesThisRound)
+                // Ensure the spawner is active (enabled)
+                if (currentSpawner.enabled)
                 {
-                    currentSpawner.SpawnZombie();
-                }
+                    // Spawn a zombie if we haven't reached the max
+                    if (zombiesSpawned < maxZombiesThisRound)
+                    {
+                        currentSpawner.SpawnZombie();
+                    }
 
-                // Move to the next spawner in order
-                spawnerIndex = (spawnerIndex + 1) % AllSpawners.Count;
+                    // Move to the next spawner in order
+                    spawnerIndex = (spawnerIndex + 1) % ActiveSpawners.Count;
+                }
 
                 // Wait before the next spawner creates a zombie
                 yield return new WaitForSeconds(currentSpawner.spawnInterval);
@@ -131,5 +164,3 @@ public class ZombieSpawner : MonoBehaviour
         }
     }
 }
-
-
