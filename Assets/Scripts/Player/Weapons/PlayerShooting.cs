@@ -72,14 +72,36 @@ public class PlayerShooting : MonoBehaviour
             return;
         }
 
-        RaycastHit hit;
-        Debug.DrawRay(gunBarrel.position, gunBarrel.forward * range, Color.blue, 1f);
+        // Perform a raycast that gets all hits along the bullet's path.
+        // Using QueryTriggerInteraction.Collide so triggers are included.
+        RaycastHit[] hits = Physics.RaycastAll(gunBarrel.position, gunBarrel.forward, range, ~0, QueryTriggerInteraction.Collide);
 
-        if (Physics.Raycast(gunBarrel.position, gunBarrel.forward, out hit, range))
+        // Sort the hits by distance (closest first)
+        System.Array.Sort(hits, (h1, h2) => h1.distance.CompareTo(h2.distance));
+
+        bool validHitFound = false;
+        foreach (var hit in hits)
         {
+            // Check if this hit should be ignored:
+            // - It's a BoxCollider
+            // - It's a trigger
+            // - And its GameObject is either on the "GroundLayer" or tagged "Floor"
+            if (hit.collider is BoxCollider && hit.collider.isTrigger)
+            {
+                if (hit.collider.CompareTag("Floor") || hit.collider.gameObject.layer == LayerMask.NameToLayer("GroundLayer"))
+                {
+                    Debug.Log("Ignored BoxCollider trigger: " + hit.collider.name);
+                    continue; // Skip this hit and look for the next one
+                }
+            }
+
+            // Use this hit since it doesn't match the ignore criteria.
             HandleHit(hit);
+            validHitFound = true;
+            break;
         }
-        else
+
+        if (!validHitFound)
         {
             Debug.DrawRay(gunBarrel.position, gunBarrel.forward * range, Color.green, 1f);
         }
