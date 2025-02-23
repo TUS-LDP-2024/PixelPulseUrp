@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro; // Required for TextMeshPro
 
 public class PlayerShooting : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class PlayerShooting : MonoBehaviour
     [Header("References")]
     public PointsManager pointsManager; // Reference to the PointsManager script
     public WeaponManager weaponManager; // Reference to the WeaponManager script
+    public TextMeshProUGUI ammoDisplay; // Reference to the ammo display text
 
     private Transform gunBarrel;   // Transform representing the gun barrel
     private PlayerInput playerInput;
@@ -35,6 +37,7 @@ public class PlayerShooting : MonoBehaviour
     {
         // Initialize ammo
         currentAmmo = maxAmmo;
+        UpdateAmmoDisplay(); // Update the ammo display at the start
 
         // Subscribe to the WeaponManager's weapon change event
         if (weaponManager != null)
@@ -82,7 +85,7 @@ public class PlayerShooting : MonoBehaviour
 
         // Consume ammo
         currentAmmo--;
-        Debug.Log($"Ammo: {currentAmmo}/{maxAmmo}");
+        UpdateAmmoDisplay(); // Update the ammo display after shooting
     }
 
     private void PerformRaycast()
@@ -171,6 +174,7 @@ public class PlayerShooting : MonoBehaviour
 
         // Reset ammo when switching weapons
         currentAmmo = maxAmmo;
+        UpdateAmmoDisplay(); // Update the ammo display when switching weapons
     }
 
     // Reload the weapon
@@ -189,7 +193,17 @@ public class PlayerShooting : MonoBehaviour
     {
         currentAmmo = maxAmmo;
         isReloading = false;
+        UpdateAmmoDisplay(); // Update the ammo display after reloading
         Debug.Log("Reload complete!");
+    }
+
+    // Update the ammo display text
+    private void UpdateAmmoDisplay()
+    {
+        if (ammoDisplay != null)
+        {
+            ammoDisplay.text = $"{currentAmmo} / {maxAmmo}";
+        }
     }
 
     // Update the gun barrel transform when the weapon changes
