@@ -18,6 +18,7 @@ public class WeaponManager : MonoBehaviour
 
     private PlayerInput playerInput;
     private InputAction switchWeaponAction;
+    private InputAction reloadAction;
 
     // Event to notify when the weapon changes
     public System.Action OnWeaponChanged;
@@ -26,6 +27,7 @@ public class WeaponManager : MonoBehaviour
     {
         playerInput = GetComponent<PlayerInput>();
         switchWeaponAction = playerInput.actions["SwitchWeapon"];
+        reloadAction = playerInput.actions["Reload"];
     }
 
     private void OnEnable()
@@ -34,6 +36,10 @@ public class WeaponManager : MonoBehaviour
         {
             switchWeaponAction.performed += OnSwitchWeapon;
         }
+        if (reloadAction != null)
+        {
+            reloadAction.performed += OnReload;
+        }
     }
 
     private void OnDisable()
@@ -41,6 +47,10 @@ public class WeaponManager : MonoBehaviour
         if (switchWeaponAction != null)
         {
             switchWeaponAction.performed -= OnSwitchWeapon;
+        }
+        if (reloadAction != null)
+        {
+            reloadAction.performed -= OnReload;
         }
     }
 
@@ -61,6 +71,12 @@ public class WeaponManager : MonoBehaviour
     {
         Debug.Log("Switch weapon input detected!");
         SwitchWeapon();
+    }
+
+    private void OnReload(InputAction.CallbackContext context)
+    {
+        Debug.Log("Reload input detected!");
+        Reload();
     }
 
     // Switch to the next weapon in the inventory
@@ -94,7 +110,7 @@ public class WeaponManager : MonoBehaviour
         // Update the PlayerShooting script with the new weapon's stats
         if (playerShooting != null)
         {
-            playerShooting.UpdateWeaponStats(currentWeapon.damage, currentWeapon.range, currentWeapon.fireRate);
+            playerShooting.UpdateWeaponStats(currentWeapon.damage, currentWeapon.range, currentWeapon.fireRate, currentWeapon.maxAmmo, currentWeapon.reloadTime);
         }
 
         // Instantiate the weapon model
@@ -117,6 +133,15 @@ public class WeaponManager : MonoBehaviour
 
         // Notify subscribers that the weapon has changed
         OnWeaponChanged?.Invoke();
+    }
+
+    // Reload the current weapon
+    private void Reload()
+    {
+        if (playerShooting != null)
+        {
+            playerShooting.Reload();
+        }
     }
 
     // Buy a weapon from the wall and add it to the inventory

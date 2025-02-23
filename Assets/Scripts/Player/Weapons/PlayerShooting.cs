@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerShooting : MonoBehaviour
 {
@@ -6,6 +7,11 @@ public class PlayerShooting : MonoBehaviour
     public int damage = 34;       // Default damage
     public float range = 100f;    // Default range
     public float fireRate = 1f;   // Default fire rate
+    public int maxAmmo = 30;      // Maximum ammo capacity
+    public float reloadTime = 2f; // Time it takes to reload
+
+    private int currentAmmo;      // Current ammo count
+    private bool isReloading = false; // Flag to track reloading state
 
     [Header("Shooting Effects")]
     public GameObject impactEffect;
@@ -15,11 +21,21 @@ public class PlayerShooting : MonoBehaviour
     public WeaponManager weaponManager; // Reference to the WeaponManager script
 
     private Transform gunBarrel;   // Transform representing the gun barrel
+    private PlayerInput playerInput;
+    private InputAction fireAction;
     private float nextFireTime = 0f;
-    private bool isShooting = false; // Flag to prevent double firing
+
+    private void Awake()
+    {
+        playerInput = GetComponent<PlayerInput>();
+        fireAction = playerInput.actions["Fire"];
+    }
 
     private void Start()
     {
+        // Initialize ammo
+        currentAmmo = maxAmmo;
+
         // Subscribe to the WeaponManager's weapon change event
         if (weaponManager != null)
         {
@@ -34,17 +50,29 @@ public class PlayerShooting : MonoBehaviour
         UpdateGunBarrel();
     }
 
-    // This method is called by the Input System when the "Fire" action is triggered
-    private void OnFire()
+    private void OnEnable()
     {
-        // If already shooting, ignore this call
-        if (isShooting) return;
+        fireAction.performed += OnShoot;
+    }
 
-        // If not enough time has passed since the last shot, ignore this call
+    private void OnDisable()
+    {
+        fireAction.performed -= OnShoot;
+    }
+
+    private void OnShoot(InputAction.CallbackContext context)
+    {
+        if (isReloading) return; // Don't shoot while reloading
+
+        // Check if enough time has passed since the last shot
         if (Time.time < nextFireTime) return;
 
-        // Set the flag to prevent double firing
-        isShooting = true;
+        // Check if there is ammo left
+        if (currentAmmo <= 0)
+        {
+            Reload();
+            return;
+        }
 
         // Set the next fire time based on the fire rate
         nextFireTime = Time.time + 1f / fireRate;
@@ -52,13 +80,9 @@ public class PlayerShooting : MonoBehaviour
         // Perform the raycast
         PerformRaycast();
 
-        // Reset the flag after a short delay to ensure debouncing
-        Invoke(nameof(ResetShootingFlag), 0.1f); // Adjust the delay as needed
-    }
-
-    private void ResetShootingFlag()
-    {
-        isShooting = false;
+        // Consume ammo
+        currentAmmo--;
+        Debug.Log($"Ammo: {currentAmmo}/{maxAmmo}");
     }
 
     private void PerformRaycast()
@@ -137,11 +161,35 @@ public class PlayerShooting : MonoBehaviour
     }
 
     // Update the weapon stats when a new weapon is equipped
-    public void UpdateWeaponStats(int newDamage, float newRange, float newFireRate)
+    public void UpdateWeaponStats(int newDamage, float newRange, float newFireRate, int newMaxAmmo, float newReloadTime)
     {
         damage = newDamage;
         range = newRange;
         fireRate = newFireRate;
+        maxAmmo = newMaxAmmo;
+        reloadTime = newReloadTime;
+
+        // Reset ammo when switching weapons
+        currentAmmo = maxAmmo;
+    }
+
+    // Reload the weapon
+    public void Reload()
+    {
+        if (isReloading || currentAmmo == maxAmmo) return;
+
+        Debug.Log("Reloading...");
+        isReloading = true;
+
+        // Wait for the reload time
+        Invoke(nameof(FinishReload), reloadTime);
+    }
+
+    private void FinishReload()
+    {
+        currentAmmo = maxAmmo;
+        isReloading = false;
+        Debug.Log("Reload complete!");
     }
 
     // Update the gun barrel transform when the weapon changes
