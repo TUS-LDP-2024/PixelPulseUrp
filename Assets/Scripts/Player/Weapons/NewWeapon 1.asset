@@ -16,5 +16,7 @@ MonoBehaviour:
   damage: 100
   range: 200
   fireRate: 1
+  maxAmmo: 5
+  reloadTime: 3
   modelPrefab: {fileID: 5589320232316488790, guid: 1c12bd30945eaad46b0e712fb42d5503,
     type: 3}
