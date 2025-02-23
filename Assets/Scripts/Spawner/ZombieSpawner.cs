@@ -102,10 +102,16 @@ public class ZombieSpawner : MonoBehaviour
         {
             if (ActiveSpawners.Count > 0)
             {
+                // Ensure spawnerIndex is within bounds
+                if (spawnerIndex >= ActiveSpawners.Count)
+                {
+                    spawnerIndex = 0; // Reset to the first spawner
+                }
+
                 ZombieSpawner currentSpawner = ActiveSpawners[spawnerIndex];
 
                 // Ensure the spawner is active (enabled)
-                if (currentSpawner.enabled)
+                if (currentSpawner != null && currentSpawner.enabled)
                 {
                     // Spawn a zombie if we haven't reached the max
                     if (zombiesSpawned < maxZombiesThisRound)
@@ -116,9 +122,19 @@ public class ZombieSpawner : MonoBehaviour
                     // Move to the next spawner in order
                     spawnerIndex = (spawnerIndex + 1) % ActiveSpawners.Count;
                 }
+                else
+                {
+                    // If the current spawner is invalid, skip it
+                    spawnerIndex = (spawnerIndex + 1) % ActiveSpawners.Count;
+                }
 
                 // Wait before the next spawner creates a zombie
                 yield return new WaitForSeconds(currentSpawner.spawnInterval);
+            }
+            else
+            {
+                // If there are no active spawners, stop the coroutine
+                yield break;
             }
         }
 
