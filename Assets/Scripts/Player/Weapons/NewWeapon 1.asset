@@ -15,6 +15,6 @@ MonoBehaviour:
   weaponName: Sniper
   damage: 100
   range: 200
-  fireRate: 5
+  fireRate: 1
   modelPrefab: {fileID: 5589320232316488790, guid: 1c12bd30945eaad46b0e712fb42d5503,
     type: 3}

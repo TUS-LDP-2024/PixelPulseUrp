@@ -15,6 +15,6 @@ MonoBehaviour:
   weaponName: Pistol
   damage: 25
   range: 100
-  fireRate: 10
+  fireRate: 5
   modelPrefab: {fileID: 6715177416934658305, guid: 6d2ff220fa2b50b479723403208d05cd,
     type: 3}
