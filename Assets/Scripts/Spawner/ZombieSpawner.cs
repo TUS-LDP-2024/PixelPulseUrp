@@ -161,6 +161,9 @@ public class ZombieSpawner : MonoBehaviour
 
             if (enemyHealth != null)
             {
+                // Update the zombie's health based on the current round
+                enemyHealth.UpdateHealthForRound(currentRound);
+
                 // Subscribe to the zombie's death event
                 enemyHealth.OnDeath += OnZombieDeath;
             }
