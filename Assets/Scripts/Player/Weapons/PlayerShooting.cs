@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerShooting : MonoBehaviour
 {
@@ -16,15 +15,8 @@ public class PlayerShooting : MonoBehaviour
     public WeaponManager weaponManager; // Reference to the WeaponManager script
 
     private Transform gunBarrel;   // Transform representing the gun barrel
-    private PlayerInput playerInput;
-    private InputAction fireAction;
     private float nextFireTime = 0f;
-
-    private void Awake()
-    {
-        playerInput = GetComponent<PlayerInput>();
-        fireAction = playerInput.actions["Fire"];
-    }
+    private bool isShooting = false; // Flag to prevent double firing
 
     private void Start()
     {
@@ -42,26 +34,31 @@ public class PlayerShooting : MonoBehaviour
         UpdateGunBarrel();
     }
 
-    private void OnEnable()
+    // This method is called by the Input System when the "Fire" action is triggered
+    private void OnFire()
     {
-        fireAction.performed += OnShoot;
-    }
+        // If already shooting, ignore this call
+        if (isShooting) return;
 
-    private void OnDisable()
-    {
-        fireAction.performed -= OnShoot;
-    }
-
-    private void OnShoot(InputAction.CallbackContext context)
-    {
-        // Check if enough time has passed since the last shot
+        // If not enough time has passed since the last shot, ignore this call
         if (Time.time < nextFireTime) return;
+
+        // Set the flag to prevent double firing
+        isShooting = true;
 
         // Set the next fire time based on the fire rate
         nextFireTime = Time.time + 1f / fireRate;
 
         // Perform the raycast
         PerformRaycast();
+
+        // Reset the flag after a short delay to ensure debouncing
+        Invoke(nameof(ResetShootingFlag), 0.1f); // Adjust the delay as needed
+    }
+
+    private void ResetShootingFlag()
+    {
+        isShooting = false;
     }
 
     private void PerformRaycast()
