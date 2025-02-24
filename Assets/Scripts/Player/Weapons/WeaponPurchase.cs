@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class WeaponPurchase : MonoBehaviour
 {
@@ -12,6 +13,9 @@ public class WeaponPurchase : MonoBehaviour
 
     [Header("Cooldown Settings")]
     public float cooldownTime = 1f; // Time (in seconds) before another purchase can be made
+
+    [Header("UI Settings")]
+    public GameObject purchaseMessage; // UI element to display purchase messages
 
     private PlayerInput playerInput;
     private InputAction interactAction;
@@ -37,8 +41,16 @@ public class WeaponPurchase : MonoBehaviour
     {
         if (!isOnCooldown && IsPlayerInRange())
         {
-            // Attempt to buy the weapon
-            weaponManager.BuyWeapon(weapon, cost);
+            // Check if the player already has the weapon
+            if (PlayerHasWeapon(weapon))
+            {
+                ShowMessage("You already have this weapon!");
+            }
+            else
+            {
+                // Attempt to buy the weapon
+                weaponManager.BuyWeapon(weapon, cost);
+            }
 
             // Start cooldown
             StartCooldown();
@@ -59,6 +71,19 @@ public class WeaponPurchase : MonoBehaviour
         return false;
     }
 
+    private bool PlayerHasWeapon(Weapon weaponToCheck)
+    {
+        // Check if the weapon is already in the player's inventory
+        foreach (Weapon weapon in weaponManager.playerInventory)
+        {
+            if (weapon != null && weapon.weaponName == weaponToCheck.weaponName)
+            {
+                return true; // Player already has this weapon
+            }
+        }
+        return false; // Player does not have this weapon
+    }
+
     private void StartCooldown()
     {
         // Set cooldown flag and start the cooldown timer
@@ -70,5 +95,26 @@ public class WeaponPurchase : MonoBehaviour
     {
         // Reset the cooldown flag
         isOnCooldown = false;
+    }
+
+    private void ShowMessage(string message)
+    {
+        if (purchaseMessage != null)
+        {
+            // Display the message (e.g., using a UI text element)
+            purchaseMessage.SetActive(true);
+            purchaseMessage.GetComponent<TextMeshProUGUI>().text = message;
+
+            // Hide the message after a short delay
+            Invoke(nameof(HideMessage), 2f);
+        }
+    }
+
+    private void HideMessage()
+    {
+        if (purchaseMessage != null)
+        {
+            purchaseMessage.SetActive(false);
+        }
     }
 }
