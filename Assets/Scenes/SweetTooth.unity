@@ -35761,7 +35761,7 @@ GameObject:
   - component: {fileID: 923087068}
   - component: {fileID: 923087072}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Wallbuy Sniper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
