@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 public class PlayerHealth : MonoBehaviour
 {
     public float maxHealth = 100f;
-    public float regenRate = 2f; // Health per second regeneration rate
+    public float regenRate = 0f; // Health per second regeneration rate
     private float currentHealth;
 
     // Reference to the UI Image for the blood overlay effect.
@@ -13,7 +13,7 @@ public class PlayerHealth : MonoBehaviour
 
     private void Start()
     {
-        currentHealth = maxHealth; // Initialize health
+        currentHealth = maxHealth / 10; // Initialize health
     }
 
     private void Update()
@@ -68,10 +68,12 @@ public class PlayerHealth : MonoBehaviour
             if (currentHealth <= fifteenPercentHealth)
             {
                 // pulse oscillates between -0.1 and 0.1; adjust frequency and amplitude as needed.
-                float pulse = 0.1f * Mathf.Sin(Time.time * 5f);
+                float pulse = 0.8f * Mathf.Sin(Time.time * 2.2f);
+                pulse = Mathf.Clamp(pulse, -0.5f, 0.2f); // Clamp the pulse effect within a safe range
                 alpha = Mathf.Clamp01(alpha + pulse);
             }
         }
+
         else
         {
             alpha = 0f;
@@ -86,3 +88,4 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 }
+
