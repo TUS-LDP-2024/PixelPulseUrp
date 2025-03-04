@@ -122,6 +122,12 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 23800000, guid: 1c421eab37b2274489777771cf3d846b, type: 2}
+--- !u!1 &16949790 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4787590805821571366, guid: 60329745d03a7114782620f7b4609422,
+    type: 3}
+  m_PrefabInstance: {fileID: 5103515598240147040}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &26220853
 GameObject:
   m_ObjectHideFlags: 0
@@ -35910,6 +35916,7 @@ GameObject:
   - component: {fileID: 923087069}
   - component: {fileID: 923087068}
   - component: {fileID: 923087072}
+  - component: {fileID: 923087073}
   m_Layer: 0
   m_Name: Wallbuy Sniper
   m_TagString: Untagged
@@ -36020,6 +36027,22 @@ MonoBehaviour:
   weaponManager: {fileID: 7689072181350644984}
   cooldownTime: 1
   purchaseMessage: {fileID: 974283154}
+--- !u!114 &923087073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 923087066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a4f123736198f74ea8f6a4bb8ea87bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemName: Sniper
+  useCost: 1
+  cost: 100
+  promptText: {fileID: 974283156}
 --- !u!1001 &930044147
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -38012,7 +38035,7 @@ GameObject:
   - component: {fileID: 974283157}
   - component: {fileID: 974283156}
   m_Layer: 5
-  m_Name: PurchaseMessage
+  m_Name: PromptMessage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -38035,7 +38058,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 50}
+  m_SizeDelta: {x: 400, y: 172.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &974283156
 MonoBehaviour:
@@ -38084,15 +38107,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 34
+  m_fontSizeBase: 34
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 1024
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -38100,7 +38123,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
@@ -43675,6 +43698,63 @@ MonoBehaviour:
   m_Bidirectional: 1
   m_AutoUpdatePosition: 0
   m_Area: 2
+--- !u!1 &1157222189 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4755848026279101044, guid: 22f3ef21ea9f71d4292a125786bbedcc,
+    type: 3}
+  m_PrefabInstance: {fileID: 358141336622197776}
+  m_PrefabAsset: {fileID: 0}
+--- !u!70 &1157222192
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1157222189}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.0025836253, y: -0.0000000033760443}
+  m_Size: {x: 0.5, y: 0.5}
+  m_Direction: 0
+--- !u!114 &1157222193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1157222189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a4f123736198f74ea8f6a4bb8ea87bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemName: Knife
+  useCost: 0
+  cost: 0
+  promptText: {fileID: 974283156}
 --- !u!1 &1164600249
 GameObject:
   m_ObjectHideFlags: 0
@@ -67619,7 +67699,15 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4755848026279101044, guid: 22f3ef21ea9f71d4292a125786bbedcc,
+        type: 3}
+      insertIndex: 2
+      addedObject: {fileID: 1157222193}
+    - targetCorrespondingSourceObject: {fileID: 4755848026279101044, guid: 22f3ef21ea9f71d4292a125786bbedcc,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1157222192}
   m_SourcePrefab: {fileID: 100100000, guid: 22f3ef21ea9f71d4292a125786bbedcc, type: 3}
 --- !u!1 &414613326661538736
 GameObject:
@@ -68314,7 +68402,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4787590805821571366, guid: 60329745d03a7114782620f7b4609422,
+        type: 3}
+      insertIndex: 6
+      addedObject: {fileID: 6623362905499902028}
   m_SourcePrefab: {fileID: 100100000, guid: 60329745d03a7114782620f7b4609422, type: 3}
 --- !u!1 &5122757201122726421
 GameObject:
@@ -68340,6 +68432,22 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 5103515598240147040}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6623362905499902028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 16949790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a4f123736198f74ea8f6a4bb8ea87bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemName: Door
+  useCost: 1
+  cost: 100
+  promptText: {fileID: 974283156}
 --- !u!33 &6679630013252694610
 MeshFilter:
   m_ObjectHideFlags: 0
