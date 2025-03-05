@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using TMPro; // Required for TextMeshPro
+using TMPro;
+using System; // Required for TextMeshPro
 
 public class PlayerShooting : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class PlayerShooting : MonoBehaviour
     public float fireRate = 1f;   // Default fire rate
     public int maxAmmo = 30;      // Maximum ammo capacity
     public float reloadTime = 2f; // Time it takes to reload
+    public int maxStoredAmmo = 100; // Max stored ammo
+    public int storedAmmo = 100; // Stored ammo count
 
     private int currentAmmo;      // Current ammo count
     private bool isReloading = false; // Flag to track reloading state
@@ -180,7 +183,9 @@ public class PlayerShooting : MonoBehaviour
     // Reload the weapon
     public void Reload()
     {
-        if (isReloading || currentAmmo == maxAmmo) return;
+        if (isReloading || currentAmmo == maxAmmo || storedAmmo == 0) return;
+
+
 
         Debug.Log("Reloading...");
         isReloading = true;
@@ -191,18 +196,21 @@ public class PlayerShooting : MonoBehaviour
 
     private void FinishReload()
     {
-        currentAmmo = maxAmmo;
+        storedAmmo += currentAmmo;
+        int ammoToReload = Math.Min(storedAmmo, maxAmmo);
+        storedAmmo -= ammoToReload;
+        currentAmmo = ammoToReload;
         isReloading = false;
         UpdateAmmoDisplay(); // Update the ammo display after reloading
         Debug.Log("Reload complete!");
     }
 
     // Update the ammo display text
-    private void UpdateAmmoDisplay()
+    public void UpdateAmmoDisplay()
     {
         if (ammoDisplay != null)
         {
-            ammoDisplay.text = $"{currentAmmo} / {maxAmmo}";
+            ammoDisplay.text = $"{currentAmmo} / {storedAmmo}";
         }
     }
 
