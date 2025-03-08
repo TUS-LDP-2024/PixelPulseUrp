@@ -271,7 +271,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b2f4616b1d5dee4d8c2c8630a0f9ee9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  baseHealth: 100
+  ammoPickup: {fileID: 4276788621699398848, guid: c05745d3238fdd84f9d10e0e7ce22feb,
+    type: 3}
+  ammoDropChance: 0.9
 --- !u!114 &3400329954022966958
 MonoBehaviour:
   m_ObjectHideFlags: 0

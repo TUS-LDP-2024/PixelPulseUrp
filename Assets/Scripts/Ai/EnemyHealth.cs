@@ -8,6 +8,8 @@ public class EnemyHealth : MonoBehaviour
 
     public delegate void DeathEvent(GameObject zombie); // Define the event delegate
     public event DeathEvent OnDeath; // Define the event
+    public GameObject ammoPickup;
+    public float ammoDropChance = 0.9f;
 
     private void Start()
     {
@@ -45,6 +47,15 @@ public class EnemyHealth : MonoBehaviour
 
         // Trigger the OnDeath event before destroying the GameObject
         OnDeath?.Invoke(gameObject);
+
+        // Chance to drop ammo
+        var result = Random.Range(0f, 1f);
+        if (result < ammoDropChance)
+        {
+            var pickup = Instantiate(ammoPickup);
+            pickup.transform.position = gameObject.transform.position + new Vector3(0f, -0.8f, 0f);
+        }
+
 
         Destroy(gameObject); // Remove enemy from the scene
     }
