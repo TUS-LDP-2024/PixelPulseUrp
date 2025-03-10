@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
-using System; // Required for TextMeshPro
+using System;
 
 public class PlayerShooting : MonoBehaviour
 {
@@ -21,8 +21,15 @@ public class PlayerShooting : MonoBehaviour
     [Header("Camera Shake")]
     public CameraShake cameraShake; // Reference to the CameraShake script on the Main Camera
 
+    [Header("Blend Shape Settings")]
+    public SkinnedMeshRenderer pistolMeshRenderer; // Reference to the pistol's SkinnedMeshRenderer
+    public int magEjectBlendShapeIndex = 0; // Index of the MagEject blend shape
+    public int roundCycleBlendShapeIndex = 1; // Index of the RoundCycle blend shape
+    public float blendShapeSpeed = 5f; // Speed of blend shape animation
+
     private int currentAmmo;      // Current ammo count
     private bool isReloading = false; // Flag to track reloading state
+    private bool isRecoiling = false; // Flag to track recoil state
 
     [Header("Shooting Effects")]
     public GameObject impactEffect;
@@ -37,8 +44,8 @@ public class PlayerShooting : MonoBehaviour
     private InputAction fireAction;
     private float nextFireTime = 0f;
 
-    private Vector3 originalWeaponPosition; // Original position of the weapon
-    private Quaternion originalWeaponRotation; // Original rotation of the weapon
+    private Vector3 originalWeaponPosition; // Original local position of the weapon
+    private Quaternion originalWeaponRotation; // Original local rotation of the weapon
 
     private AudioSource weaponAudioSource; // AudioSource for weapon sounds
 
@@ -67,7 +74,7 @@ public class PlayerShooting : MonoBehaviour
         // Initialize the gun barrel for the starting weapon
         UpdateGunBarrel();
 
-        // Store the original position and rotation of the weapon
+        // Store the original local position and rotation of the weapon
         if (weaponManager != null && weaponManager.currentWeaponModel != null)
         {
             originalWeaponPosition = weaponManager.currentWeaponModel.transform.localPosition;
@@ -95,32 +102,52 @@ public class PlayerShooting : MonoBehaviour
     private void Update()
     {
         // Recoil recovery
-        if (weaponManager != null && weaponManager.currentWeaponModel != null)
+        if (weaponManager != null && weaponManager.currentWeaponModel != null && isRecoiling)
         {
+            // Smoothly reset the weapon's local position
             weaponManager.currentWeaponModel.transform.localPosition = Vector3.Lerp(
                 weaponManager.currentWeaponModel.transform.localPosition,
                 originalWeaponPosition,
                 Time.deltaTime * recoilRecoverySpeed
             );
 
+            // Smoothly reset the weapon's local rotation
             weaponManager.currentWeaponModel.transform.localRotation = Quaternion.Lerp(
                 weaponManager.currentWeaponModel.transform.localRotation,
                 originalWeaponRotation,
                 Time.deltaTime * recoilRecoverySpeed
             );
+
+            // Check if the weapon has returned to its original position and rotation
+            if (Vector3.Distance(weaponManager.currentWeaponModel.transform.localPosition, originalWeaponPosition) < 0.01f &&
+                Quaternion.Angle(weaponManager.currentWeaponModel.transform.localRotation, originalWeaponRotation) < 0.01f)
+            {
+                // Reset the recoil state
+                isRecoiling = false;
+                Debug.Log("Recoil reset complete. isRecoiling = " + isRecoiling);
+            }
         }
     }
 
     private void OnShoot(InputAction.CallbackContext context)
     {
-        if (isReloading) return; // Don't shoot while reloading
+        if (isReloading || isRecoiling)
+        {
+            Debug.Log("Cannot shoot: isReloading = " + isReloading + ", isRecoiling = " + isRecoiling);
+            return; // Don't shoot while reloading or recoiling
+        }
 
         // Check if enough time has passed since the last shot
-        if (Time.time < nextFireTime) return;
+        if (Time.time < nextFireTime)
+        {
+            Debug.Log("Cannot shoot: Fire rate cooldown.");
+            return;
+        }
 
         // Check if there is ammo left
         if (currentAmmo <= 0)
         {
+            Debug.Log("Cannot shoot: Out of ammo.");
             Reload();
             return;
         }
@@ -158,17 +185,22 @@ public class PlayerShooting : MonoBehaviour
         // Consume ammo
         currentAmmo--;
         UpdateAmmoDisplay(); // Update the ammo display after shooting
+        Debug.Log("Shot fired. Current ammo: " + currentAmmo);
     }
 
     private void ApplyRecoil()
     {
-        if (weaponManager != null && weaponManager.currentWeaponModel != null)
+        if (weaponManager != null && weaponManager.currentWeaponModel != null && !isRecoiling)
         {
-            // Apply recoil to the weapon
+            // Set the recoil state
+            isRecoiling = true;
+
+            // Apply recoil to the weapon in local space
+            // Move the weapon backward along its local Z-axis
             weaponManager.currentWeaponModel.transform.localPosition -= Vector3.forward * recoilForce;
-            weaponManager.currentWeaponModel.transform.localRotation = Quaternion.Euler(
-                weaponManager.currentWeaponModel.transform.localRotation.eulerAngles + new Vector3(-recoilForce * 10, 0, 0)
-            );
+
+            // Apply rotation recoil (tilt the weapon upward)
+            weaponManager.currentWeaponModel.transform.localRotation *= Quaternion.Euler(-recoilForce * 10, 0, 0);
         }
     }
 
@@ -247,7 +279,6 @@ public class PlayerShooting : MonoBehaviour
         }
     }
 
-    // Update the weapon stats when a new weapon is equipped
     public void UpdateWeaponStats(int newDamage, float newRange, float newFireRate, int newMaxAmmo, float newReloadTime)
     {
         damage = newDamage;
@@ -261,7 +292,6 @@ public class PlayerShooting : MonoBehaviour
         UpdateAmmoDisplay(); // Update the ammo display when switching weapons
     }
 
-    // Reload the weapon
     public void Reload()
     {
         if (isReloading || currentAmmo == maxAmmo || storedAmmo == 0) return;
@@ -279,6 +309,16 @@ public class PlayerShooting : MonoBehaviour
             Debug.LogError("Weapon AudioSource or reloadSound is missing!");
         }
 
+        // Play the reload animation
+        if (weaponManager.currentWeapon != null && weaponManager.currentWeaponModel != null)
+        {
+            weaponManager.currentWeapon.PlayReloadAnimation(weaponManager.currentWeaponModel, this); // Pass the weapon instance and 'this' to start the coroutine
+        }
+        else
+        {
+            Debug.LogError("Current weapon or weapon model is null!");
+        }
+
         // Wait for the reload time
         Invoke(nameof(FinishReload), reloadTime);
     }
@@ -286,7 +326,7 @@ public class PlayerShooting : MonoBehaviour
     private void FinishReload()
     {
         storedAmmo += currentAmmo;
-        int ammoToReload = Math.Min(storedAmmo, maxAmmo);
+        int ammoToReload = Math.Min(storedAmmo, maxAmmo); // Now works because of the 'using System;' directive
         storedAmmo -= ammoToReload;
         currentAmmo = ammoToReload;
         isReloading = false;
@@ -294,7 +334,6 @@ public class PlayerShooting : MonoBehaviour
         Debug.Log("Reload complete!");
     }
 
-    // Update the ammo display text
     public void UpdateAmmoDisplay()
     {
         if (ammoDisplay != null)
@@ -303,7 +342,6 @@ public class PlayerShooting : MonoBehaviour
         }
     }
 
-    // Update the gun barrel transform when the weapon changes
     private void UpdateGunBarrel()
     {
         if (weaponManager == null || weaponManager.currentWeaponModel == null)
@@ -329,5 +367,10 @@ public class PlayerShooting : MonoBehaviour
         {
             Debug.LogError("AudioSource component not found on the weapon model!");
         }
+
+        // Store the original local position and rotation of the weapon
+        originalWeaponPosition = weaponManager.currentWeaponModel.transform.localPosition;
+        originalWeaponRotation = weaponManager.currentWeaponModel.transform.localRotation;
+        Debug.Log("Original weapon position and rotation updated.");
     }
 }

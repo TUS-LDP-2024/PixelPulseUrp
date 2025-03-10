@@ -20,3 +20,8 @@ MonoBehaviour:
   reloadTime: 2
   modelPrefab: {fileID: 6715177416934658305, guid: 6d2ff220fa2b50b479723403208d05cd,
     type: 3}
+  shootSound: {fileID: 8300000, guid: 65d2ae664ff239d4aa11305155e98ab0, type: 3}
+  reloadSound: {fileID: 8300000, guid: 70825f52c13df72479e400d229310539, type: 3}
+  magEjectBlendShapeIndex: 3
+  roundCycleBlendShapeIndex: 0
+  blendShapeSpeed: 240

@@ -67801,6 +67801,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 247293848}
     m_Modifications:
+    - target: {fileID: 2016911544828834882, guid: 6d2ff220fa2b50b479723403208d05cd,
+        type: 3}
+      propertyPath: m_BlendShapeWeights.Array.data[0]
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6231516117818264507, guid: 6d2ff220fa2b50b479723403208d05cd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -68966,6 +68971,11 @@ MonoBehaviour:
   recoilForce: 1
   recoilRecoverySpeed: 5
   cameraShake: {fileID: 4636679401943563022}
+  pistolMeshRenderer: {fileID: 2016911544828834882, guid: 6d2ff220fa2b50b479723403208d05cd,
+    type: 3}
+  magEjectBlendShapeIndex: 0
+  roundCycleBlendShapeIndex: 1
+  blendShapeSpeed: 5
   impactEffect: {fileID: 834521920}
   pointsManager: {fileID: 7689072181350644981}
   weaponManager: {fileID: 7689072181350644984}
@@ -69044,6 +69054,7 @@ MonoBehaviour:
   pointsManager: {fileID: 7689072181350644981}
   weaponParent: {fileID: 1359498174}
   currentWeaponModel: {fileID: 0}
+  currentWeapon: {fileID: 0}
 --- !u!114 &7689072181350644985
 MonoBehaviour:
   m_ObjectHideFlags: 0

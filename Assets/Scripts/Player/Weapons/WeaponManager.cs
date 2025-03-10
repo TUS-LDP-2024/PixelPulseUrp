@@ -18,7 +18,6 @@ public class WeaponManager : MonoBehaviour
     public Weapon currentWeapon; // Reference to the current weapon's data
 
     private PlayerInput playerInput;
-    private InputAction switchWeaponAction;
     private InputAction reloadAction;
 
     // Event to notify when the weapon changes
@@ -27,31 +26,22 @@ public class WeaponManager : MonoBehaviour
     private void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
-        switchWeaponAction = playerInput.actions["SwitchWeapon"];
         reloadAction = playerInput.actions["Reload"];
     }
 
     private void OnEnable()
     {
-        if (switchWeaponAction != null)
-        {
-            switchWeaponAction.performed += OnSwitchWeapon;
-        }
         if (reloadAction != null)
         {
-            reloadAction.performed += OnReload;
+            reloadAction.performed += OnReload; // Subscribe to the reload action
         }
     }
 
     private void OnDisable()
     {
-        if (switchWeaponAction != null)
-        {
-            switchWeaponAction.performed -= OnSwitchWeapon;
-        }
         if (reloadAction != null)
         {
-            reloadAction.performed -= OnReload;
+            reloadAction.performed -= OnReload; // Unsubscribe from the reload action
         }
     }
 
@@ -68,16 +58,18 @@ public class WeaponManager : MonoBehaviour
         }
     }
 
-    private void OnSwitchWeapon(InputAction.CallbackContext context)
-    {
-        Debug.Log("Switch weapon input detected!");
-        SwitchWeapon();
-    }
-
+    // Handle reload input
     private void OnReload(InputAction.CallbackContext context)
     {
         Debug.Log("Reload input detected!");
-        Reload();
+        if (playerShooting != null)
+        {
+            playerShooting.Reload(); // Call the public Reload method
+        }
+        else
+        {
+            Debug.LogError("PlayerShooting reference is missing!");
+        }
     }
 
     // Switch to the next weapon in the inventory
@@ -97,7 +89,6 @@ public class WeaponManager : MonoBehaviour
         EquipWeapon(currentWeaponIndex);
     }
 
-    // Equip a weapon and update the player's shooting stats
     private void EquipWeapon(int index)
     {
         if (index < 0 || index >= playerInventory.Length || playerInventory[index] == null)
@@ -108,6 +99,7 @@ public class WeaponManager : MonoBehaviour
 
         // Set the current weapon
         currentWeapon = playerInventory[index];
+        Debug.Log($"Equipping {currentWeapon.weaponName}");
 
         // Update the PlayerShooting script with the new weapon's stats
         if (playerShooting != null)
@@ -131,19 +123,8 @@ public class WeaponManager : MonoBehaviour
             Debug.Log($"Weapon model instantiated: {currentWeaponModel.name}");
         }
 
-        Debug.Log($"Equipped {currentWeapon.weaponName}");
-
         // Notify subscribers that the weapon has changed
         OnWeaponChanged?.Invoke();
-    }
-
-    // Reload the current weapon
-    private void Reload()
-    {
-        if (playerShooting != null)
-        {
-            playerShooting.Reload();
-        }
     }
 
     // Buy a weapon from the wall and add it to the inventory
