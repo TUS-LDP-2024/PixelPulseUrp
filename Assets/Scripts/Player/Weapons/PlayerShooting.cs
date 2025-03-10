@@ -16,7 +16,7 @@ public class PlayerShooting : MonoBehaviour
 
     [Header("Recoil Settings")]
     public float recoilForce = 1f; // Recoil force applied to the weapon
-    public float recoilRecoverySpeed = 5f; // Speed at which the weapon returns to its original position
+    private float recoilRecoverySpeed; // Speed at which the weapon returns to its original position
 
     [Header("Camera Shake")]
     public CameraShake cameraShake; // Reference to the CameraShake script on the Main Camera
@@ -194,6 +194,9 @@ public class PlayerShooting : MonoBehaviour
         {
             // Set the recoil state
             isRecoiling = true;
+
+            // Calculate recoil recovery speed based on fire rate
+            recoilRecoverySpeed = fireRate * 2f; // Adjust the multiplier as needed
 
             // Apply recoil to the weapon in local space
             // Move the weapon backward along its local Z-axis
