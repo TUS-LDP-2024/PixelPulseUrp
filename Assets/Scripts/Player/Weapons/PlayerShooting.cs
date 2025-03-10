@@ -40,6 +40,8 @@ public class PlayerShooting : MonoBehaviour
     private Vector3 originalWeaponPosition; // Original position of the weapon
     private Quaternion originalWeaponRotation; // Original rotation of the weapon
 
+    private AudioSource weaponAudioSource; // AudioSource for weapon sounds
+
     private void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
@@ -70,6 +72,13 @@ public class PlayerShooting : MonoBehaviour
         {
             originalWeaponPosition = weaponManager.currentWeaponModel.transform.localPosition;
             originalWeaponRotation = weaponManager.currentWeaponModel.transform.localRotation;
+
+            // Get the AudioSource component from the weapon model
+            weaponAudioSource = weaponManager.currentWeaponModel.GetComponent<AudioSource>();
+            if (weaponAudioSource == null)
+            {
+                Debug.LogError("AudioSource component not found on the weapon model!");
+            }
         }
     }
 
@@ -134,6 +143,16 @@ public class PlayerShooting : MonoBehaviour
         else
         {
             Debug.LogError("CameraShake reference is null in PlayerShooting!");
+        }
+
+        // Play shooting sound
+        if (weaponAudioSource != null && weaponManager.currentWeapon != null)
+        {
+            weaponAudioSource.PlayOneShot(weaponManager.currentWeapon.shootSound);
+        }
+        else
+        {
+            Debug.LogError("Weapon AudioSource or shootSound is missing!");
         }
 
         // Consume ammo
@@ -250,6 +269,16 @@ public class PlayerShooting : MonoBehaviour
         Debug.Log("Reloading...");
         isReloading = true;
 
+        // Play reloading sound
+        if (weaponAudioSource != null && weaponManager.currentWeapon != null)
+        {
+            weaponAudioSource.PlayOneShot(weaponManager.currentWeapon.reloadSound);
+        }
+        else
+        {
+            Debug.LogError("Weapon AudioSource or reloadSound is missing!");
+        }
+
         // Wait for the reload time
         Invoke(nameof(FinishReload), reloadTime);
     }
@@ -292,6 +321,13 @@ public class PlayerShooting : MonoBehaviour
         else
         {
             Debug.Log("GunBarrel updated: " + gunBarrel.name);
+        }
+
+        // Update the AudioSource reference when switching weapons
+        weaponAudioSource = weaponManager.currentWeaponModel.GetComponent<AudioSource>();
+        if (weaponAudioSource == null)
+        {
+            Debug.LogError("AudioSource component not found on the weapon model!");
         }
     }
 }

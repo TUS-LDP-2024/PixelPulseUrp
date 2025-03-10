@@ -16,6 +16,11 @@ public class Weapon : ScriptableObject
     [Header("Weapon Model")]
     public GameObject modelPrefab; // Prefab for the weapon model
 
+
+    [Header("Audio Clips")]
+    public AudioClip shootSound; // Sound effect for shooting
+    public AudioClip reloadSound; // Sound effect for reloading
+
     // Method to instantiate the weapon model
     public GameObject InstantiateModel(Transform parent)
     {

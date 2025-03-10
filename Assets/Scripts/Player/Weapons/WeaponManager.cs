@@ -15,6 +15,7 @@ public class WeaponManager : MonoBehaviour
 
     [Header("Current Weapon Model")]
     public GameObject currentWeaponModel; // Currently instantiated weapon model
+    public Weapon currentWeapon; // Reference to the current weapon's data
 
     private PlayerInput playerInput;
     private InputAction switchWeaponAction;
@@ -105,7 +106,8 @@ public class WeaponManager : MonoBehaviour
             return;
         }
 
-        Weapon currentWeapon = playerInventory[index];
+        // Set the current weapon
+        currentWeapon = playerInventory[index];
 
         // Update the PlayerShooting script with the new weapon's stats
         if (playerShooting != null)
