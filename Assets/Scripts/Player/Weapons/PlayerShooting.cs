@@ -14,6 +14,13 @@ public class PlayerShooting : MonoBehaviour
     public int maxStoredAmmo = 100; // Max stored ammo
     public int storedAmmo = 100; // Stored ammo count
 
+    [Header("Recoil Settings")]
+    public float recoilForce = 1f; // Recoil force applied to the weapon
+    public float recoilRecoverySpeed = 5f; // Speed at which the weapon returns to its original position
+
+    [Header("Camera Shake")]
+    public CameraShake cameraShake; // Reference to the CameraShake script on the Main Camera
+
     private int currentAmmo;      // Current ammo count
     private bool isReloading = false; // Flag to track reloading state
 
@@ -29,6 +36,9 @@ public class PlayerShooting : MonoBehaviour
     private PlayerInput playerInput;
     private InputAction fireAction;
     private float nextFireTime = 0f;
+
+    private Vector3 originalWeaponPosition; // Original position of the weapon
+    private Quaternion originalWeaponRotation; // Original rotation of the weapon
 
     private void Awake()
     {
@@ -54,6 +64,13 @@ public class PlayerShooting : MonoBehaviour
 
         // Initialize the gun barrel for the starting weapon
         UpdateGunBarrel();
+
+        // Store the original position and rotation of the weapon
+        if (weaponManager != null && weaponManager.currentWeaponModel != null)
+        {
+            originalWeaponPosition = weaponManager.currentWeaponModel.transform.localPosition;
+            originalWeaponRotation = weaponManager.currentWeaponModel.transform.localRotation;
+        }
     }
 
     private void OnEnable()
@@ -64,6 +81,25 @@ public class PlayerShooting : MonoBehaviour
     private void OnDisable()
     {
         fireAction.performed -= OnShoot;
+    }
+
+    private void Update()
+    {
+        // Recoil recovery
+        if (weaponManager != null && weaponManager.currentWeaponModel != null)
+        {
+            weaponManager.currentWeaponModel.transform.localPosition = Vector3.Lerp(
+                weaponManager.currentWeaponModel.transform.localPosition,
+                originalWeaponPosition,
+                Time.deltaTime * recoilRecoverySpeed
+            );
+
+            weaponManager.currentWeaponModel.transform.localRotation = Quaternion.Lerp(
+                weaponManager.currentWeaponModel.transform.localRotation,
+                originalWeaponRotation,
+                Time.deltaTime * recoilRecoverySpeed
+            );
+        }
     }
 
     private void OnShoot(InputAction.CallbackContext context)
@@ -86,9 +122,35 @@ public class PlayerShooting : MonoBehaviour
         // Perform the raycast
         PerformRaycast();
 
+        // Apply recoil
+        ApplyRecoil();
+
+        // Trigger camera shake
+        if (cameraShake != null)
+        {
+            Debug.Log("Triggering camera shake from PlayerShooting.");
+            cameraShake.TriggerShake();
+        }
+        else
+        {
+            Debug.LogError("CameraShake reference is null in PlayerShooting!");
+        }
+
         // Consume ammo
         currentAmmo--;
         UpdateAmmoDisplay(); // Update the ammo display after shooting
+    }
+
+    private void ApplyRecoil()
+    {
+        if (weaponManager != null && weaponManager.currentWeaponModel != null)
+        {
+            // Apply recoil to the weapon
+            weaponManager.currentWeaponModel.transform.localPosition -= Vector3.forward * recoilForce;
+            weaponManager.currentWeaponModel.transform.localRotation = Quaternion.Euler(
+                weaponManager.currentWeaponModel.transform.localRotation.eulerAngles + new Vector3(-recoilForce * 10, 0, 0)
+            );
+        }
     }
 
     private void PerformRaycast()
@@ -184,8 +246,6 @@ public class PlayerShooting : MonoBehaviour
     public void Reload()
     {
         if (isReloading || currentAmmo == maxAmmo || storedAmmo == 0) return;
-
-
 
         Debug.Log("Reloading...");
         isReloading = true;

@@ -67965,6 +67965,7 @@ GameObject:
   - component: {fileID: 2347073422790270793}
   - component: {fileID: 2399786208479454039}
   - component: {fileID: 4636679401943563021}
+  - component: {fileID: 4636679401943563022}
   m_Layer: 0
   m_Name: MainCamera
   m_TagString: MainCamera
@@ -67980,7 +67981,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2347073422790270794}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -15.73, y: 10.161317, z: -23.948788}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -68404,6 +68405,21 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!114 &4636679401943563022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2347073422790270794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf348969ccb8b6144874ef6f652ecfe8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shakeDuration: 0.1
+  shakeMagnitude: 0.1
+  dampingSpeed: 1
 --- !u!1001 &5103515598240147040
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -68947,6 +68963,9 @@ MonoBehaviour:
   reloadTime: 2
   maxStoredAmmo: 100
   storedAmmo: 100
+  recoilForce: 1
+  recoilRecoverySpeed: 5
+  cameraShake: {fileID: 4636679401943563022}
   impactEffect: {fileID: 834521920}
   pointsManager: {fileID: 7689072181350644981}
   weaponManager: {fileID: 7689072181350644984}
