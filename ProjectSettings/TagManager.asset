@@ -12,6 +12,7 @@ TagManager:
   - Body
   - Head
   - PlayerCollider
+  - Enemy
   layers:
   - Default
   - TransparentFX

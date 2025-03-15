@@ -10,7 +10,7 @@ public class DoorMover : MonoBehaviour
     }
 
     [Header("Trigger Settings")]
-    [Tooltip("Assign the trigger collider (must be set as 'Is Trigger') that detects the player.")]
+    [Tooltip("Assign the trigger collider (must be set as 'Is Trigger') that detects the player or enemy.")]
     public Collider triggerZone;
 
     [Header("Movement Settings")]
@@ -28,7 +28,7 @@ public class DoorMover : MonoBehaviour
 
     private Vector3 closedPosition;
     private Vector3 openPosition;
-    private bool playerDetected;
+    private bool triggerDetected;
 
     void Start()
     {
@@ -40,18 +40,18 @@ public class DoorMover : MonoBehaviour
         switch (doorAxis)
         {
             case DoorAxis.LocalX:
-                axisDirection = transform.right;   // local X
+                axisDirection = transform.right;
                 break;
             case DoorAxis.LocalY:
-                axisDirection = transform.up;      // local Y
+                axisDirection = transform.up;
                 break;
             case DoorAxis.LocalZ:
             default:
-                axisDirection = transform.forward; // local Z
+                axisDirection = transform.forward;
                 break;
         }
 
-        // If moveRight is false, invert the direction
+        // Invert the direction if needed
         if (!moveRight)
         {
             axisDirection = -axisDirection;
@@ -63,25 +63,25 @@ public class DoorMover : MonoBehaviour
 
     void Update()
     {
-        bool isPlayerInTrigger = CheckForPlayer();
+        bool isTriggered = CheckForTrigger();
 
-        if (isPlayerInTrigger && !playerDetected)
+        if (isTriggered && !triggerDetected)
         {
-            Debug.Log("Player entered trigger zone for door: " + gameObject.name);
+            Debug.Log("Trigger entered for door: " + gameObject.name);
         }
-        else if (!isPlayerInTrigger && playerDetected)
+        else if (!isTriggered && triggerDetected)
         {
-            Debug.Log("Player exited trigger zone for door: " + gameObject.name);
+            Debug.Log("Trigger exited for door: " + gameObject.name);
         }
-        playerDetected = isPlayerInTrigger;
+        triggerDetected = isTriggered;
 
         // Move the door toward the open or closed position based on detection
-        Vector3 targetPosition = playerDetected ? openPosition : closedPosition;
+        Vector3 targetPosition = triggerDetected ? openPosition : closedPosition;
         transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
     }
 
-    // Check for player within the trigger using Physics.OverlapBox
-    bool CheckForPlayer()
+    // Check for objects tagged "Player" or "Enemy" within the trigger zone.
+    bool CheckForTrigger()
     {
         if (triggerZone == null)
         {
@@ -89,20 +89,19 @@ public class DoorMover : MonoBehaviour
             return false;
         }
 
-        Collider[] hits = Physics.OverlapBox(triggerZone.bounds.center,
-                                            triggerZone.bounds.extents,
-                                            triggerZone.transform.rotation);
+        Collider[] hits = Physics.OverlapBox(triggerZone.bounds.center, triggerZone.bounds.extents, triggerZone.transform.rotation);
         foreach (Collider hit in hits)
         {
-            if (hit.CompareTag("Player"))
+            if (hit.CompareTag("Player") || hit.CompareTag("Enemy"))
             {
+                Debug.Log("Detected trigger object: " + hit.name);
                 return true;
             }
         }
         return false;
     }
 
-    // Draw the trigger zone in the editor for visualization
+    // Draw the trigger zone in the editor for visualization.
     void OnDrawGizmosSelected()
     {
         if (triggerZone != null)
