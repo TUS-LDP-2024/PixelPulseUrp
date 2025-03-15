@@ -14,14 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Shotgun
   damage: 60
-  range: 200
-  fireRate: 0.5
-  maxAmmo: 7
-  reloadTime: 2
-  modelPrefab: {fileID: 7855651171049340649, guid: 81f02d2a656264f45ac12a6d18b5441b,
+  range: 100
+  fireRate: 5
+  maxAmmo: 8
+  reloadTime: 3
+  modelPrefab: {fileID: 5589320232316488790, guid: 71c29bc2fe0f9ec4d8ab3b974bf0eae2,
     type: 3}
   shootSound: {fileID: 0}
   reloadSound: {fileID: 0}
   magEjectBlendShapeIndex: 0
   roundCycleBlendShapeIndex: 1
   blendShapeSpeed: 5
+  isShotgun: 1
+  spreadAngle: 10
+  pelletCount: 13

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using TMPro;
 using System;
+using TMPro;
 
 public class PlayerShooting : MonoBehaviour
 {
@@ -13,6 +13,11 @@ public class PlayerShooting : MonoBehaviour
     public float reloadTime = 2f; // Time it takes to reload
     public int maxStoredAmmo = 100; // Max stored ammo
     public int storedAmmo = 100; // Stored ammo count
+
+    [Header("Shotgun Settings")]
+    public bool isShotgun = false; // Is the current weapon a shotgun?
+    public float spreadAngle = 10f; // Spread angle for shotgun pellets (in degrees)
+    public int pelletCount = 8; // Number of pellets fired per shot
 
     [Header("Recoil Settings")]
     public float recoilForce = 1f; // Recoil force applied to the weapon
@@ -215,40 +220,92 @@ public class PlayerShooting : MonoBehaviour
             return;
         }
 
-        // Perform a raycast that gets all hits along the bullet's path.
-        // Using QueryTriggerInteraction.Collide so triggers are included.
-        RaycastHit[] hits = Physics.RaycastAll(gunBarrel.position, gunBarrel.forward, range, ~0, QueryTriggerInteraction.Collide);
-
-        // Sort the hits by distance (closest first)
-        System.Array.Sort(hits, (h1, h2) => h1.distance.CompareTo(h2.distance));
-
-        bool validHitFound = false;
-        foreach (var hit in hits)
+        if (weaponManager == null || weaponManager.currentWeapon == null)
         {
-            // Check if this hit should be ignored:
-            // - It's a BoxCollider
-            // - It's a trigger
-            // - And its GameObject is either on the "GroundLayer" or tagged "Floor"
-            if (hit.collider is BoxCollider && hit.collider.isTrigger)
+            Debug.LogError("WeaponManager or currentWeapon is missing!");
+            return;
+        }
+
+        // Check if the current weapon is a shotgun
+        if (weaponManager.currentWeapon.isShotgun)
+        {
+            // Shotgun behavior: Fire multiple pellets in a cone
+            for (int i = 0; i < weaponManager.currentWeapon.pelletCount; i++)
             {
-                if (hit.collider.CompareTag("Floor") || hit.collider.gameObject.layer == LayerMask.NameToLayer("GroundLayer"))
+                // Calculate a random direction within the spread angle
+                Vector3 pelletDirection = GetRandomDirectionWithinSpread(gunBarrel.forward, weaponManager.currentWeapon.spreadAngle);
+
+                // Perform a raycast for each pellet
+                RaycastHit[] hits = Physics.RaycastAll(gunBarrel.position, pelletDirection, range, ~0, QueryTriggerInteraction.Collide);
+                System.Array.Sort(hits, (h1, h2) => h1.distance.CompareTo(h2.distance));
+
+                bool validHitFound = false;
+                foreach (var hit in hits)
                 {
-                    Debug.Log("Ignored BoxCollider trigger: " + hit.collider.name);
-                    continue; // Skip this hit and look for the next one
+                    if (hit.collider is BoxCollider && hit.collider.isTrigger)
+                    {
+                        if (hit.collider.CompareTag("Floor") || hit.collider.gameObject.layer == LayerMask.NameToLayer("GroundLayer"))
+                        {
+                            Debug.Log("Ignored BoxCollider trigger: " + hit.collider.name);
+                            continue;
+                        }
+                    }
+
+                    HandleHit(hit);
+                    validHitFound = true;
+                    break;
+                }
+
+                if (!validHitFound)
+                {
+                    Debug.DrawRay(gunBarrel.position, pelletDirection * range, Color.green, 1f);
                 }
             }
-
-            // Use this hit since it doesn't match the ignore criteria.
-            HandleHit(hit);
-            validHitFound = true;
-            break;
         }
-
-        if (!validHitFound)
+        else
         {
-            Debug.DrawRay(gunBarrel.position, gunBarrel.forward * range, Color.green, 1f);
+            // Default behavior: Single raycast
+            RaycastHit[] hits = Physics.RaycastAll(gunBarrel.position, gunBarrel.forward, range, ~0, QueryTriggerInteraction.Collide);
+            System.Array.Sort(hits, (h1, h2) => h1.distance.CompareTo(h2.distance));
+
+            bool validHitFound = false;
+            foreach (var hit in hits)
+            {
+                if (hit.collider is BoxCollider && hit.collider.isTrigger)
+                {
+                    if (hit.collider.CompareTag("Floor") || hit.collider.gameObject.layer == LayerMask.NameToLayer("GroundLayer"))
+                    {
+                        Debug.Log("Ignored BoxCollider trigger: " + hit.collider.name);
+                        continue;
+                    }
+                }
+
+                HandleHit(hit);
+                validHitFound = true;
+                break;
+            }
+
+            if (!validHitFound)
+            {
+                Debug.DrawRay(gunBarrel.position, gunBarrel.forward * range, Color.green, 1f);
+            }
         }
     }
+
+    // Helper method to calculate a random direction within the spread angle
+    private Vector3 GetRandomDirectionWithinSpread(Vector3 direction, float spreadAngle)
+    {
+        // Calculate random angles within the spread
+        float randomAngleX = UnityEngine.Random.Range(-spreadAngle, spreadAngle); // Explicitly use UnityEngine.Random
+        float randomAngleY = UnityEngine.Random.Range(-spreadAngle, spreadAngle); // Explicitly use UnityEngine.Random
+
+        // Create a rotation based on the random angles
+        Quaternion spreadRotation = Quaternion.Euler(randomAngleX, randomAngleY, 0);
+
+        // Apply the rotation to the original direction
+        return spreadRotation * direction;
+    }
+
 
     private void HandleHit(RaycastHit hit)
     {
@@ -282,13 +339,18 @@ public class PlayerShooting : MonoBehaviour
         }
     }
 
-    public void UpdateWeaponStats(int newDamage, float newRange, float newFireRate, int newMaxAmmo, float newReloadTime)
+    public void UpdateWeaponStats(int newDamage, float newRange, float newFireRate, int newMaxAmmo, float newReloadTime, bool isShotgun, float spreadAngle, int pelletCount)
     {
         damage = newDamage;
         range = newRange;
         fireRate = newFireRate;
         maxAmmo = newMaxAmmo;
         reloadTime = newReloadTime;
+
+        // Shotgun-specific stats
+        this.isShotgun = isShotgun;
+        this.spreadAngle = spreadAngle;
+        this.pelletCount = pelletCount;
 
         // Reset ammo when switching weapons
         currentAmmo = maxAmmo;
