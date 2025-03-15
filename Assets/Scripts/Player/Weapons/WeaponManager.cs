@@ -104,7 +104,16 @@ public class WeaponManager : MonoBehaviour
         // Update the PlayerShooting script with the new weapon's stats
         if (playerShooting != null)
         {
-            playerShooting.UpdateWeaponStats(currentWeapon.damage, currentWeapon.range, currentWeapon.fireRate, currentWeapon.maxAmmo, currentWeapon.reloadTime);
+            playerShooting.UpdateWeaponStats(
+                currentWeapon.damage,
+                currentWeapon.range,
+                currentWeapon.fireRate,
+                currentWeapon.maxAmmo,
+                currentWeapon.reloadTime,
+                currentWeapon.isShotgun,
+                currentWeapon.spreadAngle,
+                currentWeapon.pelletCount
+            );
         }
 
         // Instantiate the weapon model

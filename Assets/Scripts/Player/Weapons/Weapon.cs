@@ -25,6 +25,11 @@ public class Weapon : ScriptableObject
     public int roundCycleBlendShapeIndex = 1; // Index of the RoundCycle blend shape
     public float blendShapeSpeed = 5f; // Speed of blend shape animation
 
+    [Header("Shotgun Settings")]
+    public bool isShotgun = false; // Is this weapon a shotgun?
+    public float spreadAngle = 10f; // Spread angle for shotgun pellets (in degrees)
+    public int pelletCount = 8; // Number of pellets fired per shot
+
     // Method to instantiate the weapon model
     public GameObject InstantiateModel(Transform parent)
     {
