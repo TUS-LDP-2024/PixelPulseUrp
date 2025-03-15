@@ -4380,7 +4380,7 @@ GameObject:
   m_Component:
   - component: {fileID: 628549147}
   - component: {fileID: 628549148}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Door Zone 2
   m_TagString: Untagged
   m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
@@ -4537,7 +4537,7 @@ GameObject:
   m_Component:
   - component: {fileID: 694278987}
   - component: {fileID: 694278988}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Door Zone 3
   m_TagString: Untagged
   m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
@@ -5227,7 +5227,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1045084454}
   - component: {fileID: 1045084455}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Door Zone 1
   m_TagString: Untagged
   m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
