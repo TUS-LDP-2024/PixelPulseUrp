@@ -3622,8 +3622,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19b0234e1bbc83247ba0acef17324150, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triggerZone: {fileID: 0}
-  doorAxis: 0
+  triggerZone: {fileID: 694278988}
+  doorAxis: 1
   moveRight: 1
   moveDistance: 1.5
   moveSpeed: 2
@@ -3807,9 +3807,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19b0234e1bbc83247ba0acef17324150, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triggerZone: {fileID: 0}
-  doorAxis: 0
-  moveRight: 1
+  triggerZone: {fileID: 694278988}
+  doorAxis: 1
+  moveRight: 0
   moveDistance: 1.5
   moveSpeed: 2
 --- !u!65 &306237492
@@ -4527,6 +4527,59 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 689858099}
   m_CullTransparentMesh: 1
+--- !u!1 &694278986
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 694278987}
+  - component: {fileID: 694278988}
+  m_Layer: 0
+  m_Name: Door Zone 3
+  m_TagString: Untagged
+  m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &694278987
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 694278986}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.38268343, z: 0, w: 0.92387956}
+  m_LocalPosition: {x: 306.66, y: 130.8, z: -23.26}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1600150179}
+  m_LocalEulerAnglesHint: {x: 0, y: 45, z: 0}
+--- !u!65 &694278988
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 694278986}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.4865761, y: 3.2091122, z: 4.229214}
+  m_Center: {x: 0.021177292, y: 1.1045561, z: -0.1871121}
 --- !u!1 &715263952
 GameObject:
   m_ObjectHideFlags: 0
@@ -6032,6 +6085,7 @@ Transform:
   m_Children:
   - {fileID: 1045084454}
   - {fileID: 628549147}
+  - {fileID: 694278987}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1652682536
