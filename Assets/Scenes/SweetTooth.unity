@@ -3429,8 +3429,8 @@ MonoBehaviour:
   triggerZone: {fileID: 0}
   doorAxis: 0
   moveRight: 1
-  moveDistance: 3
-  moveSpeed: 5
+  moveDistance: 1.5
+  moveSpeed: 2
 --- !u!114 &117402297
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3446,8 +3446,8 @@ MonoBehaviour:
   triggerZone: {fileID: 0}
   doorAxis: 0
   moveRight: 1
-  moveDistance: 3
-  moveSpeed: 5
+  moveDistance: 1.5
+  moveSpeed: 2
 --- !u!64 &175201606
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3625,8 +3625,8 @@ MonoBehaviour:
   triggerZone: {fileID: 0}
   doorAxis: 0
   moveRight: 1
-  moveDistance: 3
-  moveSpeed: 5
+  moveDistance: 1.5
+  moveSpeed: 2
 --- !u!1 &247293847
 GameObject:
   m_ObjectHideFlags: 0
@@ -3810,8 +3810,8 @@ MonoBehaviour:
   triggerZone: {fileID: 0}
   doorAxis: 0
   moveRight: 1
-  moveDistance: 3
-  moveSpeed: 5
+  moveDistance: 1.5
+  moveSpeed: 2
 --- !u!65 &306237492
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3887,11 +3887,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19b0234e1bbc83247ba0acef17324150, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triggerZone: {fileID: 0}
-  doorAxis: 0
+  triggerZone: {fileID: 628549148}
+  doorAxis: 1
   moveRight: 1
-  moveDistance: 3
-  moveSpeed: 5
+  moveDistance: 1.5
+  moveSpeed: 2
 --- !u!114 &384566288
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3907,8 +3907,8 @@ MonoBehaviour:
   triggerZone: {fileID: 0}
   doorAxis: 0
   moveRight: 1
-  moveDistance: 3
-  moveSpeed: 5
+  moveDistance: 1.5
+  moveSpeed: 2
 --- !u!114 &391079760
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3924,8 +3924,8 @@ MonoBehaviour:
   triggerZone: {fileID: 0}
   doorAxis: 0
   moveRight: 1
-  moveDistance: 3
-  moveSpeed: 5
+  moveDistance: 1.5
+  moveSpeed: 2
 --- !u!4 &450259554 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5281590113135728846, guid: 22f3ef21ea9f71d4292a125786bbedcc,
@@ -4267,8 +4267,8 @@ MonoBehaviour:
   triggerZone: {fileID: 0}
   doorAxis: 0
   moveRight: 1
-  moveDistance: 3
-  moveSpeed: 5
+  moveDistance: 1.5
+  moveSpeed: 2
 --- !u!850595691 &561141556
 LightingSettings:
   m_ObjectHideFlags: 0
@@ -4370,6 +4370,59 @@ MonoBehaviour:
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: 811bf51c5ae50ff4a957bced9e96d802, type: 2}
   m_BuildHeightMesh: 0
+--- !u!1 &628549146
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 628549147}
+  - component: {fileID: 628549148}
+  m_Layer: 0
+  m_Name: Door Zone 2
+  m_TagString: Untagged
+  m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &628549147
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 628549146}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 338.84, y: 130.8, z: -44.2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1600150179}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!65 &628549148
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 628549146}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.4865761, y: 3.2091122, z: 4.229214}
+  m_Center: {x: 0.021177292, y: 1.1045561, z: -0.1871121}
 --- !u!1 &661803312 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2166372997602631747, guid: 4558de5ff9d761f49b5ed7c0ba194511,
@@ -4397,8 +4450,8 @@ MonoBehaviour:
   triggerZone: {fileID: 0}
   doorAxis: 0
   moveRight: 1
-  moveDistance: 3
-  moveSpeed: 5
+  moveDistance: 1.5
+  moveSpeed: 2
 --- !u!1 &689858099
 GameObject:
   m_ObjectHideFlags: 0
@@ -5134,8 +5187,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 3.2091122, z: 4.229214}
-  m_Center: {x: 0, y: 1.1045561, z: -0.1871121}
+  m_Size: {x: 1.4865761, y: 3.2091122, z: 4.229214}
+  m_Center: {x: 0.021177292, y: 1.1045561, z: -0.1871121}
 --- !u!114 &1059446233
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5151,8 +5204,8 @@ MonoBehaviour:
   triggerZone: {fileID: 0}
   doorAxis: 0
   moveRight: 1
-  moveDistance: 3
-  moveSpeed: 5
+  moveDistance: 1.5
+  moveSpeed: 2
 --- !u!1 &1085428967
 GameObject:
   m_ObjectHideFlags: 0
@@ -5382,8 +5435,8 @@ MonoBehaviour:
   triggerZone: {fileID: 0}
   doorAxis: 0
   moveRight: 1
-  moveDistance: 3
-  moveSpeed: 5
+  moveDistance: 1.5
+  moveSpeed: 2
 --- !u!1 &1152071178 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1314836635957881629, guid: 02b846b363d926140a438c035dd0c204,
@@ -5739,8 +5792,8 @@ MonoBehaviour:
   triggerZone: {fileID: 0}
   doorAxis: 0
   moveRight: 1
-  moveDistance: 3
-  moveSpeed: 5
+  moveDistance: 1.5
+  moveSpeed: 2
 --- !u!1 &1348591456
 GameObject:
   m_ObjectHideFlags: 0
@@ -5978,6 +6031,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1045084454}
+  - {fileID: 628549147}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1652682536
@@ -5995,8 +6049,8 @@ MonoBehaviour:
   triggerZone: {fileID: 0}
   doorAxis: 0
   moveRight: 1
-  moveDistance: 3
-  moveSpeed: 5
+  moveDistance: 1.5
+  moveSpeed: 2
 --- !u!1001 &1663826988
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6093,11 +6147,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19b0234e1bbc83247ba0acef17324150, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triggerZone: {fileID: 0}
-  doorAxis: 0
-  moveRight: 1
-  moveDistance: 3
-  moveSpeed: 5
+  triggerZone: {fileID: 628549148}
+  doorAxis: 1
+  moveRight: 0
+  moveDistance: 1.5
+  moveSpeed: 2
 --- !u!65 &1716677188
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6182,8 +6236,8 @@ MonoBehaviour:
   triggerZone: {fileID: 0}
   doorAxis: 0
   moveRight: 1
-  moveDistance: 3
-  moveSpeed: 5
+  moveDistance: 1.5
+  moveSpeed: 2
 --- !u!1001 &1846179125
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6480,8 +6534,8 @@ MonoBehaviour:
   triggerZone: {fileID: 0}
   doorAxis: 0
   moveRight: 1
-  moveDistance: 3
-  moveSpeed: 5
+  moveDistance: 1.5
+  moveSpeed: 2
 --- !u!1 &1924455213
 GameObject:
   m_ObjectHideFlags: 0
@@ -6646,8 +6700,8 @@ MonoBehaviour:
   triggerZone: {fileID: 0}
   doorAxis: 0
   moveRight: 1
-  moveDistance: 3
-  moveSpeed: 5
+  moveDistance: 1.5
+  moveSpeed: 2
 --- !u!1001 &358141336622197776
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7810,8 +7864,8 @@ MonoBehaviour:
   triggerZone: {fileID: 0}
   doorAxis: 0
   moveRight: 1
-  moveDistance: 3
-  moveSpeed: 5
+  moveDistance: 1.5
+  moveSpeed: 2
 --- !u!114 &4575432880224114189
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7827,8 +7881,8 @@ MonoBehaviour:
   triggerZone: {fileID: 0}
   doorAxis: 0
   moveRight: 1
-  moveDistance: 3
-  moveSpeed: 5
+  moveDistance: 1.5
+  moveSpeed: 2
 --- !u!114 &4575432880224114190
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7844,8 +7898,8 @@ MonoBehaviour:
   triggerZone: {fileID: 0}
   doorAxis: 0
   moveRight: 1
-  moveDistance: 3
-  moveSpeed: 5
+  moveDistance: 1.5
+  moveSpeed: 2
 --- !u!114 &4575432880224114191
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7858,11 +7912,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19b0234e1bbc83247ba0acef17324150, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triggerZone: {fileID: 0}
-  doorAxis: 0
-  moveRight: 1
-  moveDistance: 3
-  moveSpeed: 5
+  triggerZone: {fileID: 1045084455}
+  doorAxis: 1
+  moveRight: 0
+  moveDistance: 1.5
+  moveSpeed: 2
 --- !u!114 &4575432880224114192
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7875,11 +7929,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19b0234e1bbc83247ba0acef17324150, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triggerZone: {fileID: 0}
-  doorAxis: 0
+  triggerZone: {fileID: 1045084455}
+  doorAxis: 1
   moveRight: 1
-  moveDistance: 3
-  moveSpeed: 5
+  moveDistance: 1.5
+  moveSpeed: 2
 --- !u!114 &4616110094648739232
 MonoBehaviour:
   m_ObjectHideFlags: 3
