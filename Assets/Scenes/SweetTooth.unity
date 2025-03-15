@@ -3570,7 +3570,7 @@ Transform:
   m_GameObject: {fileID: 214722070}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.081, y: 1.14, z: 1.88}
+  m_LocalPosition: {x: 5.69, y: 4.075, z: 1.88}
   m_LocalScale: {x: 0.19547, y: 0.42415, z: 1.5174}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8921,6 +8921,9 @@ MonoBehaviour:
   reloadTime: 2
   maxStoredAmmo: 100
   storedAmmo: 100
+  isShotgun: 0
+  spreadAngle: 10
+  pelletCount: 8
   recoilForce: 1
   cameraShake: {fileID: 4636679401943563022}
   pistolMeshRenderer: {fileID: 2016911544828834882, guid: 6d2ff220fa2b50b479723403208d05cd,
@@ -8998,74 +9001,6 @@ MonoBehaviour:
   cooldownDuration: 1.2
   shootAction: {fileID: 1388657160877356583, guid: 4419d82f33d36e848b3ed5af4c8da37e,
     type: 3}
---- !u!1001 &7744258937925477496
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 6597335036481375407, guid: 81f02d2a656264f45ac12a6d18b5441b,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.15
-      objectReference: {fileID: 0}
-    - target: {fileID: 6597335036481375407, guid: 81f02d2a656264f45ac12a6d18b5441b,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.76
-      objectReference: {fileID: 0}
-    - target: {fileID: 6597335036481375407, guid: 81f02d2a656264f45ac12a6d18b5441b,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 2.33
-      objectReference: {fileID: 0}
-    - target: {fileID: 6597335036481375407, guid: 81f02d2a656264f45ac12a6d18b5441b,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6597335036481375407, guid: 81f02d2a656264f45ac12a6d18b5441b,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6597335036481375407, guid: 81f02d2a656264f45ac12a6d18b5441b,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6597335036481375407, guid: 81f02d2a656264f45ac12a6d18b5441b,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6597335036481375407, guid: 81f02d2a656264f45ac12a6d18b5441b,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6597335036481375407, guid: 81f02d2a656264f45ac12a6d18b5441b,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6597335036481375407, guid: 81f02d2a656264f45ac12a6d18b5441b,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7855651171049340649, guid: 81f02d2a656264f45ac12a6d18b5441b,
-        type: 3}
-      propertyPath: m_Name
-      value: Shotgun
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 81f02d2a656264f45ac12a6d18b5441b, type: 3}
 --- !u!1001 &8172215625229021665
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9220,5 +9155,4 @@ SceneRoots:
   - {fileID: 8651233561075134803}
   - {fileID: 1846179125}
   - {fileID: 8172215625229021665}
-  - {fileID: 7744258937925477496}
   - {fileID: 1600150179}
