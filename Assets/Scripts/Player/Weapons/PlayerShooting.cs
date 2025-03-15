@@ -298,6 +298,7 @@ public class PlayerShooting : MonoBehaviour
         // Calculate random angles within the spread
         float randomAngleX = UnityEngine.Random.Range(-spreadAngle, spreadAngle); // Explicitly use UnityEngine.Random
         float randomAngleY = UnityEngine.Random.Range(-spreadAngle, spreadAngle); // Explicitly use UnityEngine.Random
+        float randomAngleZ = UnityEngine.Random.Range(-spreadAngle, spreadAngle); // Random angle for Z-axis
 
         // Create a rotation based on the random angles
         Quaternion spreadRotation = Quaternion.Euler(randomAngleX, randomAngleY, 0);

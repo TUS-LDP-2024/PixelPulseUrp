@@ -10,21 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e1d3de45ac8633e4dbeb5db919e6a01c, type: 3}
-  m_Name: NewWeapon 2
+  m_Name: Pistol
   m_EditorClassIdentifier: 
-  weaponName: Shotgun
-  damage: 60
+  weaponName: Pistol
+  damage: 25
   range: 100
   fireRate: 5
-  maxAmmo: 8
-  reloadTime: 3
-  modelPrefab: {fileID: 5589320232316488790, guid: 71c29bc2fe0f9ec4d8ab3b974bf0eae2,
+  maxAmmo: 10
+  reloadTime: 2
+  modelPrefab: {fileID: 6715177416934658305, guid: 6d2ff220fa2b50b479723403208d05cd,
     type: 3}
-  shootSound: {fileID: 0}
-  reloadSound: {fileID: 0}
-  magEjectBlendShapeIndex: 0
-  roundCycleBlendShapeIndex: 1
-  blendShapeSpeed: 5
-  isShotgun: 1
-  spreadAngle: 10
-  pelletCount: 13
+  shootSound: {fileID: 8300000, guid: 65d2ae664ff239d4aa11305155e98ab0, type: 3}
+  reloadSound: {fileID: 8300000, guid: 70825f52c13df72479e400d229310539, type: 3}
+  magEjectBlendShapeIndex: 3
+  roundCycleBlendShapeIndex: 0
+  blendShapeSpeed: 240
