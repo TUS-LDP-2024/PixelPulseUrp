@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1d3de45ac8633e4dbeb5db919e6a01c, type: 3}
+  m_Name: NewWeapon 2
+  m_EditorClassIdentifier: 
+  weaponName: Shotgun
+  damage: 60
+  range: 200
+  fireRate: 0.5
+  maxAmmo: 7
+  reloadTime: 2
+  modelPrefab: {fileID: 7855651171049340649, guid: 81f02d2a656264f45ac12a6d18b5441b,
+    type: 3}
+  shootSound: {fileID: 0}
+  reloadSound: {fileID: 0}
+  magEjectBlendShapeIndex: 0
+  roundCycleBlendShapeIndex: 1
+  blendShapeSpeed: 5
