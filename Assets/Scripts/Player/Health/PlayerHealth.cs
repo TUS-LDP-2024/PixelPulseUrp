@@ -13,19 +13,19 @@ public class PlayerHealth : MonoBehaviour
 
     private void Start()
     {
-        currentHealth = maxHealth / 10; // Initialize health
+        currentHealth = maxHealth/1.5f; // Initialize health
     }
 
     private void Update()
     {
-        // Regenerate health if below 50% of maxHealth
-        if (currentHealth < maxHealth * 0.5f)
+        // Regenerate health if below 15% of maxHealth
+        if (currentHealth < maxHealth * 0.15f)
         {
             currentHealth += regenRate * Time.deltaTime;
-            // Clamp health to 50% maximum when regenerating
-            if (currentHealth > maxHealth * 0.5f)
+            // Clamp health to 15% maximum when regenerating
+            if (currentHealth > maxHealth * 0.15f)
             {
-                currentHealth = maxHealth * 0.5f;
+                currentHealth = maxHealth * 0.15f;
             }
         }
 
@@ -43,10 +43,20 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
+    // New: Add health but never exceed maxHealth.
+    public void AddHealth(float amount)
+    {
+        currentHealth += amount;
+        if (currentHealth > maxHealth)
+        {
+            currentHealth = maxHealth;
+        }
+        Debug.Log($"Player healed by {amount}! Current Health: {currentHealth}");
+    }
+
     private void Die()
     {
         Debug.Log("Player has died! Loading main menu...");
-        // Load the end-game or main menu scene
         SceneManager.LoadScene("EndGameMenu");
     }
 
@@ -67,13 +77,11 @@ public class PlayerHealth : MonoBehaviour
             // If health is at or below 15%, add a pulsing effect.
             if (currentHealth <= fifteenPercentHealth)
             {
-                // pulse oscillates between -0.1 and 0.1; adjust frequency and amplitude as needed.
                 float pulse = 0.8f * Mathf.Sin(Time.time * 2.2f);
-                pulse = Mathf.Clamp(pulse, -0.5f, 0.2f); // Clamp the pulse effect within a safe range
+                pulse = Mathf.Clamp(pulse, -0.5f, 0.2f);
                 alpha = Mathf.Clamp01(alpha + pulse);
             }
         }
-
         else
         {
             alpha = 0f;
@@ -88,4 +96,3 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 }
-
