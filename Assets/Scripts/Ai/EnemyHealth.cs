@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyHealth : MonoBehaviour
 {
@@ -11,10 +12,28 @@ public class EnemyHealth : MonoBehaviour
     public GameObject ammoPickup;
     public float ammoDropChance = 0.9f;
 
+    [Header("Ragdoll Settings")]
+    public float ragdollDuration = 3f; // Time to ragdoll before destruction
+    private Animator animator; // Animator in the child object
+    private NavMeshAgent agent;
+    private Rigidbody[] ragdollRigidbodies; // Array of Rigidbodies for ragdoll
+    private Collider[] ragdollColliders; // Array of Colliders for ragdoll
+
     private void Start()
     {
         // Initialize health based on the current round
         UpdateHealthForRound(ZombieSpawner.currentRound);
+
+        // Get references to components
+        animator = GetComponentInChildren<Animator>(); // Get Animator in child object
+        agent = GetComponent<NavMeshAgent>();
+
+        // Get all Rigidbody and Collider components in the ragdoll
+        ragdollRigidbodies = GetComponentsInChildren<Rigidbody>();
+        ragdollColliders = GetComponentsInChildren<Collider>();
+
+        // Disable ragdoll physics at the start
+        SetRagdollActive(false);
     }
 
     // Update the zombie's health based on the current round
@@ -48,6 +67,19 @@ public class EnemyHealth : MonoBehaviour
         // Trigger the OnDeath event before destroying the GameObject
         OnDeath?.Invoke(gameObject);
 
+        // Disable the Animator (in the child object) and NavMeshAgent
+        if (animator != null)
+        {
+            animator.enabled = false;
+        }
+        if (agent != null)
+        {
+            agent.enabled = false;
+        }
+
+        // Enable ragdoll physics
+        SetRagdollActive(true);
+
         // Chance to drop ammo
         var result = Random.Range(0f, 1f);
         if (result < ammoDropChance)
@@ -56,7 +88,37 @@ public class EnemyHealth : MonoBehaviour
             pickup.transform.position = gameObject.transform.position + new Vector3(0f, -0.8f, 0f);
         }
 
+        // Destroy the zombie after a delay
+        Destroy(gameObject, ragdollDuration);
+    }
 
-        Destroy(gameObject); // Remove enemy from the scene
+    // Enable or disable ragdoll physics
+    private void SetRagdollActive(bool isActive)
+    {
+        // Enable/disable all Rigidbodies in the ragdoll
+        foreach (var rb in ragdollRigidbodies)
+        {
+            rb.isKinematic = !isActive; // Enable physics if active
+            rb.detectCollisions = isActive; // Enable collisions if active
+        }
+
+        // Enable/disable all Colliders in the ragdoll
+        foreach (var col in ragdollColliders)
+        {
+            col.enabled = isActive; // Enable colliders if active
+        }
+
+        // Disable the main Collider and Rigidbody (if any)
+        var mainCollider = GetComponent<Collider>();
+        if (mainCollider != null)
+        {
+            mainCollider.enabled = !isActive;
+        }
+
+        var mainRigidbody = GetComponent<Rigidbody>();
+        if (mainRigidbody != null)
+        {
+            mainRigidbody.isKinematic = isActive;
+        }
     }
 }
