@@ -13,6 +13,10 @@ public class Weapon : ScriptableObject
     public int maxAmmo = 30;  // Maximum ammo capacity
     public float reloadTime = 2f; // Time it takes to reload
 
+    [Header("Recoil Settings")]
+    public float recoilForce = 1f; // Base recoil force
+    public float recoilIntensity = 1f; // Multiplier for recoil intensity
+
     [Header("Weapon Model")]
     public GameObject modelPrefab; // Prefab for the weapon model
 

@@ -112,7 +112,9 @@ public class WeaponManager : MonoBehaviour
                 currentWeapon.reloadTime,
                 currentWeapon.isShotgun,
                 currentWeapon.spreadAngle,
-                currentWeapon.pelletCount
+                currentWeapon.pelletCount,
+                currentWeapon.recoilForce, // Pass recoil force
+                currentWeapon.recoilIntensity // Pass recoil intensity
             );
         }
 

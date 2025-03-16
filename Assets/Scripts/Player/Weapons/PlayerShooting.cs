@@ -21,6 +21,7 @@ public class PlayerShooting : MonoBehaviour
 
     [Header("Recoil Settings")]
     public float recoilForce = 1f; // Recoil force applied to the weapon
+    public float recoilIntensity = 1f; // Multiplier for recoil intensity
     private float recoilRecoverySpeed; // Speed at which the weapon returns to its original position
 
     [Header("Camera Shake")]
@@ -195,8 +196,20 @@ public class PlayerShooting : MonoBehaviour
             // Calculate recoil recovery speed based on fire rate
             recoilRecoverySpeed = fireRate * 2f; // Adjust the multiplier as needed
 
-            // Apply rotational recoil (tilt the gun upward around its local Z-axis)
-            weaponManager.currentWeaponModel.transform.localRotation *= Quaternion.Euler(0, 0, recoilForce * 15);
+            // Calculate recoil intensity based on fire rate (lower fire rate = stronger recoil)
+            float calculatedRecoil = recoilForce * recoilIntensity * (1f / fireRate);
+
+            // Apply rotational recoil
+            if (isShotgun)
+            {
+                // Shotgun: Rotate upward around the X-axis (flip the sign)
+                weaponManager.currentWeaponModel.transform.localRotation *= Quaternion.Euler(-calculatedRecoil * 15, 0, 0);
+            }
+            else
+            {
+                // Other weapons: Rotate upward around the Z-axis
+                weaponManager.currentWeaponModel.transform.localRotation *= Quaternion.Euler(0, 0, calculatedRecoil * 15);
+            }
         }
     }
 
@@ -328,16 +341,20 @@ public class PlayerShooting : MonoBehaviour
         }
     }
 
-    public void UpdateWeaponStats(int newDamage, float newRange, float newFireRate, int newMaxAmmo, float newReloadTime, bool isShotgun, float spreadAngle, int pelletCount)
+    public void UpdateWeaponStats(int newDamage, float newRange, float newFireRate, int newMaxAmmo, float newReloadTime, bool isShotgun, float spreadAngle, int pelletCount, float recoilForce, float recoilIntensity)
     {
         damage = newDamage;
         range = newRange;
-        fireRate = newFireRate;
+        fireRate = newFireRate; // Update fire rate
         maxAmmo = newMaxAmmo;
         reloadTime = newReloadTime;
 
+        // Recoil settings
+        this.recoilForce = recoilForce;
+        this.recoilIntensity = recoilIntensity;
+
         // Shotgun-specific stats
-        this.isShotgun = isShotgun;
+        this.isShotgun = isShotgun; // Update the isShotgun flag
         this.spreadAngle = spreadAngle;
         this.pelletCount = pelletCount;
 
