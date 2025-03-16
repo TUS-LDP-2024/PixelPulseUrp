@@ -19,6 +19,8 @@ public class WeaponManager : MonoBehaviour
 
     private PlayerInput playerInput;
     private InputAction reloadAction;
+    private InputAction switchWeaponAction;
+
 
     // Event to notify when the weapon changes
     public System.Action OnWeaponChanged;
@@ -27,13 +29,19 @@ public class WeaponManager : MonoBehaviour
     {
         playerInput = GetComponent<PlayerInput>();
         reloadAction = playerInput.actions["Reload"];
+        switchWeaponAction = playerInput.actions["SwitchWeapon"];
     }
+
 
     private void OnEnable()
     {
         if (reloadAction != null)
         {
             reloadAction.performed += OnReload; // Subscribe to the reload action
+        }
+         if (switchWeaponAction != null)
+        {
+            switchWeaponAction.performed += OnSwitchWeapon; // Subscribe to the switch weapon action
         }
     }
 
@@ -43,7 +51,11 @@ public class WeaponManager : MonoBehaviour
         {
             reloadAction.performed -= OnReload; // Unsubscribe from the reload action
         }
-    }
+        if (switchWeaponAction != null)
+        {
+            switchWeaponAction.performed -= OnSwitchWeapon; // Unsubscribe from the switch weapon action
+        }
+}
 
     private void Start()
     {
@@ -57,8 +69,13 @@ public class WeaponManager : MonoBehaviour
             Debug.LogWarning("No weapon in inventory slot 0.");
         }
     }
+    private void OnSwitchWeapon(InputAction.CallbackContext context)
+    {
+         Debug.Log("Switch weapon input detected!");
+         SwitchWeapon();
+    }       
 
-    // Handle reload input
+// Handle reload input
     private void OnReload(InputAction.CallbackContext context)
     {
         Debug.Log("Reload input detected!");
@@ -74,20 +91,20 @@ public class WeaponManager : MonoBehaviour
 
     // Switch to the next weapon in the inventory
     private void SwitchWeapon()
+{
+    // Only switch if there are at least two weapons in the inventory
+    if (playerInventory[0] == null || playerInventory[1] == null)
     {
-        // Only switch if there are 2 weapons in the inventory
-        if (playerInventory[0] == null || playerInventory[1] == null)
-        {
-            Debug.Log("Cannot switch weapons: Inventory is not full.");
-            return;
-        }
-
-        // Increment the weapon index and wrap around if necessary
-        currentWeaponIndex = (currentWeaponIndex + 1) % playerInventory.Length;
-
-        // Equip the weapon at the new index
-        EquipWeapon(currentWeaponIndex);
+        Debug.Log("Cannot switch weapons: Inventory is not full.");
+        return;
     }
+
+    // Increment the weapon index and wrap around if necessary
+    currentWeaponIndex = (currentWeaponIndex + 1) % playerInventory.Length;
+
+    // Equip the weapon at the new index
+    EquipWeapon(currentWeaponIndex);
+}
 
     private void EquipWeapon(int index)
     {

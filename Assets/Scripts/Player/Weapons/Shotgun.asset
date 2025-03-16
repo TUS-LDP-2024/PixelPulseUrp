@@ -15,9 +15,11 @@ MonoBehaviour:
   weaponName: Shotgun
   damage: 60
   range: 50
-  fireRate: 5
+  fireRate: 3
   maxAmmo: 8
   reloadTime: 3
+  recoilForce: 2
+  recoilIntensity: 2
   modelPrefab: {fileID: 5589320232316488790, guid: 71c29bc2fe0f9ec4d8ab3b974bf0eae2,
     type: 3}
   shootSound: {fileID: 8300000, guid: 65d2ae664ff239d4aa11305155e98ab0, type: 3}
