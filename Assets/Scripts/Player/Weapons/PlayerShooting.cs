@@ -109,13 +109,6 @@ public class PlayerShooting : MonoBehaviour
         // Recoil recovery
         if (weaponManager != null && weaponManager.currentWeaponModel != null && isRecoiling)
         {
-            // Smoothly reset the weapon's local position
-            weaponManager.currentWeaponModel.transform.localPosition = Vector3.Lerp(
-                weaponManager.currentWeaponModel.transform.localPosition,
-                originalWeaponPosition,
-                Time.deltaTime * recoilRecoverySpeed
-            );
-
             // Smoothly reset the weapon's local rotation
             weaponManager.currentWeaponModel.transform.localRotation = Quaternion.Lerp(
                 weaponManager.currentWeaponModel.transform.localRotation,
@@ -123,9 +116,8 @@ public class PlayerShooting : MonoBehaviour
                 Time.deltaTime * recoilRecoverySpeed
             );
 
-            // Check if the weapon has returned to its original position and rotation
-            if (Vector3.Distance(weaponManager.currentWeaponModel.transform.localPosition, originalWeaponPosition) < 0.01f &&
-                Quaternion.Angle(weaponManager.currentWeaponModel.transform.localRotation, originalWeaponRotation) < 0.01f)
+            // Check if the weapon has returned to its original rotation
+            if (Quaternion.Angle(weaponManager.currentWeaponModel.transform.localRotation, originalWeaponRotation) < 0.01f)
             {
                 // Reset the recoil state
                 isRecoiling = false;
@@ -203,12 +195,8 @@ public class PlayerShooting : MonoBehaviour
             // Calculate recoil recovery speed based on fire rate
             recoilRecoverySpeed = fireRate * 2f; // Adjust the multiplier as needed
 
-            // Apply recoil to the weapon in local space
-            // Move the weapon backward along its local Z-axis
-            weaponManager.currentWeaponModel.transform.localPosition -= Vector3.forward * recoilForce;
-
-            // Apply rotation recoil (tilt the weapon upward)
-            weaponManager.currentWeaponModel.transform.localRotation *= Quaternion.Euler(-recoilForce * 10, 0, 0);
+            // Apply rotational recoil (tilt the gun upward around its local Z-axis)
+            weaponManager.currentWeaponModel.transform.localRotation *= Quaternion.Euler(0, 0, recoilForce * 15);
         }
     }
 
