@@ -7590,6 +7590,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4558de5ff9d761f49b5ed7c0ba194511, type: 3}
+--- !u!1 &1587002834 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: bf4af84bcac585548b0b4606688dcc86,
+    type: 3}
+  m_PrefabInstance: {fileID: 1965416552}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1600150178
 GameObject:
   m_ObjectHideFlags: 0
@@ -8603,7 +8609,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bf4af84bcac585548b0b4606688dcc86,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1965416556}
   m_SourcePrefab: {fileID: 100100000, guid: bf4af84bcac585548b0b4606688dcc86, type: 3}
 --- !u!4 &1965416553 stripped
 Transform:
@@ -8611,6 +8621,28 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1965416552}
   m_PrefabAsset: {fileID: 0}
+--- !u!64 &1965416556
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1587002834}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 1973893103929547111, guid: bf4af84bcac585548b0b4606688dcc86, type: 3}
 --- !u!114 &2016478642
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9348,6 +9380,7 @@ GameObject:
   - component: {fileID: 2399786208479454039}
   - component: {fileID: 4636679401943563021}
   - component: {fileID: 4636679401943563022}
+  - component: {fileID: 4636679401943563023}
   m_Layer: 0
   m_Name: MainCamera
   m_TagString: MainCamera
@@ -10905,6 +10938,25 @@ MonoBehaviour:
   shakeDuration: 0.05
   shakeMagnitude: 0.05
   dampingSpeed: 1
+--- !u!114 &4636679401943563023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2347073422790270794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b86ad5e2c7be4a84faf5bad0ded7c2bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topImage: {fileID: 689858101}
+  bottomImage: {fileID: 739777206}
+  leftImage: {fileID: 1313878433}
+  rightImage: {fileID: 1924455215}
+  defaultColor: {r: 1, g: 1, b: 1, a: 1}
+  targetColor: {r: 1, g: 0, b: 0, a: 1}
+  rayDistance: 200
 --- !u!1 &5122757201122726421
 GameObject:
   m_ObjectHideFlags: 0
