@@ -202,8 +202,8 @@ public class PlayerShooting : MonoBehaviour
             // Apply rotational recoil
             if (isShotgun)
             {
-                // Shotgun: Rotate upward around the X-axis (flip the sign)
-                weaponManager.currentWeaponModel.transform.localRotation *= Quaternion.Euler(-calculatedRecoil * 15, 0, 0);
+                // Shotgun: Rotate around the Y-axis
+                weaponManager.currentWeaponModel.transform.localRotation *= Quaternion.Euler(0, -calculatedRecoil * 15, 0);
             }
             else
             {
