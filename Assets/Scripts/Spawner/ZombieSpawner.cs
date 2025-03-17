@@ -16,7 +16,8 @@ public class ZombieSpawner : MonoBehaviour
     public static float spawnIncreaseFactor = 1.2f; // Zombies increase per round
 
     // Spawner properties
-    public GameObject zombiePrefab;
+    public GameObject zombiePrefab; // Normal zombie prefab
+    public GameObject fastZombiePrefab; // Faster zombie prefab
     public Transform spawnPoint;
     public float spawnInterval = 3f; // Time between spawns
 
@@ -153,10 +154,13 @@ public class ZombieSpawner : MonoBehaviour
         // Prevent spawning more than allowed
         if (zombiesSpawned >= maxZombiesThisRound) return;
 
-        if (zombiePrefab != null && spawnPoint != null)
+        // Decide which prefab to spawn (30% chance for fast zombie)
+        GameObject prefabToSpawn = Random.value < 0.3f ? fastZombiePrefab : zombiePrefab;
+
+        if (prefabToSpawn != null && spawnPoint != null)
         {
             // Create a new zombie at the spawner's location
-            GameObject newZombie = Instantiate(zombiePrefab, spawnPoint.position, Quaternion.identity);
+            GameObject newZombie = Instantiate(prefabToSpawn, spawnPoint.position, Quaternion.identity);
             EnemyHealth enemyHealth = newZombie.GetComponent<EnemyHealth>();
 
             if (enemyHealth != null)
