@@ -20,9 +20,9 @@ MonoBehaviour:
   reloadTime: 3
   recoilForce: 2
   recoilIntensity: 2
-  modelPrefab: {fileID: 5589320232316488790, guid: 71c29bc2fe0f9ec4d8ab3b974bf0eae2,
+  modelPrefab: {fileID: 8577934998607185085, guid: ccadb20a7cd418046949108df9686603,
     type: 3}
-  shootSound: {fileID: 8300000, guid: 65d2ae664ff239d4aa11305155e98ab0, type: 3}
+  shootSound: {fileID: 8300000, guid: 3367924b99b01344ba6cecc68d20259d, type: 3}
   reloadSound: {fileID: 8300000, guid: 70825f52c13df72479e400d229310539, type: 3}
   magEjectBlendShapeIndex: 0
   roundCycleBlendShapeIndex: 1
