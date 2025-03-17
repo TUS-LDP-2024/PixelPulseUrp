@@ -6382,7 +6382,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6eeb5dc026fdf4b488bc7ae0138ab719, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AgentTypeID: 0
+  m_AgentTypeID: -1372625422
   m_StartPoint: {x: 0.34418353, y: 0, z: -1.7910703}
   m_EndPoint: {x: -0.08924258, y: 0, z: 1.4418931}
   m_Width: 3.3056188
@@ -9657,7 +9657,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.083333336
+  m_VoxelSize: 0.1
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: 811bf51c5ae50ff4a957bced9e96d802, type: 2}
   m_BuildHeightMesh: 0
@@ -13860,7 +13860,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6eeb5dc026fdf4b488bc7ae0138ab719, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AgentTypeID: 0
+  m_AgentTypeID: -1372625422
   m_StartPoint: {x: 0.34418353, y: 0, z: -1.7910703}
   m_EndPoint: {x: -0.08924258, y: 0, z: 1.4418931}
   m_Width: 3.3056188
@@ -14926,7 +14926,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6eeb5dc026fdf4b488bc7ae0138ab719, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AgentTypeID: 0
+  m_AgentTypeID: -1372625422
   m_StartPoint: {x: 0.34418353, y: 0, z: -1.7910703}
   m_EndPoint: {x: -0.08924258, y: 0, z: 1.4418931}
   m_Width: 3.3056188
@@ -15787,7 +15787,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6eeb5dc026fdf4b488bc7ae0138ab719, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AgentTypeID: 0
+  m_AgentTypeID: -1372625422
   m_StartPoint: {x: 0.34418353, y: 0, z: -1.7910703}
   m_EndPoint: {x: -0.08924258, y: 0, z: 1.4418931}
   m_Width: 3.3056188
@@ -16576,7 +16576,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6eeb5dc026fdf4b488bc7ae0138ab719, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AgentTypeID: 0
+  m_AgentTypeID: -1372625422
   m_StartPoint: {x: 0.34418353, y: 0, z: -1.7910703}
   m_EndPoint: {x: -0.08924258, y: 0, z: 1.4418931}
   m_Width: 3.3056188
@@ -16764,7 +16764,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6eeb5dc026fdf4b488bc7ae0138ab719, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AgentTypeID: 0
+  m_AgentTypeID: -1372625422
   m_StartPoint: {x: 0.34418353, y: 0, z: -1.7910703}
   m_EndPoint: {x: -0.08924258, y: 0, z: 1.4418931}
   m_Width: 3.3056188
