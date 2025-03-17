@@ -17421,12 +17421,9 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1965416552}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
 <<<<<<< HEAD
-=======
->>>>>>> test
 --- !u!1 &1982953278 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2166372997602631747, guid: 4558de5ff9d761f49b5ed7c0ba194511,
@@ -17439,7 +17436,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 551566182}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< HEAD
 =======
 >>>>>>> Stashed changes
 --- !u!64 &1965416556
@@ -17468,8 +17464,6 @@ MeshCollider:
 =======
 >>>>>>> 0a8c9cafd2fa992d8c9a8c06d5885f87470371e0
 >>>>>>> Stashed changes
-=======
->>>>>>> test
 --- !u!114 &2016478642
 MonoBehaviour:
   m_ObjectHideFlags: 0
