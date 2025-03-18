@@ -20,21 +20,24 @@ public class HitMarkerManager : MonoBehaviour
 
     private void Awake()
     {
-        // Establish this instance as the singleton.
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
         }
         Instance = this;
+        Debug.Log("HitMarkerManager instance created");
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
             audioSource = gameObject.AddComponent<AudioSource>();
     }
 
-    // Call this method to display a hit marker at the world position where a ray hit an enemy.
-    public void ShowHitMarker(Vector3 worldPosition)
+
+// Call this method to display a hit marker at the world position where a ray hit an enemy.
+public void ShowHitMarker(Vector3 worldPosition)
     {
+        Debug.Log("ShowHitMarker called with position: " + worldPosition);
+
         if (uiCanvas == null || hitMarkerPrefab == null)
             return;
 
@@ -60,7 +63,7 @@ public class HitMarkerManager : MonoBehaviour
         if (canvasGroup == null)
             canvasGroup = marker.AddComponent<CanvasGroup>();
 
-        float elapsed = 0f;
+        float elapsed = 5f;
         while (elapsed < fadeDuration)
         {
             elapsed += Time.deltaTime;

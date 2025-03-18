@@ -313,15 +313,22 @@ public class PlayerShooting : MonoBehaviour
     {
         Debug.Log("Hit: " + hit.collider.name);
 
-        // Check if the hit object is a zombie
+        // Trigger the hit marker at the hit point
+        if (HitMarkerManager.Instance != null)
+        {
+            HitMarkerManager.Instance.ShowHitMarker(hit.point);
+        }
+        else
+        {
+            Debug.LogError("HitMarkerManager instance is null!");
+        }
+
+        // Check if the hit object is a zombie and apply damage
         EnemyHealth enemyHealth = hit.collider.GetComponentInParent<EnemyHealth>();
         if (enemyHealth != null)
         {
-            // Determine if it's a headshot or body shot
             bool isHeadshot = hit.collider.CompareTag("Head");
             int damageToApply = isHeadshot ? damage * 2 : damage;
-
-            // Apply damage to the zombie
             enemyHealth.TakeDamage(damageToApply);
 
             // Award points based on the shot type
@@ -330,7 +337,6 @@ public class PlayerShooting : MonoBehaviour
                 int pointsToAdd = isHeadshot ? 50 : 10;
                 pointsManager.AddPoints(pointsToAdd);
             }
-
             Debug.Log(isHeadshot ? "Headshot!" : "Body shot!");
         }
 
@@ -340,6 +346,7 @@ public class PlayerShooting : MonoBehaviour
             Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
         }
     }
+
 
     public void UpdateWeaponStats(int newDamage, float newRange, float newFireRate, int newMaxAmmo, float newReloadTime, bool isShotgun, float spreadAngle, int pelletCount, float recoilForce, float recoilIntensity)
     {
