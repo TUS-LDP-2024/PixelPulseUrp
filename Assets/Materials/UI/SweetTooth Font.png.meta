@@ -1,0 +1,897 @@
+fileFormatVersion: 2
+guid: 725b92ca7cada92499bb2d2839034102
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 1
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: SweetTooth Font_0
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 1003
+        width: 235
+        height: 314
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d182c6cc49f115a438ab6a574f58d12a
+      internalID: 1182717430
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SweetTooth Font_1
+      rect:
+        serializedVersion: 2
+        x: 251
+        y: 1003
+        width: 82
+        height: 314
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8e6777ce6a4434643b066236955057f3
+      internalID: 2060976440
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SweetTooth Font_2
+      rect:
+        serializedVersion: 2
+        x: 334
+        y: 1003
+        width: 198
+        height: 314
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1f7c75f900bc1754b847820044badea4
+      internalID: 385906990
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SweetTooth Font_3
+      rect:
+        serializedVersion: 2
+        x: 538
+        y: 1003
+        width: 191
+        height: 314
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b53d19977c930ae4bb892d21985297d7
+      internalID: 763117422
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SweetTooth Font_4
+      rect:
+        serializedVersion: 2
+        x: 734
+        y: 1003
+        width: 244
+        height: 314
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 175822a7b8c060e49b83fcd2c4f0ff2e
+      internalID: -405006313
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SweetTooth Font_5
+      rect:
+        serializedVersion: 2
+        x: 987
+        y: 1003
+        width: 195
+        height: 314
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7bbee7215a33fbd46926cfb90393c15e
+      internalID: -1607028688
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SweetTooth Font_6
+      rect:
+        serializedVersion: 2
+        x: 1187
+        y: 1003
+        width: 200
+        height: 314
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 51ab4f7f8476bcc43b292fbe7113d445
+      internalID: 501005225
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SweetTooth Font_7
+      rect:
+        serializedVersion: 2
+        x: 1392
+        y: 1002
+        width: 184
+        height: 316
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6a87945b4bd15c446ab635ee03c95ce0
+      internalID: 865745940
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SweetTooth Font_8
+      rect:
+        serializedVersion: 2
+        x: 1580
+        y: 1003
+        width: 199
+        height: 314
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f69979ac6948a9445b618771ac382641
+      internalID: 849091326
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SweetTooth Font_9
+      rect:
+        serializedVersion: 2
+        x: 1784
+        y: 1003
+        width: 200
+        height: 314
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 38309725eb8669e41a16125fb2d24534
+      internalID: -2017260865
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SweetTooth Font_10
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 616
+        width: 212
+        height: 251
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b571e70797440b6408198c0792119e61
+      internalID: -367469057
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SweetTooth Font_11
+      rect:
+        serializedVersion: 2
+        x: 227
+        y: 616
+        width: 170
+        height: 251
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ce84fb9f625dd75428a1275ae444f655
+      internalID: -846724322
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SweetTooth Font_12
+      rect:
+        serializedVersion: 2
+        x: 402
+        y: 615
+        width: 172
+        height: 252
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cfc347b29dc3daf4486ac089bf19f5e7
+      internalID: 290955626
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SweetTooth Font_13
+      rect:
+        serializedVersion: 2
+        x: 579
+        y: 616
+        width: 165
+        height: 251
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bb95a78e357bed242adb62758fd57f5b
+      internalID: -965304962
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SweetTooth Font_14
+      rect:
+        serializedVersion: 2
+        x: 749
+        y: 614
+        width: 203
+        height: 253
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7b1f000cd84d8214081598d0b94a4436
+      internalID: -1948336595
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SweetTooth Font_15
+      rect:
+        serializedVersion: 2
+        x: 959
+        y: 616
+        width: 197
+        height: 251
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aa045e765c384a243a787cc908c64a60
+      internalID: 1012221368
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SweetTooth Font_16
+      rect:
+        serializedVersion: 2
+        x: 1163
+        y: 615
+        width: 181
+        height: 252
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 535d16402c7a8ba409f2e7a150058795
+      internalID: 773309726
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SweetTooth Font_17
+      rect:
+        serializedVersion: 2
+        x: 1349
+        y: 616
+        width: 223
+        height: 251
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 672c8c030bdae2c49962d96a1248978e
+      internalID: 1527083778
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SweetTooth Font_18
+      rect:
+        serializedVersion: 2
+        x: 1578
+        y: 615
+        width: 210
+        height: 252
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e60df593d6187a7498e613c9a6f84e61
+      internalID: 674001748
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SweetTooth Font_19
+      rect:
+        serializedVersion: 2
+        x: 1793
+        y: 616
+        width: 186
+        height: 251
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6364151dfc776b84fa9e28c105cc65f1
+      internalID: 1565784634
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SweetTooth Font_20
+      rect:
+        serializedVersion: 2
+        x: 1986
+        y: 616
+        width: 181
+        height: 251
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 98f187a3e3c7d7c4193c9a7b0831c761
+      internalID: 293485510
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SweetTooth Font_21
+      rect:
+        serializedVersion: 2
+        x: 2172
+        y: 615
+        width: 204
+        height: 252
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d0dc05c548d50b5479a087ef51251f62
+      internalID: -1498475437
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SweetTooth Font_22
+      rect:
+        serializedVersion: 2
+        x: 2382
+        y: 616
+        width: 171
+        height: 251
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 87beae2b2ec41b44281b4afa1bf490d6
+      internalID: 1552815297
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SweetTooth Font_23
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 227
+        width: 190
+        height: 251
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e85be1e40672dfe4c9d40a92b0f28821
+      internalID: -1168662063
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SweetTooth Font_24
+      rect:
+        serializedVersion: 2
+        x: 203
+        y: 227
+        width: 170
+        height: 251
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7b971f47fa94b144a97c8615d04e9140
+      internalID: -2091867333
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SweetTooth Font_25
+      rect:
+        serializedVersion: 2
+        x: 377
+        y: 204
+        width: 181
+        height: 273
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 27042db3be1f25d43a334b1c5fc792c1
+      internalID: -755970109
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SweetTooth Font_26
+      rect:
+        serializedVersion: 2
+        x: 563
+        y: 227
+        width: 169
+        height: 251
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5ad6d02949a76724f824b7325bb5c44b
+      internalID: -117868205
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SweetTooth Font_27
+      rect:
+        serializedVersion: 2
+        x: 738
+        y: 227
+        width: 164
+        height: 251
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7ce1fedc3f112f54f9eac044982d316c
+      internalID: 179724770
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SweetTooth Font_28
+      rect:
+        serializedVersion: 2
+        x: 907
+        y: 227
+        width: 185
+        height: 251
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b1ac7814a28abe34892254065d009667
+      internalID: 2089574912
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SweetTooth Font_29
+      rect:
+        serializedVersion: 2
+        x: 1098
+        y: 227
+        width: 176
+        height: 251
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6432681a7bd3b164e97ff3996c9825e8
+      internalID: -1893751815
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SweetTooth Font_30
+      rect:
+        serializedVersion: 2
+        x: 1279
+        y: 227
+        width: 165
+        height: 251
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 60db31f9953aba540be474e8aea3b4a2
+      internalID: 223130933
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SweetTooth Font_31
+      rect:
+        serializedVersion: 2
+        x: 1449
+        y: 227
+        width: 254
+        height: 251
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5e791c714e7ea5b4b900d1f3f80415f4
+      internalID: -2057226531
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SweetTooth Font_32
+      rect:
+        serializedVersion: 2
+        x: 1712
+        y: 227
+        width: 157
+        height: 251
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c410fbf4f248da24196760f734f0ba37
+      internalID: 2007421901
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SweetTooth Font_33
+      rect:
+        serializedVersion: 2
+        x: 1873
+        y: 227
+        width: 158
+        height: 251
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c4653330ef1fd9c40b9505afc0b12a13
+      internalID: 1734001038
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SweetTooth Font_34
+      rect:
+        serializedVersion: 2
+        x: 2036
+        y: 227
+        width: 186
+        height: 251
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 849faf4c6b1747244896bbc69b786b0b
+      internalID: 1489270435
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      SweetTooth Font_0: 1182717430
+      SweetTooth Font_1: 2060976440
+      SweetTooth Font_10: -367469057
+      SweetTooth Font_11: -846724322
+      SweetTooth Font_12: 290955626
+      SweetTooth Font_13: -965304962
+      SweetTooth Font_14: -1948336595
+      SweetTooth Font_15: 1012221368
+      SweetTooth Font_16: 773309726
+      SweetTooth Font_17: 1527083778
+      SweetTooth Font_18: 674001748
+      SweetTooth Font_19: 1565784634
+      SweetTooth Font_2: 385906990
+      SweetTooth Font_20: 293485510
+      SweetTooth Font_21: -1498475437
+      SweetTooth Font_22: 1552815297
+      SweetTooth Font_23: -1168662063
+      SweetTooth Font_24: -2091867333
+      SweetTooth Font_25: -755970109
+      SweetTooth Font_26: -117868205
+      SweetTooth Font_27: 179724770
+      SweetTooth Font_28: 2089574912
+      SweetTooth Font_29: -1893751815
+      SweetTooth Font_3: 763117422
+      SweetTooth Font_30: 223130933
+      SweetTooth Font_31: -2057226531
+      SweetTooth Font_32: 2007421901
+      SweetTooth Font_33: 1734001038
+      SweetTooth Font_34: 1489270435
+      SweetTooth Font_4: -405006313
+      SweetTooth Font_5: -1607028688
+      SweetTooth Font_6: 501005225
+      SweetTooth Font_7: 865745940
+      SweetTooth Font_8: 849091326
+      SweetTooth Font_9: -2017260865
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
