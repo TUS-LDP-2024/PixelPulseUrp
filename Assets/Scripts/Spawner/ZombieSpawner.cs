@@ -8,12 +8,25 @@ public class ZombieSpawner : MonoBehaviour
     public Transform spawnPoint;
     public float spawnInterval = 2f;
 
-    private void Start()
+    private bool isActive = false;
+    private Coroutine spawnCoroutine;
+
+    public void SetActivation(bool active)
     {
-        if (RoundManager.Instance != null)
+        isActive = active;
+
+        if (active)
         {
-            RoundManager.Instance.AllSpawners.Add(this);
-            StartCoroutine(SpawnRoutine());
+            spawnCoroutine = StartCoroutine(SpawnRoutine());
+            Debug.Log($"Activated spawner at {transform.position}");
+        }
+        else
+        {
+            if (spawnCoroutine != null)
+            {
+                StopCoroutine(spawnCoroutine);
+                spawnCoroutine = null;
+            }
         }
     }
 
@@ -21,7 +34,7 @@ public class ZombieSpawner : MonoBehaviour
     {
         while (true)
         {
-            if (ShouldSpawn())
+            if (CanSpawn())
             {
                 yield return StartCoroutine(SpawnZombieWithDelay());
             }
@@ -29,18 +42,19 @@ public class ZombieSpawner : MonoBehaviour
         }
     }
 
-    private bool ShouldSpawn()
+    private bool CanSpawn()
     {
-        return RoundManager.Instance != null
-            && RoundManager.Instance.IsRoundActive
-            && RoundManager.Instance.CanSpawnMoreZombies();
+        return isActive &&
+               RoundManager.Instance != null &&
+               RoundManager.Instance.IsRoundActive &&
+               RoundManager.Instance.CanSpawnMoreZombies();
     }
 
     private IEnumerator SpawnZombieWithDelay()
     {
         yield return new WaitForSeconds(spawnInterval);
 
-        if (!ShouldSpawn()) yield break;
+        if (!CanSpawn()) yield break;
 
         GameObject prefabToSpawn = Random.value < 0.3f ? fastZombiePrefab : zombiePrefab;
         GameObject zombie = Instantiate(prefabToSpawn, spawnPoint.position, Quaternion.identity);
@@ -49,6 +63,7 @@ public class ZombieSpawner : MonoBehaviour
         {
             RoundManager.Instance.IncrementSpawnedCount();
             health.OnDeath += HandleZombieDeath;
+            Debug.Log($"Spawned zombie at {transform.position}");
         }
     }
 

@@ -31,6 +31,12 @@ public class RoundManager : MonoBehaviour
             return;
         }
         Instance = this;
+
+        // Initialize all spawners as disabled by default
+        foreach (var spawner in AllSpawners)
+        {
+            spawner.enabled = false;
+        }
     }
 
     private void Start()

@@ -3,41 +3,28 @@ using UnityEngine;
 
 public class RoomTrigger : MonoBehaviour
 {
-    public List<GameObject> spawnersInRoom;
+    public List<ZombieSpawner> spawnersInThisRoom;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            DisableAllSpawners();
-            EnableSpawnersInRoom();
-        }
-    }
-
-    private void DisableAllSpawners()
-    {
-        // Use the AllSpawners property from RoundManager
-        foreach (ZombieSpawner spawner in RoundManager.Instance.AllSpawners)
-        {
-            if (spawner != null)
+            // Disable all spawners first
+            foreach (var spawner in RoundManager.Instance.AllSpawners)
             {
-                spawner.enabled = false;
+                spawner.SetActivation(false);
             }
-        }
-    }
 
-    private void EnableSpawnersInRoom()
-    {
-        foreach (GameObject spawnerObject in spawnersInRoom)
-        {
-            if (spawnerObject != null)
+            // Enable only spawners in this room
+            foreach (var spawner in spawnersInThisRoom)
             {
-                ZombieSpawner spawner = spawnerObject.GetComponent<ZombieSpawner>();
                 if (spawner != null)
                 {
-                    spawner.enabled = true;
+                    spawner.SetActivation(true);
                 }
             }
+
+            Debug.Log($"Entered room with {spawnersInThisRoom.Count} active spawners");
         }
     }
 }
