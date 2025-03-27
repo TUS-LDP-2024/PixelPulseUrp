@@ -1,5 +1,5 @@
 using UnityEngine;
-using TMPro; // Add this namespace for TextMeshPro
+using TMPro;
 
 public class RoundDisplay : MonoBehaviour
 {
@@ -9,10 +9,10 @@ public class RoundDisplay : MonoBehaviour
     private void Update()
     {
         // Update the round display every frame
-        if (roundText != null)
+        if (roundText != null && RoundManager.Instance != null)
         {
-            // Get the current round from the ZombieSpawner script
-            int currentRound = ZombieSpawner.currentRound;
+            // Get the current round from the RoundManager
+            int currentRound = RoundManager.Instance.currentRound;
 
             // Update the text to show the current round
             roundText.text = $"Round: {currentRound}";
