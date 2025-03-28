@@ -16223,7 +16223,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   triggerZone: {fileID: 628549148}
-  doorAxis: 0
+  doorAxis: 1
   moveRight: 1
   moveDistance: 1.5
   moveSpeed: 2
@@ -23507,10 +23507,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   triggerZone: {fileID: 694278988}
-  doorAxis: 0
+  doorAxis: 1
   moveRight: 1
   moveDistance: 1.5
-  moveSpeed: 3
+  moveSpeed: 2
 --- !u!65 &1798211116
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -23635,8 +23635,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   triggerZone: {fileID: 1045084455}
-  doorAxis: 0
-  moveRight: 1
+  doorAxis: 1
+  moveRight: 0
   moveDistance: 1.5
   moveSpeed: 2
 --- !u!65 &1839260240
@@ -23728,6 +23728,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 54a3cebd2fdff814195b05e9392cdbeb, type: 3}
+--- !u!1 &1846179126 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5950741655133274864, guid: 54a3cebd2fdff814195b05e9392cdbeb,
+    type: 3}
+  m_PrefabInstance: {fileID: 1846179125}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1849117557 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4822869033377734733, guid: 6bbf999c48168aa4a855abe2d8a4b3de,
@@ -23766,7 +23772,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   triggerZone: {fileID: 1045084455}
-  doorAxis: 0
+  doorAxis: 1
   moveRight: 1
   moveDistance: 1.5
   moveSpeed: 2
@@ -25257,8 +25263,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   triggerZone: {fileID: 628549148}
-  doorAxis: 0
-  moveRight: 1
+  doorAxis: 1
+  moveRight: 0
   moveDistance: 1.5
   moveSpeed: 2
 --- !u!4 &1982953279 stripped
@@ -26451,10 +26457,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   triggerZone: {fileID: 694278988}
-  doorAxis: 0
-  moveRight: 1
+  doorAxis: 1
+  moveRight: 0
   moveDistance: 1.5
-  moveSpeed: 3
+  moveSpeed: 2
 --- !u!65 &2109403176
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -29352,6 +29358,7 @@ GameObject:
   - component: {fileID: 7689072181350644981}
   - component: {fileID: 7689072181350644982}
   - component: {fileID: 7689072181350644984}
+  - component: {fileID: 7689072181350644986}
   m_Layer: 8
   m_Name: PlayerCapsule
   m_TagString: Player
@@ -29530,6 +29537,30 @@ MonoBehaviour:
   boxSize: {x: 1.5, y: 1.5, z: 1}
   cooldownDuration: 1.2
   shootAction: {fileID: 1388657160877356583, guid: 4419d82f33d36e848b3ed5af4c8da37e,
+    type: 3}
+--- !u!114 &7689072181350644986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7061295419527947848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603f7b10f05a97243a19fdc34c0a242e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grenadePrefab: {fileID: 1846179126}
+  grenadeSpawnPoint: {fileID: 1359498174}
+  grenadeCount: 5
+  maxThrowForce: 20
+  minThrowForce: 5
+  forceChargeRate: 10
+  upwardModifier: 0.5
+  trajectoryLine: {fileID: 0}
+  numTrajectoryPoints: 30
+  trajectoryTimeStep: 0.1
+  throwGrenadeAction: {fileID: -8176901907558038425, guid: 4419d82f33d36e848b3ed5af4c8da37e,
     type: 3}
 --- !u!4 &7909762148300969537 stripped
 Transform:

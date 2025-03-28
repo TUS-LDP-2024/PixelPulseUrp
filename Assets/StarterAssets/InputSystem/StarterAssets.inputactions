@@ -65,7 +65,7 @@
                     "id": "a36b3b52-f097-49e3-98fe-c89422401637",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Hold",
                     "initialStateCheck": false
                 },
                 {
@@ -315,19 +315,8 @@
                 },
                 {
                     "name": "",
-                    "id": "39514a2b-577e-4b96-940c-4f0574ddd86b",
-                    "path": "<Keyboard>/#(F)",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "ThrowGrenade",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "e66ecdd3-a317-45f8-9090-643860c10bfa",
-                    "path": "<Mouse>/middleButton",
+                    "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

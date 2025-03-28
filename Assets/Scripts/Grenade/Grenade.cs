@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class ExplodeObjets : MonoBehaviour
+public class Grenade : MonoBehaviour
 {
     [Header("Explosion Settings")]
     public float destroyDelay = 3f;       // Delay before destroying each child object.

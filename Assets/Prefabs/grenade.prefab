@@ -309,7 +309,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 0eecd716858d3b24a9d035eca7790367,
         type: 3}
       propertyPath: m_Name
-      value: Grenade
+      value: grenade
       objectReference: {fileID: 0}
     - target: {fileID: 1075159202457829991, guid: 0eecd716858d3b24a9d035eca7790367,
         type: 3}
@@ -372,7 +372,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0eecd716858d3b24a9d035eca7790367,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3566734329949748982}
+      addedObject: {fileID: -24469401385839924}
     - targetCorrespondingSourceObject: {fileID: -3133498875991405556, guid: 0eecd716858d3b24a9d035eca7790367,
         type: 3}
       insertIndex: -1
@@ -1847,7 +1847,7 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 6797094915590061985}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3566734329949748982
+--- !u!114 &-24469401385839924
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1862,9 +1862,14 @@ MonoBehaviour:
   destroyDelay: 3
   minForce: 150
   maxForce: 200
-  radius: 500
+  explosionRadius: 5
+  forceRadius: 5
+  explosionDelay: 2
   smoke: {fileID: 2503884458980034378, guid: dd9e48c4f9f6b1e4f9111bb7317d14ad, type: 3}
   maximumSmokes: 30
+  explosionTags:
+  - Enemy
+  - Ground
 --- !u!1 &6030865333703337721 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1001437120155425112, guid: 0eecd716858d3b24a9d035eca7790367,
