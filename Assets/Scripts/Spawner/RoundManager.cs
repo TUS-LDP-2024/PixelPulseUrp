@@ -113,7 +113,7 @@ public class RoundManager : MonoBehaviour
         while (timer > 0)
         {
             countdownText.text = $"Next round in: {timer:F1}";
-            timer -= Time.deltaTime;
+            timer -= Time.unscaledDeltaTime;
             yield return null;
         }
 
@@ -122,9 +122,8 @@ public class RoundManager : MonoBehaviour
 
     public void ResumeAfterCardSelection()
     {
-        // This is now called AFTER card is hidden
-        Time.timeScale = 1f;
         IsSelectingUpgrade = false;
+        Time.timeScale = 1f;
     }
 
     public void RegisterSpawner(ZombieSpawner spawner)

@@ -5,7 +5,7 @@ using TMPro;
 public class CardSelectionUI : MonoBehaviour
 {
     [Header("UI References")]
-    public GameObject cardPanel;  // Parent panel for all cards
+    public GameObject cardPanel;
 
     // Left Card
     public GameObject leftCard;
@@ -14,7 +14,7 @@ public class CardSelectionUI : MonoBehaviour
     public Button leftCardButton;
     public Image leftCardIcon;
 
-    // Middle Card
+    // Middle Card (Health Upgrades)
     public GameObject middleCard;
     public TextMeshProUGUI middleCardTitle;
     public TextMeshProUGUI middleCardDescription;
@@ -30,59 +30,79 @@ public class CardSelectionUI : MonoBehaviour
 
     private void Start()
     {
-        // Initialize all card buttons with empty listeners
-        leftCardButton.onClick.AddListener(() => { });
-        middleCardButton.onClick.AddListener(() => { });
-        rightCardButton.onClick.AddListener(() => { });
+        // Initialize buttons
+        leftCardButton.onClick.AddListener(() => OnCardClicked());
+        middleCardButton.onClick.AddListener(() => OnCardClicked());
+        rightCardButton.onClick.AddListener(() => OnCardClicked());
 
-        // Hide all cards at start
-        cardPanel.SetActive(false);
-        leftCard.SetActive(false);
-        middleCard.SetActive(false);
-        rightCard.SetActive(false);
-
-        Debug.Log("Card UI initialized", this);
+        HideAllCards();
     }
 
     public void ShowRandomUpgrade()
     {
         if (!VerifyComponents()) return;
 
-        // Show the panel and all cards
+        // Set up left card (empty or different type for now)
+        leftCardTitle.text = "Coming Soon";
+        leftCardDescription.text = "Additional upgrades in future updates!";
+        leftCardButton.onClick.RemoveAllListeners();
+        leftCardButton.onClick.AddListener(() => OnCardClicked());
+
+        // Set up middle card (health upgrades only)
+        var healthUpgrade = UpgradeManager.Instance?.GetRandomHealthUpgrade();
+        if (healthUpgrade != null)
+        {
+            middleCardTitle.text = healthUpgrade.upgradeName;
+            middleCardDescription.text = healthUpgrade.description;
+            middleCardButton.onClick.RemoveAllListeners();
+            middleCardButton.onClick.AddListener(() => OnCardClicked(healthUpgrade));
+        }
+
+        // Set up right card (empty or different type for now)
+        rightCardTitle.text = "Coming Soon";
+        rightCardDescription.text = "Additional upgrades in future updates!";
+        rightCardButton.onClick.RemoveAllListeners();
+        rightCardButton.onClick.AddListener(() => OnCardClicked());
+
+        // Show UI
         cardPanel.SetActive(true);
         leftCard.SetActive(true);
         middleCard.SetActive(true);
         rightCard.SetActive(true);
 
-        // Unlock cursor for selection
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-
-        Debug.Log("All cards shown", cardPanel);
     }
 
-    private void OnCardClicked() // Generic click handler for now
+    private void OnCardClicked(UpgradeManager.UpgradeEffect upgrade = null)
     {
-        HideAllCards();
+        if (upgrade != null)
+        {
+            UpgradeManager.Instance?.ApplyUpgrade(upgrade);
+        }
 
-        // Lock cursor
+        HideAllCards();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
-        // Notify RoundManager to resume
         RoundManager.Instance?.ResumeAfterCardSelection();
+    }
+
+    private void HideAllCards()
+    {
+        cardPanel.SetActive(false);
+        leftCard.SetActive(false);
+        middleCard.SetActive(false);
+        rightCard.SetActive(false);
     }
 
     private bool VerifyComponents()
     {
-        // Verify all card components exist
-        bool cardsValid = leftCard != null && middleCard != null && rightCard != null;
+        bool allValid = true;
 
-        // Verify all buttons exist
-        bool buttonsValid = leftCardButton != null &&
-                          middleCardButton != null &&
-                          rightCardButton != null;
+        if (leftCardTitle == null) { Debug.LogError("Left Card Title missing!"); allValid = false; }
+        if (middleCardTitle == null) { Debug.LogError("Middle Card Title missing!"); allValid = false; }
+        if (rightCardTitle == null) { Debug.LogError("Right Card Title missing!"); allValid = false; }
 
-        return cardPanel != null && cardsValid && buttonsValid;
+        return allValid && cardPanel != null && leftCard != null && middleCard != null && rightCard != null;
     }
 }

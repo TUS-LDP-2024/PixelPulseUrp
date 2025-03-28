@@ -4328,6 +4328,20 @@ MonoBehaviour:
     regenIncrease: 1000
     damageReduction: 1000
     description: IM FUCKING INVINCIBLE
+  - upgradeName: Juggernog
+    healthIncrease: 0
+    regenIncrease: 0
+    damageReduction: 0.15
+    description: '!5% damage reduction
+
+'
+  - upgradeName: CancerAny%
+    healthIncrease: 0
+    regenIncrease: 1
+    damageReduction: 0
+    description: 'Regen 1Hp/s
+
+'
 --- !u!1001 &140834077
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17904,6 +17918,7 @@ GameObject:
   - component: {fileID: 1257796601}
   - component: {fileID: 1257796605}
   - component: {fileID: 1257796606}
+  - component: {fileID: 1257796607}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -18041,6 +18056,34 @@ MonoBehaviour:
   uiCanvas: {fileID: 1257796603}
   hitSound: {fileID: 0}
   fadeDuration: 10
+--- !u!114 &1257796607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1257796600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca5aeb93f13ded843adfbff170c9b545, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cardPanel: {fileID: 1998603344}
+  leftCard: {fileID: 1206838393}
+  leftCardTitle: {fileID: 1934178154}
+  leftCardDescription: {fileID: 1664060525}
+  leftCardButton: {fileID: 1206838395}
+  leftCardIcon: {fileID: 0}
+  middleCard: {fileID: 2019787909}
+  middleCardTitle: {fileID: 904488881}
+  middleCardDescription: {fileID: 1221667711}
+  middleCardButton: {fileID: 2019787911}
+  middleCardIcon: {fileID: 0}
+  rightCard: {fileID: 286405777}
+  rightCardTitle: {fileID: 1874848057}
+  rightCardDescription: {fileID: 284740886}
+  rightCardButton: {fileID: 286405779}
+  rightCardIcon: {fileID: 0}
 --- !u!1001 &1262334760
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21158,7 +21201,7 @@ MonoBehaviour:
   spawnIncreaseFactor: 1.2
   roundText: {fileID: 1919674258}
   countdownText: {fileID: 1378144416}
-  cardSelectionUI: {fileID: 2006335643}
+  cardSelectionUI: {fileID: 1257796607}
 --- !u!1001 &1538266040
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24346,7 +24389,6 @@ Transform:
   - {fileID: 1853654227}
   - {fileID: 1288661851}
   - {fileID: 1534837648}
-  - {fileID: 2006335642}
   - {fileID: 124198584}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -25340,63 +25382,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1998603344}
   m_CullTransparentMesh: 1
---- !u!1 &2006335641
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2006335642}
-  - component: {fileID: 2006335643}
-  m_Layer: 0
-  m_Name: Powerupmanager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2006335642
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2006335641}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1915111733}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2006335643
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2006335641}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca5aeb93f13ded843adfbff170c9b545, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cardPanel: {fileID: 1998603344}
-  cardTitles:
-  - {fileID: 1934178154}
-  - {fileID: 904488881}
-  - {fileID: 1874848057}
-  cardDescriptions:
-  - {fileID: 1664060525}
-  - {fileID: 1221667711}
-  - {fileID: 284740886}
-  cardButtons:
-  - {fileID: 1206838395}
-  - {fileID: 2019787911}
-  - {fileID: 286405779}
 --- !u!1 &2014933987
 GameObject:
   m_ObjectHideFlags: 0
@@ -29439,9 +29424,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  currentHealth: 0
   regenRate: 0
+  damageReduction: 0
   bloodOverlayImage: {fileID: 1116004495}
   bloodOverlayImage2: {fileID: 1884454119}
+  regenDelay: 5
 --- !u!114 &7689072181350644980
 MonoBehaviour:
   m_ObjectHideFlags: 0
