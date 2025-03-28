@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.InputSystem;
 using UnityEngine;
 using TMPro;
 
@@ -98,7 +99,7 @@ public class RoundManager : MonoBehaviour
         // Wait for selection
         yield return new WaitWhile(() => IsSelectingUpgrade);
 
-        // Start countdown to next round (using unscaled time)
+        // Start countdown to next round
         float timer = timeBetweenRounds;
         while (timer > 0)
         {
@@ -108,6 +109,12 @@ public class RoundManager : MonoBehaviour
         }
 
         StartNewRound();
+    }
+
+    public void ResumeAfterCardSelection()
+    {
+        IsSelectingUpgrade = false;
+        Time.timeScale = 1f; // Ensure game is unpaused
     }
 
     public void UpgradeSelected()

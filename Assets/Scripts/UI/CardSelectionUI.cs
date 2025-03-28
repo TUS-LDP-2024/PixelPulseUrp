@@ -2,68 +2,76 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-[System.Serializable]
-public class CardUI
-{
-    public TMP_Text titleText;
-    public TMP_Text descriptionText;
-    public Image iconImage;
-
-    public void Setup(string title, string description)
-    {
-        titleText.text = title;
-        descriptionText.text = description;
-    }
-}
-
 public class CardSelectionUI : MonoBehaviour
 {
     [Header("UI Elements")]
     public GameObject cardPanel;
-    public CardUI[] cards;
+    public TextMeshProUGUI[] cardTitles;
+    public TextMeshProUGUI[] cardDescriptions;
     public Button[] cardButtons;
+
+    private bool isActive = false;
 
     private void Awake()
     {
+        // Hide panel by default
         cardPanel.SetActive(false);
 
-        for (int i = 0; i < cardButtons.Length; i++)
-        {
-            int index = i;
-            cardButtons[i].onClick.AddListener(() => SelectCard(index));
-        }
+        // Setup button listeners
+        cardButtons[1].onClick.AddListener(OnHealthCardSelected);
     }
 
     public void ShowCards()
     {
+        if (isActive) return;
+
+        isActive = true;
+
         // Unlock cursor
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        // Setup cards
-        for (int i = 0; i < cards.Length; i++)
+        // Setup health upgrade card (middle card)
+        var healthUpgrade = UpgradeManager.Instance.GetCurrentHealthUpgrade();
+        if (healthUpgrade != null)
         {
-            cards[i].Setup($"Upgrade {i + 1}", $"Bonus effect {i + 1}");
+            cardTitles[1].text = healthUpgrade.upgradeName;
+            cardDescriptions[1].text = healthUpgrade.description;
+            cardButtons[1].interactable = true;
         }
 
+        // Disable other cards for now
+        cardTitles[0].text = "Coming Soon";
+        cardDescriptions[0].text = "Upgrade in development";
+        cardButtons[0].interactable = false;
+
+        cardTitles[2].text = "Coming Soon";
+        cardDescriptions[2].text = "Upgrade in development";
+        cardButtons[2].interactable = false;
+
+        // Show panel
         cardPanel.SetActive(true);
     }
 
-    private void SelectCard(int cardIndex)
+    public void OnHealthCardSelected()
     {
-        Debug.Log($"Selected card {cardIndex + 1}");
+        if (!isActive) return;
 
-        // Hide panel
+        // Apply upgrade
+        UpgradeManager.Instance.ApplyHealthUpgrade();
+
+        // Hide UI
+        HideCards();
+
+        // Notify RoundManager to resume
+        RoundManager.Instance.ResumeAfterCardSelection();
+    }
+
+    private void HideCards()
+    {
+        isActive = false;
         cardPanel.SetActive(false);
-
-        // Lock cursor
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
-        // Unpause the game
-        Time.timeScale = 1f;
-
-        // Notify RoundManager
-        RoundManager.Instance.UpgradeSelected();
     }
 }

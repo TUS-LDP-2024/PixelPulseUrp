@@ -4271,6 +4271,63 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
+--- !u!1 &124198583
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 124198584}
+  - component: {fileID: 124198585}
+  m_Layer: 0
+  m_Name: UpgradeManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &124198584
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 124198583}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1915111733}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &124198585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 124198583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: beb667a9b3917134eb3b369cb614e654, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthUpgrades:
+  - upgradeName: VitalityBoost
+    healthIncrease: 50
+    regenIncrease: 0
+    damageReduction: 0
+    description: 'Increases Health
+
+'
+  - upgradeName: Metal gear?
+    healthIncrease: 1000
+    regenIncrease: 1000
+    damageReduction: 1000
+    description: IM FUCKING INVINCIBLE
 --- !u!1001 &140834077
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24138,6 +24195,7 @@ Transform:
   - {fileID: 1288661851}
   - {fileID: 1534837648}
   - {fileID: 2006335642}
+  - {fileID: 124198584}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1919674255
@@ -25137,16 +25195,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardPanel: {fileID: 1998603344}
-  cards:
-  - titleText: {fileID: 1934178154}
-    descriptionText: {fileID: 1664060525}
-    iconImage: {fileID: 0}
-  - titleText: {fileID: 904488881}
-    descriptionText: {fileID: 1221667711}
-    iconImage: {fileID: 0}
-  - titleText: {fileID: 1874848057}
-    descriptionText: {fileID: 284740886}
-    iconImage: {fileID: 0}
+  cardTitles:
+  - {fileID: 1934178154}
+  - {fileID: 904488881}
+  - {fileID: 1874848057}
+  cardDescriptions:
+  - {fileID: 1664060525}
+  - {fileID: 1221667711}
+  - {fileID: 284740886}
   cardButtons:
   - {fileID: 1206838395}
   - {fileID: 2019787911}

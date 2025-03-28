@@ -154,4 +154,16 @@ public class PlayerHealth : MonoBehaviour
             bloodOverlayImage2.color = color2;
         }
     }
+    public void IncreaseMaxHealth(float amount)
+    {
+        maxHealth += amount;
+        currentHealth += amount; // Also heal the player
+        Debug.Log($"Max health increased to {maxHealth}");
+    }
+
+    public void IncreaseRegenRate(float amount)
+    {
+        regenRate += amount;
+        Debug.Log($"Regen rate increased to {regenRate}/sec");
+    }
 }
