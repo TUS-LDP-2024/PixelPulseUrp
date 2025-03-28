@@ -9,15 +9,15 @@ public class UpgradeManager : MonoBehaviour
     public class UpgradeEffect
     {
         public string upgradeName;
-        public float healthIncrease = 0f;
-        public float regenIncrease = 0f;
-        public float damageReduction = 0f;
+        public float healthIncrease;
+        public float regenIncrease;
+        public float damageReduction;
         [TextArea] public string description;
     }
 
     [Header("Health Upgrades")]
     public List<UpgradeEffect> healthUpgrades;
-    private int currentHealthUpgradeIndex = 0;
+    private List<UpgradeEffect> remainingUpgrades;
 
     private void Awake()
     {
@@ -27,40 +27,30 @@ public class UpgradeManager : MonoBehaviour
             return;
         }
         Instance = this;
-        DontDestroyOnLoad(gameObject);
-        currentHealthUpgradeIndex = 0;
+        remainingUpgrades = new List<UpgradeEffect>(healthUpgrades);
     }
 
-    public void ApplyHealthUpgrade()
+    public UpgradeEffect GetRandomHealthUpgrade()
     {
-        if (currentHealthUpgradeIndex >= healthUpgrades.Count) return;
+        if (remainingUpgrades.Count == 0) return null;
+        return remainingUpgrades[Random.Range(0, remainingUpgrades.Count)];
+    }
 
-        var upgrade = healthUpgrades[currentHealthUpgradeIndex];
-        PlayerHealth playerHealth = FindObjectOfType<PlayerHealth>();
+    public void ApplyUpgrade(UpgradeEffect upgrade)
+    {
+        if (upgrade == null) return;
 
-        if (playerHealth != null)
+        PlayerHealth player = FindObjectOfType<PlayerHealth>();
+        if (player != null)
         {
             if (upgrade.healthIncrease > 0)
-            {
-                playerHealth.maxHealth += upgrade.healthIncrease;
-                playerHealth.AddHealth(upgrade.healthIncrease);
-            }
-
+                player.IncreaseMaxHealth(upgrade.healthIncrease);
             if (upgrade.regenIncrease > 0)
-            {
-                playerHealth.regenRate += upgrade.regenIncrease;
-            }
-
-            Debug.Log($"Applied upgrade: {upgrade.upgradeName}");
+                player.IncreaseRegenRate(upgrade.regenIncrease);
+            if (upgrade.damageReduction > 0)
+                player.IncreaseDamageReduction(upgrade.damageReduction);
         }
 
-        currentHealthUpgradeIndex = Mathf.Min(currentHealthUpgradeIndex + 1, healthUpgrades.Count - 1);
-    }
-
-    public UpgradeEffect GetCurrentHealthUpgrade()
-    {
-        if (currentHealthUpgradeIndex < healthUpgrades.Count)
-            return healthUpgrades[currentHealthUpgradeIndex];
-        return null;
+        remainingUpgrades.Remove(upgrade);
     }
 }

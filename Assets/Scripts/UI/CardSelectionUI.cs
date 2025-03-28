@@ -4,74 +4,85 @@ using TMPro;
 
 public class CardSelectionUI : MonoBehaviour
 {
-    [Header("UI Elements")]
-    public GameObject cardPanel;
-    public TextMeshProUGUI[] cardTitles;
-    public TextMeshProUGUI[] cardDescriptions;
-    public Button[] cardButtons;
+    [Header("UI References")]
+    public GameObject cardPanel;  // Parent panel for all cards
 
-    private bool isActive = false;
+    // Left Card
+    public GameObject leftCard;
+    public TextMeshProUGUI leftCardTitle;
+    public TextMeshProUGUI leftCardDescription;
+    public Button leftCardButton;
+    public Image leftCardIcon;
 
-    private void Awake()
+    // Middle Card
+    public GameObject middleCard;
+    public TextMeshProUGUI middleCardTitle;
+    public TextMeshProUGUI middleCardDescription;
+    public Button middleCardButton;
+    public Image middleCardIcon;
+
+    // Right Card
+    public GameObject rightCard;
+    public TextMeshProUGUI rightCardTitle;
+    public TextMeshProUGUI rightCardDescription;
+    public Button rightCardButton;
+    public Image rightCardIcon;
+
+    private void Start()
     {
-        // Hide panel by default
-        cardPanel.SetActive(false);
+        // Initialize all card buttons with empty listeners
+        leftCardButton.onClick.AddListener(() => { });
+        middleCardButton.onClick.AddListener(() => { });
+        rightCardButton.onClick.AddListener(() => { });
 
-        // Setup button listeners
-        cardButtons[1].onClick.AddListener(OnHealthCardSelected);
+        // Hide all cards at start
+        cardPanel.SetActive(false);
+        leftCard.SetActive(false);
+        middleCard.SetActive(false);
+        rightCard.SetActive(false);
+
+        Debug.Log("Card UI initialized", this);
     }
 
-    public void ShowCards()
+    public void ShowRandomUpgrade()
     {
-        if (isActive) return;
+        if (!VerifyComponents()) return;
 
-        isActive = true;
+        // Show the panel and all cards
+        cardPanel.SetActive(true);
+        leftCard.SetActive(true);
+        middleCard.SetActive(true);
+        rightCard.SetActive(true);
 
-        // Unlock cursor
+        // Unlock cursor for selection
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        // Setup health upgrade card (middle card)
-        var healthUpgrade = UpgradeManager.Instance.GetCurrentHealthUpgrade();
-        if (healthUpgrade != null)
-        {
-            cardTitles[1].text = healthUpgrade.upgradeName;
-            cardDescriptions[1].text = healthUpgrade.description;
-            cardButtons[1].interactable = true;
-        }
-
-        // Disable other cards for now
-        cardTitles[0].text = "Coming Soon";
-        cardDescriptions[0].text = "Upgrade in development";
-        cardButtons[0].interactable = false;
-
-        cardTitles[2].text = "Coming Soon";
-        cardDescriptions[2].text = "Upgrade in development";
-        cardButtons[2].interactable = false;
-
-        // Show panel
-        cardPanel.SetActive(true);
+        Debug.Log("All cards shown", cardPanel);
     }
 
-    public void OnHealthCardSelected()
+    private void OnCardClicked() // Generic click handler for now
     {
-        if (!isActive) return;
+        HideAllCards();
 
-        // Apply upgrade
-        UpgradeManager.Instance.ApplyHealthUpgrade();
-
-        // Hide UI
-        HideCards();
-
-        // Notify RoundManager to resume
-        RoundManager.Instance.ResumeAfterCardSelection();
-    }
-
-    private void HideCards()
-    {
-        isActive = false;
-        cardPanel.SetActive(false);
+        // Lock cursor
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        // Notify RoundManager to resume
+        RoundManager.Instance?.ResumeAfterCardSelection();
+    }
+
+    private bool VerifyComponents()
+    {
+        // Verify all card components exist
+        bool cardsValid = leftCard != null && middleCard != null && rightCard != null;
+
+        // Verify all buttons exist
+        bool buttonsValid = leftCardButton != null &&
+                          middleCardButton != null &&
+                          rightCardButton != null;
+
+        return cardPanel != null && cardsValid && buttonsValid;
     }
 }

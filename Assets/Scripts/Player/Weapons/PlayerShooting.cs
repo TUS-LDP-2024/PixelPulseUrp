@@ -6,54 +6,54 @@ using TMPro;
 public class PlayerShooting : MonoBehaviour
 {
     [Header("Weapon Stats")]
-    public int damage = 34;       // Default damage
-    public float range = 100f;    // Default range
-    public float fireRate = 1f;   // Default fire rate
-    public int maxAmmo = 30;      // Maximum ammo capacity
-    public float reloadTime = 2f; // Time it takes to reload
-    public int maxStoredAmmo = 100; // Max stored ammo
-    public int storedAmmo = 100; // Stored ammo count
+    public int damage = 34;
+    public float range = 100f;
+    public float fireRate = 1f;
+    public int maxAmmo = 30;
+    public float reloadTime = 2f;
+    public int maxStoredAmmo = 100;
+    public int storedAmmo = 100;
 
     [Header("Shotgun Settings")]
-    public bool isShotgun = false; // Is the current weapon a shotgun?
-    public float spreadAngle = 10f; // Spread angle for shotgun pellets (in degrees)
-    public int pelletCount = 8; // Number of pellets fired per shot
+    public bool isShotgun = false;
+    public float spreadAngle = 10f;
+    public int pelletCount = 8;
 
     [Header("Recoil Settings")]
-    public float recoilForce = 1f; // Recoil force applied to the weapon
-    public float recoilIntensity = 1f; // Multiplier for recoil intensity
-    private float recoilRecoverySpeed; // Speed at which the weapon returns to its original position
+    public float recoilForce = 1f;
+    public float recoilIntensity = 1f;
+    private float recoilRecoverySpeed;
 
     [Header("Camera Shake")]
-    public CameraShake cameraShake; // Reference to the CameraShake script on the Main Camera
+    public CameraShake cameraShake;
 
     [Header("Blend Shape Settings")]
-    public SkinnedMeshRenderer pistolMeshRenderer; // Reference to the pistol's SkinnedMeshRenderer
-    public int magEjectBlendShapeIndex = 0; // Index of the MagEject blend shape
-    public int roundCycleBlendShapeIndex = 1; // Index of the RoundCycle blend shape
-    public float blendShapeSpeed = 5f; // Speed of blend shape animation
+    public SkinnedMeshRenderer pistolMeshRenderer;
+    public int magEjectBlendShapeIndex = 0;
+    public int roundCycleBlendShapeIndex = 1;
+    public float blendShapeSpeed = 5f;
 
-    private int currentAmmo;      // Current ammo count
-    private bool isReloading = false; // Flag to track reloading state
-    private bool isRecoiling = false; // Flag to track recoil state
+    private int currentAmmo;
+    private bool isReloading = false;
+    private bool isRecoiling = false;
 
     [Header("Shooting Effects")]
     public GameObject impactEffect;
 
     [Header("References")]
-    public PointsManager pointsManager; // Reference to the PointsManager script
-    public WeaponManager weaponManager; // Reference to the WeaponManager script
-    public TextMeshProUGUI ammoDisplay; // Reference to the ammo display text
+    public PointsManager pointsManager;
+    public WeaponManager weaponManager;
+    public TextMeshProUGUI ammoDisplay;
 
-    private Transform gunBarrel;   // Transform representing the gun barrel
+    private Transform gunBarrel;
     private PlayerInput playerInput;
     private InputAction fireAction;
     private float nextFireTime = 0f;
 
-    private Vector3 originalWeaponPosition; // Original local position of the weapon
-    private Quaternion originalWeaponRotation; // Original local rotation of the weapon
+    private Vector3 originalWeaponPosition;
+    private Quaternion originalWeaponRotation;
 
-    private AudioSource weaponAudioSource; // AudioSource for weapon sounds
+    private AudioSource weaponAudioSource;
 
     private void Awake()
     {
@@ -63,35 +63,21 @@ public class PlayerShooting : MonoBehaviour
 
     private void Start()
     {
-        // Initialize ammo
         currentAmmo = maxAmmo;
-        UpdateAmmoDisplay(); // Update the ammo display at the start
+        UpdateAmmoDisplay();
 
-        // Subscribe to the WeaponManager's weapon change event
         if (weaponManager != null)
         {
             weaponManager.OnWeaponChanged += UpdateGunBarrel;
         }
-        else
-        {
-            Debug.LogError("WeaponManager reference is missing!");
-        }
 
-        // Initialize the gun barrel for the starting weapon
         UpdateGunBarrel();
 
-        // Store the original local position and rotation of the weapon
         if (weaponManager != null && weaponManager.currentWeaponModel != null)
         {
             originalWeaponPosition = weaponManager.currentWeaponModel.transform.localPosition;
             originalWeaponRotation = weaponManager.currentWeaponModel.transform.localRotation;
-
-            // Get the AudioSource component from the weapon model
             weaponAudioSource = weaponManager.currentWeaponModel.GetComponent<AudioSource>();
-            if (weaponAudioSource == null)
-            {
-                Debug.LogError("AudioSource component not found on the weapon model!");
-            }
         }
     }
 
@@ -107,22 +93,17 @@ public class PlayerShooting : MonoBehaviour
 
     private void Update()
     {
-        // Recoil recovery
         if (weaponManager != null && weaponManager.currentWeaponModel != null && isRecoiling)
         {
-            // Smoothly reset the weapon's local rotation
             weaponManager.currentWeaponModel.transform.localRotation = Quaternion.Lerp(
                 weaponManager.currentWeaponModel.transform.localRotation,
                 originalWeaponRotation,
                 Time.deltaTime * recoilRecoverySpeed
             );
 
-            // Check if the weapon has returned to its original rotation
             if (Quaternion.Angle(weaponManager.currentWeaponModel.transform.localRotation, originalWeaponRotation) < 0.01f)
             {
-                // Reset the recoil state
                 isRecoiling = false;
-                Debug.Log("Recoil reset complete. isRecoiling = " + isRecoiling);
             }
         }
     }
@@ -131,83 +112,52 @@ public class PlayerShooting : MonoBehaviour
     {
         if (isReloading || isRecoiling)
         {
-            Debug.Log("Cannot shoot: isReloading = " + isReloading + ", isRecoiling = " + isRecoiling);
-            return; // Don't shoot while reloading or recoiling
-        }
-
-        // Check if enough time has passed since the last shot
-        if (Time.time < nextFireTime)
-        {
-            Debug.Log("Cannot shoot: Fire rate cooldown.");
             return;
         }
 
-        // Check if there is ammo left
+        if (Time.time < nextFireTime)
+        {
+            return;
+        }
+
         if (currentAmmo <= 0)
         {
-            Debug.Log("Cannot shoot: Out of ammo.");
             Reload();
             return;
         }
 
-        // Set the next fire time based on the fire rate
         nextFireTime = Time.time + 1f / fireRate;
-
-        // Perform the raycast
         PerformRaycast();
-
-        // Apply recoil
         ApplyRecoil();
 
-        // Trigger camera shake
         if (cameraShake != null)
         {
-            Debug.Log("Triggering camera shake from PlayerShooting.");
             cameraShake.TriggerShake();
         }
-        else
-        {
-            Debug.LogError("CameraShake reference is null in PlayerShooting!");
-        }
 
-        // Play shooting sound
         if (weaponAudioSource != null && weaponManager.currentWeapon != null)
         {
             weaponAudioSource.PlayOneShot(weaponManager.currentWeapon.shootSound);
         }
-        else
-        {
-            Debug.LogError("Weapon AudioSource or shootSound is missing!");
-        }
 
-        // Consume ammo
         currentAmmo--;
-        UpdateAmmoDisplay(); // Update the ammo display after shooting
-        Debug.Log("Shot fired. Current ammo: " + currentAmmo);
+        UpdateAmmoDisplay();
     }
 
     private void ApplyRecoil()
     {
         if (weaponManager != null && weaponManager.currentWeaponModel != null && !isRecoiling)
         {
-            // Set the recoil state
             isRecoiling = true;
-
-            // Calculate recoil recovery speed based on fire rate
-            recoilRecoverySpeed = fireRate * 2f; // Adjust the multiplier as needed
-
-            // Calculate recoil intensity based on fire rate (lower fire rate = stronger recoil)
+            recoilRecoverySpeed = fireRate * 2f;
             float calculatedRecoil = recoilForce * recoilIntensity * (1f / fireRate);
 
-            // Apply rotational recoil
             if (isShotgun)
             {
-                // Shotgun: Rotate around the Y-axis
                 weaponManager.currentWeaponModel.transform.localRotation *= Quaternion.Euler(0, -calculatedRecoil * 15, 0);
             }
             else
             {
-                // Other weapons: Rotate upward around the Z-axis
                 weaponManager.currentWeaponModel.transform.localRotation *= Quaternion.Euler(0, 0, calculatedRecoil * 15);
             }
         }
@@ -215,28 +165,16 @@ public class PlayerShooting : MonoBehaviour
 
     private void PerformRaycast()
     {
-        if (gunBarrel == null)
+        if (gunBarrel == null || weaponManager == null || weaponManager.currentWeapon == null)
         {
-            Debug.LogError("GunBarrel is not assigned!");
             return;
         }
 
-        if (weaponManager == null || weaponManager.currentWeapon == null)
-        {
-            Debug.LogError("WeaponManager or currentWeapon is missing!");
-            return;
-        }
-
-        // Check if the current weapon is a shotgun
         if (weaponManager.currentWeapon.isShotgun)
         {
-            // Shotgun behavior: Fire multiple pellets in a cone
             for (int i = 0; i < weaponManager.currentWeapon.pelletCount; i++)
             {
-                // Calculate a random direction within the spread angle
                 Vector3 pelletDirection = GetRandomDirectionWithinSpread(gunBarrel.forward, weaponManager.currentWeapon.spreadAngle);
-
-                // Perform a raycast for each pellet
                 RaycastHit[] hits = Physics.RaycastAll(gunBarrel.position, pelletDirection, range, ~0, QueryTriggerInteraction.Collide);
                 System.Array.Sort(hits, (h1, h2) => h1.distance.CompareTo(h2.distance));
 
@@ -247,7 +185,6 @@ public class PlayerShooting : MonoBehaviour
                     {
                         if (hit.collider.CompareTag("Floor") || hit.collider.gameObject.layer == LayerMask.NameToLayer("GroundLayer"))
                         {
-                            Debug.Log("Ignored BoxCollider trigger: " + hit.collider.name);
                             continue;
                         }
                     }
@@ -265,7 +202,6 @@ public class PlayerShooting : MonoBehaviour
         }
         else
         {
-            // Default behavior: Single raycast
             RaycastHit[] hits = Physics.RaycastAll(gunBarrel.position, gunBarrel.forward, range, ~0, QueryTriggerInteraction.Collide);
             System.Array.Sort(hits, (h1, h2) => h1.distance.CompareTo(h2.distance));
 
@@ -276,7 +212,6 @@ public class PlayerShooting : MonoBehaviour
                 {
                     if (hit.collider.CompareTag("Floor") || hit.collider.gameObject.layer == LayerMask.NameToLayer("GroundLayer"))
                     {
-                        Debug.Log("Ignored BoxCollider trigger: " + hit.collider.name);
                         continue;
                     }
                 }
@@ -293,37 +228,22 @@ public class PlayerShooting : MonoBehaviour
         }
     }
 
-    // Helper method to calculate a random direction within the spread angle
     private Vector3 GetRandomDirectionWithinSpread(Vector3 direction, float spreadAngle)
     {
-        // Calculate random angles within the spread
-        float randomAngleX = UnityEngine.Random.Range(-spreadAngle, spreadAngle); // Explicitly use UnityEngine.Random
-        float randomAngleY = UnityEngine.Random.Range(-spreadAngle, spreadAngle); // Explicitly use UnityEngine.Random
-        float randomAngleZ = UnityEngine.Random.Range(-spreadAngle, spreadAngle); // Random angle for Z-axis
-
-        // Create a rotation based on the random angles
+        float randomAngleX = UnityEngine.Random.Range(-spreadAngle, spreadAngle);
+        float randomAngleY = UnityEngine.Random.Range(-spreadAngle, spreadAngle);
+        float randomAngleZ = UnityEngine.Random.Range(-spreadAngle, spreadAngle);
         Quaternion spreadRotation = Quaternion.Euler(randomAngleX, randomAngleY, 0);
-
-        // Apply the rotation to the original direction
         return spreadRotation * direction;
     }
 
-
     private void HandleHit(RaycastHit hit)
     {
-        Debug.Log("Hit: " + hit.collider.name);
-
-        // Trigger the hit marker at the hit point
         if (HitMarkerManager.Instance != null)
         {
             HitMarkerManager.Instance.ShowHitMarker(hit.point);
         }
-        else
-        {
-            Debug.LogError("HitMarkerManager instance is null!");
-        }
 
-        // Check if the hit object is a zombie and apply damage
         EnemyHealth enemyHealth = hit.collider.GetComponentInParent<EnemyHealth>();
         if (enemyHealth != null)
         {
@@ -331,85 +251,62 @@ public class PlayerShooting : MonoBehaviour
             int damageToApply = isHeadshot ? damage * 2 : damage;
             enemyHealth.TakeDamage(damageToApply);
 
-            // Award points based on the shot type
             if (pointsManager != null)
             {
                 int pointsToAdd = isHeadshot ? 50 : 10;
                 pointsManager.AddPoints(pointsToAdd);
             }
-            Debug.Log(isHeadshot ? "Headshot!" : "Body shot!");
         }
 
-        // Instantiate impact effect at the hit location
         if (impactEffect != null)
         {
             Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
         }
     }
 
-
     public void UpdateWeaponStats(int newDamage, float newRange, float newFireRate, int newMaxAmmo, float newReloadTime, bool isShotgun, float spreadAngle, int pelletCount, float recoilForce, float recoilIntensity)
     {
         damage = newDamage;
         range = newRange;
-        fireRate = newFireRate; // Update fire rate
+        fireRate = newFireRate;
         maxAmmo = newMaxAmmo;
         reloadTime = newReloadTime;
-
-        // Recoil settings
         this.recoilForce = recoilForce;
         this.recoilIntensity = recoilIntensity;
-
-        // Shotgun-specific stats
-        this.isShotgun = isShotgun; // Update the isShotgun flag
+        this.isShotgun = isShotgun;
         this.spreadAngle = spreadAngle;
         this.pelletCount = pelletCount;
-
-        // Reset ammo when switching weapons
         currentAmmo = maxAmmo;
-        UpdateAmmoDisplay(); // Update the ammo display when switching weapons
+        UpdateAmmoDisplay();
     }
 
     public void Reload()
     {
         if (isReloading || currentAmmo == maxAmmo || storedAmmo == 0) return;
 
-        Debug.Log("Reloading...");
         isReloading = true;
 
-        // Play reloading sound
         if (weaponAudioSource != null && weaponManager.currentWeapon != null)
         {
             weaponAudioSource.PlayOneShot(weaponManager.currentWeapon.reloadSound);
         }
-        else
-        {
-            Debug.LogError("Weapon AudioSource or reloadSound is missing!");
-        }
 
-        // Play the reload animation
         if (weaponManager.currentWeapon != null && weaponManager.currentWeaponModel != null)
         {
-            weaponManager.currentWeapon.PlayReloadAnimation(weaponManager.currentWeaponModel, this); // Pass the weapon instance and 'this' to start the coroutine
-        }
-        else
-        {
-            Debug.LogError("Current weapon or weapon model is null!");
+            weaponManager.currentWeapon.PlayReloadAnimation(weaponManager.currentWeaponModel, this);
         }
 
-        // Wait for the reload time
         Invoke(nameof(FinishReload), reloadTime);
     }
 
     private void FinishReload()
     {
         storedAmmo += currentAmmo;
-        int ammoToReload = Math.Min(storedAmmo, maxAmmo); // Now works because of the 'using System;' directive
+        int ammoToReload = Math.Min(storedAmmo, maxAmmo);
         storedAmmo -= ammoToReload;
         currentAmmo = ammoToReload;
         isReloading = false;
-        UpdateAmmoDisplay(); // Update the ammo display after reloading
-        Debug.Log("Reload complete!");
+        UpdateAmmoDisplay();
     }
 
     public void UpdateAmmoDisplay()
@@ -424,31 +321,13 @@ public class PlayerShooting : MonoBehaviour
     {
         if (weaponManager == null || weaponManager.currentWeaponModel == null)
         {
-            Debug.LogError("WeaponManager or currentWeaponModel is missing!");
             return;
         }
 
-        // Find the gun barrel transform in the current weapon model
         gunBarrel = weaponManager.currentWeaponModel.transform.Find("GunBarrel");
-        if (gunBarrel == null)
-        {
-            Debug.LogError("GunBarrel not found in the current weapon model!");
-        }
-        else
-        {
-            Debug.Log("GunBarrel updated: " + gunBarrel.name);
-        }
-
-        // Update the AudioSource reference when switching weapons
         weaponAudioSource = weaponManager.currentWeaponModel.GetComponent<AudioSource>();
-        if (weaponAudioSource == null)
-        {
-            Debug.LogError("AudioSource component not found on the weapon model!");
-        }
 
-        // Store the original local position and rotation of the weapon
         originalWeaponPosition = weaponManager.currentWeaponModel.transform.localPosition;
         originalWeaponRotation = weaponManager.currentWeaponModel.transform.localRotation;
-        Debug.Log("Original weapon position and rotation updated.");
     }
 }

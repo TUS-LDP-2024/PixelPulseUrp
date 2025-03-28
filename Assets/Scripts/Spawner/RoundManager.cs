@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.InputSystem;
 using UnityEngine;
 using TMPro;
 
@@ -30,7 +29,7 @@ public class RoundManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null)
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
@@ -59,6 +58,12 @@ public class RoundManager : MonoBehaviour
         IsSelectingUpgrade = false;
         roundText.text = $"ROUND {currentRound}";
         Debug.Log($"Started Round {currentRound}. Zombies to spawn: {ZombiesToSpawnThisRound}");
+
+        // Enable all spawners
+        foreach (var spawner in AllSpawners)
+        {
+            spawner.enabled = true;
+        }
     }
 
     public void IncrementSpawnedCount()
@@ -87,24 +92,28 @@ public class RoundManager : MonoBehaviour
     private IEnumerator CompleteRound()
     {
         IsRoundActive = false;
-        Debug.Log($"Round {currentRound} completed!");
-
-        // Freeze gameplay
-        Time.timeScale = 0f;
         IsSelectingUpgrade = true;
+        Time.timeScale = 0f;
 
-        // Show card selection UI
-        cardSelectionUI.ShowCards();
+        // Show cards
+        if (cardSelectionUI != null)
+        {
+            cardSelectionUI.ShowRandomUpgrade();
+            Debug.Log("Waiting for card selection...");
 
-        // Wait for selection
-        yield return new WaitWhile(() => IsSelectingUpgrade);
+            // Wait until card selection is complete
+            yield return new WaitWhile(() => IsSelectingUpgrade);
+        }
 
-        // Start countdown to next round
+        // Resume time
+        Time.timeScale = 1f;
+
+        // Countdown to next round
         float timer = timeBetweenRounds;
         while (timer > 0)
         {
             countdownText.text = $"Next round in: {timer:F1}";
-            timer -= Time.unscaledDeltaTime;
+            timer -= Time.deltaTime;
             yield return null;
         }
 
@@ -113,12 +122,17 @@ public class RoundManager : MonoBehaviour
 
     public void ResumeAfterCardSelection()
     {
+        // This is now called AFTER card is hidden
+        Time.timeScale = 1f;
         IsSelectingUpgrade = false;
-        Time.timeScale = 1f; // Ensure game is unpaused
     }
 
-    public void UpgradeSelected()
+    public void RegisterSpawner(ZombieSpawner spawner)
     {
-        IsSelectingUpgrade = false;
+        if (!AllSpawners.Contains(spawner))
+        {
+            AllSpawners.Add(spawner);
+            spawner.enabled = IsRoundActive;
+        }
     }
 }

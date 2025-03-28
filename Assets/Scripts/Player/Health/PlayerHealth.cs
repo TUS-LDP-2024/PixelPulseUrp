@@ -5,88 +5,101 @@ using System.Collections;
 
 public class PlayerHealth : MonoBehaviour
 {
+    [Header("Health Settings")]
     public float maxHealth = 100f;
-    public float regenRate = 0f; // Health per second regeneration rate
-    private float currentHealth;
+    [SerializeField] private float currentHealth;
+    [SerializeField] private float regenRate = 0f;
+    [SerializeField] private float damageReduction = 0f;
 
-    // Reference to the primary UI Image for the blood overlay effect.
+    [Header("Visual Effects")]
     public Image bloodOverlayImage;
-    // Additional canvas image for the blood overlay effect (capped max alpha).
     public Image bloodOverlayImage2;
 
-    // Reference to the UIManager for flash effects.
-    private UIManager uiManager;
-
-    // Delay between damage instances in seconds.
+    [Header("Gameplay Settings")]
+    public float regenDelay = 5f;
+    private float timeSinceLastDamage;
+    private bool isRegenerating;
     private bool canTakeDamage = true;
     private float damageCooldown = 1.5f;
 
-    private void Start()
+    private void Awake()
     {
-        currentHealth = maxHealth; // Initialize health
-        // Find the UIManager in the scene.
-        uiManager = FindObjectOfType<UIManager>();
+        currentHealth = maxHealth;
+        timeSinceLastDamage = 0f;
     }
 
     private void Update()
     {
-        // Regenerate health if below 15% of maxHealth.
-        if (currentHealth < maxHealth * 0.15f)
+        timeSinceLastDamage += Time.deltaTime;
+
+        if (CanRegenerate())
         {
-            currentHealth += regenRate * Time.deltaTime;
-            // Clamp health to 15% maximum when regenerating.
-            if (currentHealth > maxHealth * 0.15f)
+            if (!isRegenerating)
             {
-                currentHealth = maxHealth * 0.15f;
+                Debug.Log("Regeneration started");
+                isRegenerating = true;
             }
+            currentHealth = Mathf.Min(currentHealth + (regenRate * Time.deltaTime), maxHealth);
+        }
+        else if (isRegenerating)
+        {
+            isRegenerating = false;
         }
 
         UpdateBloodOverlay();
     }
 
+    private bool CanRegenerate()
+    {
+        return regenRate > 0 &&
+               currentHealth < maxHealth &&
+               timeSinceLastDamage >= regenDelay;
+    }
+
     public void TakeDamage(float damage)
     {
-        // Only allow damage if cooldown has elapsed.
-        if (!canTakeDamage)
-        {
-            return;
-        }
+        if (!canTakeDamage) return;
 
-        currentHealth -= damage;
-        Debug.Log($"Player took {damage} damage! Current Health: {currentHealth}");
+        timeSinceLastDamage = 0f;
+        isRegenerating = false;
 
-        // Trigger the damage flash effect via UIManager.
-        if (uiManager != null)
-        {
-            uiManager.DamageFlash();
-        }
+        float reducedDamage = damage * (1f - damageReduction);
+        currentHealth -= reducedDamage;
 
         if (currentHealth <= 0)
         {
             Die();
         }
-
-        // Start damage cooldown.
-        canTakeDamage = false;
-        StartCoroutine(DamageCooldown());
+        else
+        {
+            canTakeDamage = false;
+            StartCoroutine(DamageCooldown());
+        }
     }
 
-    // Coroutine to reset damage reception after cooldown.
     private IEnumerator DamageCooldown()
     {
         yield return new WaitForSeconds(damageCooldown);
         canTakeDamage = true;
     }
 
-    // Add health but never exceed maxHealth.
-    public void AddHealth(float amount)
+    public void IncreaseMaxHealth(float amount)
     {
+        maxHealth += amount;
         currentHealth += amount;
-        if (currentHealth > maxHealth)
-        {
-            currentHealth = maxHealth;
-        }
-        Debug.Log($"Player healed by {amount}! Current Health: {currentHealth}");
+        Debug.Log($"Max health increased to {maxHealth}");
+    }
+
+    public void IncreaseRegenRate(float amount)
+    {
+        regenRate += amount;
+        Debug.Log($"Regen rate increased to {regenRate} HP/s");
+    }
+
+    public void IncreaseDamageReduction(float amount)
+    {
+        damageReduction = Mathf.Clamp(damageReduction + amount, 0f, 0.8f);
+        Debug.Log($"Damage reduction now: {damageReduction * 100}%");
     }
 
     private void Die()
@@ -97,39 +110,30 @@ public class PlayerHealth : MonoBehaviour
 
     private void UpdateBloodOverlay()
     {
-        // Calculate thresholds in absolute values.
-        float halfHealth = maxHealth * 0.5f;
-        float fifteenPercentHealth = maxHealth * 0.15f;
+        float healthPercent = currentHealth / maxHealth;
         float baseAlpha = 0f;
 
-        // Only show the overlay when health is below 50%.
-        if (currentHealth < halfHealth)
+        // Only show blood when below 50% health
+        if (healthPercent < 0.5f)
         {
-            // Mathf.InverseLerp returns 0 when currentHealth equals halfHealth and 1 when it equals fifteenPercentHealth.
-            baseAlpha = Mathf.InverseLerp(halfHealth, fifteenPercentHealth, currentHealth);
+            baseAlpha = Mathf.InverseLerp(0.5f, 0.15f, healthPercent);
             baseAlpha = Mathf.Clamp01(baseAlpha);
         }
-        else
-        {
-            baseAlpha = 0f;
-        }
 
-        // For the primary image, use a PingPong pulse (with a 1.5× multiplier).
+        // Primary overlay - pulsating effect when very low health
         float alpha1 = baseAlpha;
-        if (currentHealth <= fifteenPercentHealth)
+        if (healthPercent <= 0.15f)
         {
             float ping = Mathf.PingPong(Time.time * 1.5f, 1f);
             float smoothPing = Mathf.SmoothStep(0f, 1f, ping);
-            // Center around zero and scale by amplitude.
             float pulse = (smoothPing - 0.5f) * 0.8f;
-            // Lower the minimum pulse value to -0.7 for a lower minimum alpha.
             pulse = Mathf.Clamp(pulse, -0.7f, 0.2f);
             alpha1 = Mathf.Clamp01(baseAlpha + pulse);
         }
 
-        // For the secondary image, use a slower PingPong pulse.
+        // Secondary overlay - more subtle effect
         float alpha2 = baseAlpha;
-        if (currentHealth <= fifteenPercentHealth)
+        if (healthPercent <= 0.15f)
         {
             float ping = Mathf.PingPong(Time.time * 1f, 1f);
             float smoothPing = Mathf.SmoothStep(0.3f, 1f, ping);
@@ -138,7 +142,7 @@ public class PlayerHealth : MonoBehaviour
             alpha2 = Mathf.Clamp01(baseAlpha + pulse);
         }
 
-        // Apply the computed alpha to the primary blood overlay image.
+        // Apply to UI
         if (bloodOverlayImage != null)
         {
             Color color = bloodOverlayImage.color;
@@ -146,24 +150,21 @@ public class PlayerHealth : MonoBehaviour
             bloodOverlayImage.color = color;
         }
 
-        // For the additional blood overlay, cap the maximum alpha at 25/255.
         if (bloodOverlayImage2 != null)
         {
             Color color2 = bloodOverlayImage2.color;
-            color2.a = alpha2 * (25f / 255f);
+            color2.a = alpha2 * (25f / 255f); // Capped at ~10% opacity
             bloodOverlayImage2.color = color2;
         }
     }
-    public void IncreaseMaxHealth(float amount)
+
+    public void AddHealth(float amount)
     {
-        maxHealth += amount;
-        currentHealth += amount; // Also heal the player
-        Debug.Log($"Max health increased to {maxHealth}");
+        currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
+        Debug.Log($"Added {amount} health. Current: {currentHealth}/{maxHealth}");
     }
 
-    public void IncreaseRegenRate(float amount)
-    {
-        regenRate += amount;
-        Debug.Log($"Regen rate increased to {regenRate}/sec");
-    }
+    // For debugging
+    public float GetCurrentHealth() => currentHealth;
+    public float GetHealthPercent() => currentHealth / maxHealth;
 }
