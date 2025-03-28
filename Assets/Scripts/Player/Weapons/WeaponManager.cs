@@ -85,6 +85,24 @@ public class WeaponManager : MonoBehaviour
         currentWeaponIndex = (currentWeaponIndex + 1) % playerInventory.Length;
         EquipWeapon(currentWeaponIndex);
     }
+    public void ApplyWeaponUpgrade(float damageBoost, float fireRateBoost, float ammoBoost, float reloadSpeedBoost)
+    {
+        if (currentWeapon == null) return;
+
+        if (damageBoost > 0)
+            currentWeapon.damage = Mathf.RoundToInt(currentWeapon.damage * (1 + damageBoost));
+
+        if (fireRateBoost > 0)
+            currentWeapon.fireRate *= (1 + fireRateBoost);
+
+        if (ammoBoost > 0)
+            currentWeapon.maxAmmo = Mathf.RoundToInt(currentWeapon.maxAmmo * (1 + ammoBoost));
+
+        if (reloadSpeedBoost > 0)
+            currentWeapon.reloadTime *= (1 - reloadSpeedBoost);
+
+        EquipWeapon(currentWeaponIndex);
+    }
 
     private void EquipWeapon(int index)
     {

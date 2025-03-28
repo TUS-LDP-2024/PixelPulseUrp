@@ -42,23 +42,33 @@ public class CardSelectionUI : MonoBehaviour
     {
         if (!VerifyComponents()) return;
 
-        // Set up left card (empty or different type for now)
-        leftCardTitle.text = "Coming Soon";
-        leftCardDescription.text = "Additional upgrades in future updates!";
-        leftCardButton.onClick.RemoveAllListeners();
-        leftCardButton.onClick.AddListener(() => OnCardClicked());
+        // Left Card - Weapon Upgrades
+        var weaponUpgrade = UpgradeManager.Instance?.GetRandomWeaponUpgrade();
+        if (weaponUpgrade != null)
+        {
+            leftCardTitle.text = weaponUpgrade.upgradeName;
+            leftCardDescription.text = weaponUpgrade.description;
+            leftCardButton.onClick.RemoveAllListeners();
+            leftCardButton.onClick.AddListener(() => {
+                UpgradeManager.Instance?.ApplyWeaponUpgrade(weaponUpgrade);
+                OnCardClicked(weaponUpgrade: weaponUpgrade);
+            });
+        }
 
-        // Set up middle card (health upgrades only)
+        // Middle Card - Health Upgrades
         var healthUpgrade = UpgradeManager.Instance?.GetRandomHealthUpgrade();
         if (healthUpgrade != null)
         {
             middleCardTitle.text = healthUpgrade.upgradeName;
             middleCardDescription.text = healthUpgrade.description;
             middleCardButton.onClick.RemoveAllListeners();
-            middleCardButton.onClick.AddListener(() => OnCardClicked(healthUpgrade));
+            middleCardButton.onClick.AddListener(() => {
+                UpgradeManager.Instance?.ApplyHealthUpgrade(healthUpgrade);
+                OnCardClicked(healthUpgrade: healthUpgrade);
+            });
         }
 
-        // Set up right card (empty or different type for now)
+        // Right Card - Placeholder
         rightCardTitle.text = "Coming Soon";
         rightCardDescription.text = "Additional upgrades in future updates!";
         rightCardButton.onClick.RemoveAllListeners();
@@ -74,16 +84,15 @@ public class CardSelectionUI : MonoBehaviour
         Cursor.visible = true;
     }
 
-    private void OnCardClicked(UpgradeManager.UpgradeEffect upgrade = null)
+    private void OnCardClicked(UpgradeManager.HealthUpgrade healthUpgrade = null,
+                         UpgradeManager.WeaponUpgrade weaponUpgrade = null)
     {
-        if (upgrade != null)
-        {
-            UpgradeManager.Instance?.ApplyUpgrade(upgrade);
-        }
-
+        // Hide all cards first
         HideAllCards();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        // Notify RoundManager to resume
         RoundManager.Instance?.ResumeAfterCardSelection();
     }
 
