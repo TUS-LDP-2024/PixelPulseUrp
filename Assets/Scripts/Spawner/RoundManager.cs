@@ -17,11 +17,15 @@ public class RoundManager : MonoBehaviour
     public TextMeshProUGUI roundText;
     public TextMeshProUGUI countdownText;
 
+    [Header("Card System")]
+    public CardSelectionUI cardSelectionUI;
+
     public int currentRound { get; private set; } = 0;
     public int ZombiesToSpawnThisRound { get; private set; } = 0;
     public int ZombiesSpawnedThisRound { get; private set; } = 0;
     public int ZombiesAlive { get; private set; } = 0;
     public bool IsRoundActive { get; private set; } = false;
+    public bool IsSelectingUpgrade { get; private set; } = false;
 
     private void Awake()
     {
@@ -31,12 +35,6 @@ public class RoundManager : MonoBehaviour
             return;
         }
         Instance = this;
-
-        // Initialize all spawners as disabled by default
-        foreach (var spawner in AllSpawners)
-        {
-            spawner.enabled = false;
-        }
     }
 
     private void Start()
@@ -57,6 +55,7 @@ public class RoundManager : MonoBehaviour
         }
 
         IsRoundActive = true;
+        IsSelectingUpgrade = false;
         roundText.text = $"ROUND {currentRound}";
         Debug.Log($"Started Round {currentRound}. Zombies to spawn: {ZombiesToSpawnThisRound}");
     }
@@ -89,14 +88,30 @@ public class RoundManager : MonoBehaviour
         IsRoundActive = false;
         Debug.Log($"Round {currentRound} completed!");
 
+        // Freeze gameplay
+        Time.timeScale = 0f;
+        IsSelectingUpgrade = true;
+
+        // Show card selection UI
+        cardSelectionUI.ShowCards();
+
+        // Wait for selection
+        yield return new WaitWhile(() => IsSelectingUpgrade);
+
+        // Start countdown to next round (using unscaled time)
         float timer = timeBetweenRounds;
         while (timer > 0)
         {
             countdownText.text = $"Next round in: {timer:F1}";
-            timer -= Time.deltaTime;
+            timer -= Time.unscaledDeltaTime;
             yield return null;
         }
 
         StartNewRound();
+    }
+
+    public void UpgradeSelected()
+    {
+        IsSelectingUpgrade = false;
     }
 }
