@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
 using TMPro;
+using System.Collections;
 
 public class PlayerShooting : MonoBehaviour
 {
@@ -33,7 +34,16 @@ public class PlayerShooting : MonoBehaviour
     public int roundCycleBlendShapeIndex = 1;
     public float blendShapeSpeed = 5f;
 
-    private int currentAmmo;
+    private int _currentAmmo;
+    public int currentAmmo
+    {
+        get => _currentAmmo;
+        set
+        {
+            _currentAmmo = Mathf.Clamp(value, 0, maxAmmo);
+            UpdateAmmoDisplay();
+        }
+    }
     private bool isReloading = false;
     private bool isRecoiling = false;
 
@@ -141,6 +151,11 @@ public class PlayerShooting : MonoBehaviour
         }
 
         currentAmmo--;
+    }
+
+    public void AddAmmo(int amount)
+    {
+        storedAmmo = Mathf.Min(maxStoredAmmo, storedAmmo + amount);
         UpdateAmmoDisplay();
     }
 
@@ -276,40 +291,83 @@ public class PlayerShooting : MonoBehaviour
         this.isShotgun = isShotgun;
         this.spreadAngle = spreadAngle;
         this.pelletCount = pelletCount;
-        currentAmmo = maxAmmo;
-        UpdateAmmoDisplay();
+        ResetAmmo();
     }
 
     public void Reload()
     {
-        if (isReloading || currentAmmo == maxAmmo || storedAmmo == 0) return;
+        if (isReloading || currentAmmo == maxAmmo || storedAmmo <= 0)
+            return;
 
         isReloading = true;
 
-        if (weaponAudioSource != null && weaponManager.currentWeapon != null)
+        // Play reload sound
+        if (weaponAudioSource != null && weaponManager?.currentWeapon?.reloadSound != null)
         {
             weaponAudioSource.PlayOneShot(weaponManager.currentWeapon.reloadSound);
         }
 
-        if (weaponManager.currentWeapon != null && weaponManager.currentWeaponModel != null)
+        // Special handling for shotgun reload
+        if (isShotgun)
         {
-            weaponManager.currentWeapon.PlayReloadAnimation(weaponManager.currentWeaponModel, this);
+            StartCoroutine(ShotgunReload());
+        }
+        else // Normal weapon reload
+        {
+            Invoke(nameof(FinishReload), weaponManager.currentWeapon.reloadTime);
+        }
+    }
+
+    private IEnumerator ShotgunReload()
+    {
+        float reloadPerShell = weaponManager.currentWeapon.reloadTime / maxAmmo;
+
+        while (currentAmmo < maxAmmo && storedAmmo > 0)
+        {
+            yield return new WaitForSeconds(reloadPerShell);
+
+            if (!isReloading) // Check if reload was cancelled
+                yield break;
+
+            currentAmmo++;
+            storedAmmo--;
+            UpdateAmmoDisplay();
         }
 
-        Invoke(nameof(FinishReload), reloadTime);
+        isReloading = false;
     }
+
 
     private void FinishReload()
     {
-        storedAmmo += currentAmmo;
-        int ammoToReload = Math.Min(storedAmmo, maxAmmo);
-        storedAmmo -= ammoToReload;
-        currentAmmo = ammoToReload;
+        int ammoNeeded = maxAmmo - currentAmmo;
+        int ammoCanTake = Mathf.Min(ammoNeeded, storedAmmo);
+
+        currentAmmo += ammoCanTake;
+        storedAmmo -= ammoCanTake;
+
         isReloading = false;
         UpdateAmmoDisplay();
     }
 
-    public void UpdateAmmoDisplay()
+    public void CancelReload()
+    {
+        if (isReloading)
+        {
+            StopAllCoroutines();
+            CancelInvoke(nameof(FinishReload));
+            isReloading = false;
+            Debug.Log("Reload cancelled");
+        }
+    }
+
+    public void ResetAmmo()
+    {
+        currentAmmo = maxAmmo;
+        UpdateAmmoDisplay();
+    }
+
+    private void UpdateAmmoDisplay()
     {
         if (ammoDisplay != null)
         {

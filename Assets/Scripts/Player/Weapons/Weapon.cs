@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 [CreateAssetMenu(fileName = "NewWeapon", menuName = "Weapon", order = 51)]
 public class Weapon : ScriptableObject
@@ -11,7 +12,7 @@ public class Weapon : ScriptableObject
 
     [Header("Ammo Settings")]
     public int maxAmmo = 30;  // Maximum ammo capacity
-    public float reloadTime = 2f; // Time it takes to reload
+    public float reloadTime = 2f; // Time it takes to reload (full magazine)
 
     [Header("Recoil Settings")]
     public float recoilForce = 1f; // Base recoil force
@@ -31,6 +32,7 @@ public class Weapon : ScriptableObject
 
     [Header("Shotgun Settings")]
     public bool isShotgun = false; // Is this weapon a shotgun?
+    public float shellReloadInterval = 0.5f; // Time between shell reloads for shotguns
     public float spreadAngle = 10f; // Spread angle for shotgun pellets (in degrees)
     public int pelletCount = 8; // Number of pellets fired per shot
 
@@ -90,7 +92,7 @@ public class Weapon : ScriptableObject
         if (coroutineStarter != null)
         {
             Debug.Log("Starting ReloadAnimation coroutine");
-            coroutineStarter.StartCoroutine(ReloadAnimation(weaponInstanceComponent.skinnedMeshRenderer));
+            coroutineStarter.StartCoroutine(PlayReloadAnimationCoroutine(weaponInstanceComponent.skinnedMeshRenderer));
         }
         else
         {
@@ -98,7 +100,7 @@ public class Weapon : ScriptableObject
         }
     }
 
-    private System.Collections.IEnumerator ReloadAnimation(SkinnedMeshRenderer skinnedMeshRenderer)
+    private IEnumerator PlayReloadAnimationCoroutine(SkinnedMeshRenderer skinnedMeshRenderer)
     {
         Debug.Log("ReloadAnimation started");
 

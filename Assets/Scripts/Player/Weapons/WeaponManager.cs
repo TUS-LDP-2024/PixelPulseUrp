@@ -6,7 +6,12 @@ public class WeaponManager : MonoBehaviour
     [Header("Weapon Inventory")]
     public Weapon[] weapons;
     public Weapon[] playerInventory = new Weapon[2];
-    private int currentWeaponIndex = 0;
+    private int _currentWeaponIndex = 0;
+    public int currentWeaponIndex
+    {
+        get => _currentWeaponIndex;
+        private set => _currentWeaponIndex = value;
+    }
 
     [Header("References")]
     public PlayerShooting playerShooting;
@@ -15,7 +20,7 @@ public class WeaponManager : MonoBehaviour
 
     [Header("Current Weapon Model")]
     public GameObject currentWeaponModel;
-    public Weapon currentWeapon;
+    public Weapon currentWeapon { get; private set; }
 
     private PlayerInput playerInput;
     private InputAction reloadAction;
@@ -69,7 +74,7 @@ public class WeaponManager : MonoBehaviour
 
     private void OnReload(InputAction.CallbackContext context)
     {
-        if (playerShooting != null)
+        if (playerShooting != null && context.performed)
         {
             playerShooting.Reload();
         }
@@ -85,26 +90,8 @@ public class WeaponManager : MonoBehaviour
         currentWeaponIndex = (currentWeaponIndex + 1) % playerInventory.Length;
         EquipWeapon(currentWeaponIndex);
     }
-    public void ApplyWeaponUpgrade(float damageBoost, float fireRateBoost, float ammoBoost, float reloadSpeedBoost)
-    {
-        if (currentWeapon == null) return;
 
-        if (damageBoost > 0)
-            currentWeapon.damage = Mathf.RoundToInt(currentWeapon.damage * (1 + damageBoost));
-
-        if (fireRateBoost > 0)
-            currentWeapon.fireRate *= (1 + fireRateBoost);
-
-        if (ammoBoost > 0)
-            currentWeapon.maxAmmo = Mathf.RoundToInt(currentWeapon.maxAmmo * (1 + ammoBoost));
-
-        if (reloadSpeedBoost > 0)
-            currentWeapon.reloadTime *= (1 - reloadSpeedBoost);
-
-        EquipWeapon(currentWeaponIndex);
-    }
-
-    private void EquipWeapon(int index)
+    public void EquipWeapon(int index)
     {
         if (index < 0 || index >= playerInventory.Length || playerInventory[index] == null)
         {
@@ -120,33 +107,71 @@ public class WeaponManager : MonoBehaviour
                 currentWeapon.range,
                 currentWeapon.fireRate,
                 currentWeapon.maxAmmo,
-                currentWeapon.reloadTime,
+                currentWeapon.isShotgun ? currentWeapon.shellReloadInterval : currentWeapon.reloadTime,
                 currentWeapon.isShotgun,
                 currentWeapon.spreadAngle,
                 currentWeapon.pelletCount,
                 currentWeapon.recoilForce,
                 currentWeapon.recoilIntensity
             );
+            playerShooting.ResetAmmo();
         }
 
         if (currentWeaponModel != null)
         {
             Destroy(currentWeaponModel);
         }
+
         currentWeaponModel = currentWeapon.InstantiateModel(weaponParent);
 
+        // Reset weapon position/rotation if needed
+        if (playerShooting != null)
+        {
+            playerShooting.CancelReload();
+        }
+
         OnWeaponChanged?.Invoke();
+    }
+
+    public void ApplyWeaponUpgrade(float damageBoost, float fireRateBoost, float ammoBoost, float reloadSpeedBoost)
+    {
+        if (currentWeapon == null) return;
+
+        if (damageBoost > 0)
+        {
+            currentWeapon.damage = Mathf.RoundToInt(currentWeapon.damage * (1 + damageBoost));
+        }
+
+        if (fireRateBoost > 0)
+        {
+            currentWeapon.fireRate *= (1 + fireRateBoost);
+        }
+
+        if (ammoBoost > 0)
+        {
+            currentWeapon.maxAmmo = Mathf.RoundToInt(currentWeapon.maxAmmo * (1 + ammoBoost));
+        }
+
+        if (reloadSpeedBoost > 0)
+        {
+            currentWeapon.reloadTime *= (1 - reloadSpeedBoost);
+        }
+
+        // Refresh weapon with new stats
+        EquipWeapon(currentWeaponIndex);
     }
 
     public void BuyWeapon(Weapon newWeapon, int cost)
     {
         if (pointsManager == null)
         {
+            Debug.LogWarning("PointsManager reference not set in WeaponManager");
             return;
         }
 
         if (pointsManager.points < cost)
         {
+            Debug.Log("Not enough points to buy weapon");
             return;
         }
 
@@ -164,7 +189,20 @@ public class WeaponManager : MonoBehaviour
         }
         else
         {
+            // Replace current weapon
             playerInventory[currentWeaponIndex] = newWeapon;
+            EquipWeapon(currentWeaponIndex);
+        }
+    }
+
+    public void ForceWeaponReset()
+    {
+        if (playerShooting != null)
+        {
+            playerShooting.CancelReload();
+        }
+        if (currentWeapon != null)
+        {
             EquipWeapon(currentWeaponIndex);
         }
     }
