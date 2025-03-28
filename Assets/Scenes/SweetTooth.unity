@@ -4316,32 +4316,47 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthUpgrades:
-  - upgradeName: VitalityBoost
-    healthIncrease: 50
+  - upgradeName: Juggernog
+    healthIncrease: 0
     regenIncrease: 0
-    damageReduction: 0
-    description: 'Increases Health
-
-'
-  - upgradeName: Metal gear?
+    damageReduction: 15
+    description: 15%
+  - upgradeName: Metal Gear?
     healthIncrease: 1000
     regenIncrease: 1000
     damageReduction: 1000
     description: IM FUCKING INVINCIBLE
-  - upgradeName: Juggernog
-    healthIncrease: 0
-    regenIncrease: 0
-    damageReduction: 0.15
-    description: '!5% damage reduction
-
-'
-  - upgradeName: CancerAny%
+  - upgradeName: Cancer Any%
     healthIncrease: 0
     regenIncrease: 1
     damageReduction: 0
-    description: 'Regen 1Hp/s
+    description: Regen 1Hp/s
+  - upgradeName: Second Heart
+    healthIncrease: 50
+    regenIncrease: 0
+    damageReduction: 0
+    description: 'More health
 
 '
+  weaponUpgrades:
+  - upgradeName: MORE DAKKA
+    damageBoost: 0
+    fireRateBoost: 5
+    ammoBoost: 0
+    reloadSpeedBoost: 0
+    description: increase fire rate
+  - upgradeName: Smooth bore
+    damageBoost: 100
+    fireRateBoost: 0
+    ammoBoost: 0
+    reloadSpeedBoost: 0
+    description: Put a pound sized hole in your enemies (more damage)
+  - upgradeName: And hes name was El Mucho
+    damageBoost: 0
+    fireRateBoost: 0
+    ammoBoost: 0
+    reloadSpeedBoost: 15
+    description: Faster reload
 --- !u!1001 &140834077
 PrefabInstance:
   m_ObjectHideFlags: 0
