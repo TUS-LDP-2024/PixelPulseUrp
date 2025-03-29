@@ -4319,8 +4319,8 @@ MonoBehaviour:
   - upgradeName: Juggernog
     healthIncrease: 0
     regenIncrease: 0
-    damageReduction: 15
-    description: 15%
+    damageReduction: 0.15
+    description: 15% damage reduction
   - upgradeName: Metal Gear?
     healthIncrease: 1000
     regenIncrease: 1000
@@ -4341,7 +4341,7 @@ MonoBehaviour:
   weaponUpgrades:
   - upgradeName: MORE DAKKA
     damageBoost: 0
-    fireRateBoost: 5
+    fireRateBoost: 0.05
     ammoBoost: 0
     reloadSpeedBoost: 0
     description: increase fire rate
@@ -4355,7 +4355,7 @@ MonoBehaviour:
     damageBoost: 0
     fireRateBoost: 0
     ammoBoost: 0
-    reloadSpeedBoost: 15
+    reloadSpeedBoost: 0.15
     description: Faster reload
 --- !u!1001 &140834077
 PrefabInstance:
@@ -18084,21 +18084,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardPanel: {fileID: 1998603344}
-  leftCard: {fileID: 1206838393}
-  leftCardTitle: {fileID: 1934178154}
-  leftCardDescription: {fileID: 1664060525}
   leftCardButton: {fileID: 1206838395}
-  leftCardIcon: {fileID: 0}
-  middleCard: {fileID: 2019787909}
-  middleCardTitle: {fileID: 904488881}
-  middleCardDescription: {fileID: 1221667711}
   middleCardButton: {fileID: 2019787911}
-  middleCardIcon: {fileID: 0}
-  rightCard: {fileID: 286405777}
-  rightCardTitle: {fileID: 1874848057}
-  rightCardDescription: {fileID: 284740886}
   rightCardButton: {fileID: 286405779}
-  rightCardIcon: {fileID: 0}
+  leftCardTitle: {fileID: 1934178154}
+  middleCardTitle: {fileID: 904488881}
+  rightCardTitle: {fileID: 1874848057}
+  leftCardDescription: {fileID: 1664060525}
+  middleCardDescription: {fileID: 1221667711}
+  rightCardDescription: {fileID: 284740886}
+  clickDelay: 0.5
 --- !u!1001 &1262334760
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29534,7 +29529,6 @@ MonoBehaviour:
   pointsManager: {fileID: 7689072181350644981}
   weaponParent: {fileID: 1359498174}
   currentWeaponModel: {fileID: 0}
-  currentWeapon: {fileID: 0}
 --- !u!114 &7689072181350644985
 MonoBehaviour:
   m_ObjectHideFlags: 0
