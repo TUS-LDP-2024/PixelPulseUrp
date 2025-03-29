@@ -4904,3 +4904,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tracerColor: {r: 1, g: 0.44863927, b: 0.015686274, a: 1}
   lineWidth: 0.05
+  fadeDuration: 0.2

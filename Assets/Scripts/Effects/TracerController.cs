@@ -3,39 +3,43 @@ using UnityEngine;
 [RequireComponent(typeof(ParticleSystem))]
 public class TracerController : MonoBehaviour
 {
+    [Header("Tracer Settings")]
+    public Color tracerColor = Color.yellow;
+    public float lineWidth = 0.05f;
+    public float fadeDuration = 0.2f;
+
     private ParticleSystem ps;
     private LineRenderer lineRenderer;
-    private float duration;
-    private float timer;
     private Material lineMaterial;
-
-    [Header("Tracer Settings")]
-    public Color tracerColor = Color.yellow; // Set your desired color in Inspector
-    public float lineWidth = 0.05f;
+    private float timer;
 
     void Awake()
     {
         ps = GetComponent<ParticleSystem>();
+        CreateLineRenderer();
+    }
 
-        // Get or add LineRenderer
+    private void CreateLineRenderer()
+    {
+        // Create or get existing LineRenderer
         lineRenderer = GetComponent<LineRenderer>();
         if (lineRenderer == null)
         {
             lineRenderer = gameObject.AddComponent<LineRenderer>();
         }
 
-        // Create material using a built-in shader that supports color
-        lineMaterial = new Material(Shader.Find("Legacy Shaders/Particles/Alpha Blended Premultiply"));
+        // Use a pre-made material that's included in Resources
+        lineMaterial = Instantiate(Resources.Load<Material>("TracerMaterial"));
         lineMaterial.color = tracerColor;
         lineRenderer.material = lineMaterial;
 
-        // Configure line appearance
-        lineRenderer.startColor = tracerColor;
-        lineRenderer.endColor = tracerColor;
+        // Configure line properties
         lineRenderer.startWidth = lineWidth;
         lineRenderer.endWidth = lineWidth;
         lineRenderer.positionCount = 2;
         lineRenderer.useWorldSpace = true;
+        lineRenderer.startColor = tracerColor;
+        lineRenderer.endColor = tracerColor;
     }
 
     public void Initialize(Vector3 startPos, Vector3 endPos, float tracerDuration)
@@ -44,38 +48,32 @@ public class TracerController : MonoBehaviour
         lineRenderer.SetPosition(0, startPos);
         lineRenderer.SetPosition(1, endPos);
 
-        // Configure particle system for impact effect
+        // Configure particle system
         var main = ps.main;
         main.startLifetime = tracerDuration;
-        main.startSpeed = 0;
         transform.position = endPos;
         ps.Play();
 
-        duration = tracerDuration;
         timer = 0f;
-
-        Destroy(gameObject, duration);
+        Destroy(gameObject, tracerDuration + fadeDuration);
     }
 
     void Update()
     {
-        // Fade out effect
         timer += Time.deltaTime;
-        float alpha = Mathf.Clamp01(1 - (timer / duration));
-
-        // Update both material and line renderer colors
-        Color fadingColor = tracerColor;
-        fadingColor.a = alpha;
-
-        lineMaterial.color = fadingColor;
-        lineRenderer.startColor = fadingColor;
-        lineRenderer.endColor = fadingColor;
+        if (timer > fadeDuration)
+        {
+            float progress = (timer - fadeDuration) / fadeDuration;
+            Color fadedColor = tracerColor;
+            fadedColor.a = Mathf.Clamp01(1 - progress);
+            lineRenderer.startColor = fadedColor;
+            lineRenderer.endColor = fadedColor;
+        }
     }
 
     void OnDestroy()
     {
-        // Clean up the material to prevent memory leaks
-        if (Application.isPlaying && lineMaterial != null)
+        if (lineMaterial != null)
         {
             Destroy(lineMaterial);
         }
