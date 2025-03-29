@@ -29479,6 +29479,10 @@ MonoBehaviour:
   blendShapeSpeed: 5
   impactEffect: {fileID: 8992208448327023009, guid: fe7e9e0a6322f1c46a9dfcd8e5563e77,
     type: 3}
+  tracerEffect: {fileID: 5058712683596706826, guid: bbb5e4c63a15a3d45b50d685858ba881,
+    type: 3}
+  tracerDuration: 1
+  tracerWidth: 0.05
   pointsManager: {fileID: 7689072181350644981}
   weaponManager: {fileID: 7689072181350644984}
   ammoDisplay: {fileID: 251400226}

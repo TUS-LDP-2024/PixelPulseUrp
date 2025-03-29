@@ -49,6 +49,9 @@ public class PlayerShooting : MonoBehaviour
 
     [Header("Shooting Effects")]
     public GameObject impactEffect;
+    public GameObject tracerEffect;
+    public float tracerDuration = 0.2f;
+    public float tracerWidth = 0.05f;
 
     [Header("References")]
     public PointsManager pointsManager;
@@ -190,57 +193,33 @@ public class PlayerShooting : MonoBehaviour
             for (int i = 0; i < weaponManager.currentWeapon.pelletCount; i++)
             {
                 Vector3 pelletDirection = GetRandomDirectionWithinSpread(gunBarrel.forward, weaponManager.currentWeapon.spreadAngle);
-                RaycastHit[] hits = Physics.RaycastAll(gunBarrel.position, pelletDirection, range, ~0, QueryTriggerInteraction.Collide);
-                System.Array.Sort(hits, (h1, h2) => h1.distance.CompareTo(h2.distance));
-
-                bool validHitFound = false;
-                foreach (var hit in hits)
-                {
-                    if (hit.collider is BoxCollider && hit.collider.isTrigger)
-                    {
-                        if (hit.collider.CompareTag("Floor") || hit.collider.gameObject.layer == LayerMask.NameToLayer("GroundLayer"))
-                        {
-                            continue;
-                        }
-                    }
-
-                    HandleHit(hit);
-                    validHitFound = true;
-                    break;
-                }
-
-                if (!validHitFound)
-                {
-                    Debug.DrawRay(gunBarrel.position, pelletDirection * range, Color.green, 1f);
-                }
+                FireTracerAndRaycast(gunBarrel.position, pelletDirection);
             }
         }
         else
         {
-            RaycastHit[] hits = Physics.RaycastAll(gunBarrel.position, gunBarrel.forward, range, ~0, QueryTriggerInteraction.Collide);
-            System.Array.Sort(hits, (h1, h2) => h1.distance.CompareTo(h2.distance));
+            FireTracerAndRaycast(gunBarrel.position, gunBarrel.forward);
+        }
+    }
 
-            bool validHitFound = false;
-            foreach (var hit in hits)
+    private void FireTracerAndRaycast(Vector3 startPosition, Vector3 direction)
+    {
+        RaycastHit hit;
+        bool hasHit = Physics.Raycast(startPosition, direction, out hit, range);
+        Vector3 endPosition = hasHit ? hit.point : startPosition + (direction * range);
+
+        if (tracerEffect != null)
+        {
+            GameObject tracer = Instantiate(tracerEffect, startPosition, Quaternion.LookRotation(direction));
+            TracerController controller = tracer.GetComponent<TracerController>();
+            if (controller != null)
             {
-                if (hit.collider is BoxCollider && hit.collider.isTrigger)
-                {
-                    if (hit.collider.CompareTag("Floor") || hit.collider.gameObject.layer == LayerMask.NameToLayer("GroundLayer"))
-                    {
-                        continue;
-                    }
-                }
-
-                HandleHit(hit);
-                validHitFound = true;
-                break;
-            }
-
-            if (!validHitFound)
-            {
-                Debug.DrawRay(gunBarrel.position, gunBarrel.forward * range, Color.green, 1f);
+                // Very short duration for instant appearance
+                controller.Initialize(startPosition, endPosition, 0.1f);
             }
         }
+
+        if (hasHit) HandleHit(hit);
     }
 
     private Vector3 GetRandomDirectionWithinSpread(Vector3 direction, float spreadAngle)
@@ -301,18 +280,16 @@ public class PlayerShooting : MonoBehaviour
 
         isReloading = true;
 
-        // Play reload sound
         if (weaponAudioSource != null && weaponManager?.currentWeapon?.reloadSound != null)
         {
             weaponAudioSource.PlayOneShot(weaponManager.currentWeapon.reloadSound);
         }
 
-        // Special handling for shotgun reload
         if (isShotgun)
         {
             StartCoroutine(ShotgunReload());
         }
-        else // Normal weapon reload
+        else
         {
             Invoke(nameof(FinishReload), weaponManager.currentWeapon.reloadTime);
         }
@@ -326,7 +303,7 @@ public class PlayerShooting : MonoBehaviour
         {
             yield return new WaitForSeconds(reloadPerShell);
 
-            if (!isReloading) // Check if reload was cancelled
+            if (!isReloading)
                 yield break;
 
             currentAmmo++;
@@ -336,7 +313,6 @@ public class PlayerShooting : MonoBehaviour
 
         isReloading = false;
     }
-
 
     private void FinishReload()
     {
