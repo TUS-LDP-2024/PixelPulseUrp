@@ -24,7 +24,7 @@ public class GrenadeThrower : MonoBehaviour
     public InputActionReference throwGrenadeAction;
 
     private bool isCharging = false;
-    private float currentCharge = 0f;
+    private float currentCharge = 10f;
 
     private void OnEnable()
     {
@@ -119,6 +119,15 @@ public class GrenadeThrower : MonoBehaviour
         {
             rb.velocity = throwVelocity;
         }
+
+        Collider playerCollider = GetComponent<Collider>(); 
+        Collider grenadeCollider = grenade.GetComponent<Collider>();
+
+        if (playerCollider && grenadeCollider)
+        {
+            Physics.IgnoreCollision(playerCollider, grenadeCollider);
+        }
+
 
         // Decrement the grenade count
         grenadeCount--;

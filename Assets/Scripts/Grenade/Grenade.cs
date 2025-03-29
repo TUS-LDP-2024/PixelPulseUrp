@@ -4,30 +4,33 @@ using UnityEngine;
 public class Grenade : MonoBehaviour
 {
     [Header("Explosion Settings")]
-    public float destroyDelay = 3f;       // Delay before destroying each child object.
-    public float minForce = 150f;         // Minimum explosion force for child pieces.
-    public float maxForce = 200f;         // Maximum explosion force for child pieces.
-    public float explosionRadius = 5f;    // Radius in which enemies take damage.
-    public float forceRadius = 5f;        // Radius for applying explosion force to child objects.
-    public float explosionDelay = 2f;     // Delay (in seconds) after collision before explosion.
+    public float destroyDelay = 3f;        // Delay before destroying each child object.
+    public float minForce = 150f;          // Minimum explosion force for child pieces.
+    public float maxForce = 200f;          // Maximum explosion force for child pieces.
+    public float explosionRadius = 5f;     // Radius in which enemies take damage.
+    public float forceRadius = 5f;         // Radius for applying explosion force.
+    public float explosionDelay = 2f;      // Delay after collision before explosion.
 
     [Header("Smoke FX Settings")]
-    public GameObject smoke;              // Smoke prefab to instantiate.
-    public int maximumSmokes = 30;        // Maximum number of smoke effects that can be spawned.
+    public GameObject smoke;
+    public int maximumSmokes = 30;
 
     [Header("Collision Settings")]
-    // Tags that will trigger the explosion (e.g., "Enemy" or "Ground").
-    public string[] explosionTags = { "Enemy", "Ground" };
+    public string[] explosionTags = { "Enemy", "Floor" };
 
     private bool hasCollided = false;
 
     void OnCollisionEnter(Collision collision)
     {
-        // Check if the collision object has any of the specified tags.
+        // Make sure we only trigger once
+        if (hasCollided) return;
+
+        // If the collided object has a matching tag, start the explosion timer
         foreach (string tag in explosionTags)
         {
-            if (!hasCollided && collision.gameObject.CompareTag(tag))
+            if (collision.gameObject.CompareTag(tag))
             {
+                Debug.Log("Grenade collided with: " + collision.gameObject.name);
                 hasCollided = true;
                 StartCoroutine(ExplosionTimer());
                 break;
@@ -35,7 +38,7 @@ public class Grenade : MonoBehaviour
         }
     }
 
-    IEnumerator ExplosionTimer()
+    private IEnumerator ExplosionTimer()
     {
         yield return new WaitForSeconds(explosionDelay);
         Explode();
@@ -43,7 +46,7 @@ public class Grenade : MonoBehaviour
 
     public void Explode()
     {
-        // 1) Damage all enemies within explosionRadius by calling TakeRandomDamage().
+        // 1) Damage enemies within explosionRadius
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, explosionRadius);
         foreach (Collider hit in hitColliders)
         {
@@ -53,7 +56,7 @@ public class Grenade : MonoBehaviour
             }
         }
 
-        // 2) For each child piece, apply explosion force and spawn smoke FX.
+        // 2) Child pieces: apply explosion force & optionally spawn smoke
         int smokeCounter = 0;
         foreach (Transform child in transform)
         {
@@ -66,8 +69,8 @@ public class Grenade : MonoBehaviour
 
             if (smoke != null && smokeCounter < maximumSmokes)
             {
-                // 25% chance to spawn smoke on this child.
-                if (Random.Range(1, 4) == 1)
+                // 25% chance to spawn smoke on this child
+                if (Random.Range(1, 5) == 1)
                 {
                     GameObject smokeFX = Instantiate(smoke, child.position, Quaternion.identity);
                     smokeCounter++;
@@ -75,11 +78,11 @@ public class Grenade : MonoBehaviour
                 }
             }
 
-            // Destroy the child object after the specified delay.
+            // Destroy child pieces after a delay
             Destroy(child.gameObject, destroyDelay);
         }
 
-        // Finally, destroy the grenade object itself.
+        // Finally, destroy the grenade
         Destroy(gameObject);
     }
 }
