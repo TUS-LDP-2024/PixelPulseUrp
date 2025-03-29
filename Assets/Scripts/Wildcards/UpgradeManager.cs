@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using StarterAssets;
 
 public class UpgradeManager : MonoBehaviour
 {
@@ -26,14 +27,28 @@ public class UpgradeManager : MonoBehaviour
         [TextArea] public string description;
     }
 
+    [System.Serializable]
+    public class MovementUpgrade
+    {
+        public string upgradeName;
+        public float moveSpeedBoost;
+        public float sprintSpeedBoost;
+        public float jumpHeightBoost;
+        [TextArea] public string description;
+    }
+
     [Header("Health Upgrades")]
     public List<HealthUpgrade> healthUpgrades;
 
     [Header("Weapon Upgrades")]
     public List<WeaponUpgrade> weaponUpgrades;
 
+    [Header("Movement Upgrades")]
+    public List<MovementUpgrade> movementUpgrades;
+
     private List<HealthUpgrade> remainingHealthUpgrades;
     private List<WeaponUpgrade> remainingWeaponUpgrades;
+    private List<MovementUpgrade> remainingMovementUpgrades;
 
     private void Awake()
     {
@@ -45,6 +60,7 @@ public class UpgradeManager : MonoBehaviour
         Instance = this;
         remainingHealthUpgrades = new List<HealthUpgrade>(healthUpgrades);
         remainingWeaponUpgrades = new List<WeaponUpgrade>(weaponUpgrades);
+        remainingMovementUpgrades = new List<MovementUpgrade>(movementUpgrades);
     }
 
     public HealthUpgrade GetRandomHealthUpgrade()
@@ -57,6 +73,12 @@ public class UpgradeManager : MonoBehaviour
     {
         if (remainingWeaponUpgrades.Count == 0) return null;
         return remainingWeaponUpgrades[Random.Range(0, remainingWeaponUpgrades.Count)];
+    }
+
+    public MovementUpgrade GetRandomMovementUpgrade()
+    {
+        if (remainingMovementUpgrades.Count == 0) return null;
+        return remainingMovementUpgrades[Random.Range(0, remainingMovementUpgrades.Count)];
     }
 
     public void ApplyHealthUpgrade(HealthUpgrade upgrade)
@@ -93,5 +115,23 @@ public class UpgradeManager : MonoBehaviour
         }
 
         remainingWeaponUpgrades.Remove(upgrade);
+    }
+
+    public void ApplyMovementUpgrade(MovementUpgrade upgrade)
+    {
+        if (upgrade == null) return;
+
+        FirstPersonController playerController = FindObjectOfType<FirstPersonController>();
+        if (playerController != null)
+        {
+            if (upgrade.moveSpeedBoost > 0)
+                playerController.MoveSpeed += upgrade.moveSpeedBoost;
+            if (upgrade.sprintSpeedBoost > 0)
+                playerController.SprintSpeed += upgrade.sprintSpeedBoost;
+            if (upgrade.jumpHeightBoost > 0)
+                playerController.JumpHeight += upgrade.jumpHeightBoost;
+        }
+
+        remainingMovementUpgrades.Remove(upgrade);
     }
 }

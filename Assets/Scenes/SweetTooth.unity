@@ -4321,11 +4321,6 @@ MonoBehaviour:
     regenIncrease: 0
     damageReduction: 0.15
     description: 15% damage reduction
-  - upgradeName: Metal Gear?
-    healthIncrease: 1000
-    regenIncrease: 1000
-    damageReduction: 1000
-    description: IM FUCKING INVINCIBLE
   - upgradeName: Cancer Any%
     healthIncrease: 0
     regenIncrease: 1
@@ -4357,6 +4352,24 @@ MonoBehaviour:
     ammoBoost: 0
     reloadSpeedBoost: 0.15
     description: Faster reload
+  movementUpgrades:
+  - upgradeName: Wanna see me touch that rock
+    moveSpeedBoost: 0
+    sprintSpeedBoost: 0.5
+    jumpHeightBoost: 0
+    description: Wanna see me do it again (Sprint 50% faster)
+  - upgradeName: Need to Piss
+    moveSpeedBoost: 0.2
+    sprintSpeedBoost: 0
+    jumpHeightBoost: 0
+    description: Walking speed increased
+  - upgradeName: Ballin
+    moveSpeedBoost: 0
+    sprintSpeedBoost: 0
+    jumpHeightBoost: 0.5
+    description: 'Jump 50% higher
+
+'
 --- !u!1001 &140834077
 PrefabInstance:
   m_ObjectHideFlags: 0

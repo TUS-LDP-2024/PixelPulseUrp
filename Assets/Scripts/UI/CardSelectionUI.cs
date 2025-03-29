@@ -100,10 +100,14 @@ public class CardSelectionUI : MonoBehaviour
             middleCardButton.gameObject.SetActive(true);
         }
 
-        // Right Card - Placeholder
-        rightCardTitle.text = "Coming Soon";
-        rightCardDescription.text = "Future content";
-        rightCardButton.gameObject.SetActive(true);
+        // Right Card - Movement Upgrade
+        var movementUpgrade = UpgradeManager.Instance?.GetRandomMovementUpgrade();
+        if (movementUpgrade != null)
+        {
+            rightCardTitle.text = movementUpgrade.upgradeName;
+            rightCardDescription.text = movementUpgrade.description;
+            rightCardButton.gameObject.SetActive(true);
+        }
     }
 
     private IEnumerator EnableCardClicking()
@@ -138,7 +142,8 @@ public class CardSelectionUI : MonoBehaviour
             case 1: // Health Upgrade
                 ApplyHealthUpgrade();
                 break;
-            case 2: // Placeholder
+            case 2: // Movement Upgrade
+                ApplyMovementUpgrade();
                 break;
         }
 
@@ -162,6 +167,16 @@ public class CardSelectionUI : MonoBehaviour
         {
             UpgradeManager.Instance?.ApplyHealthUpgrade(upgrade);
             Debug.Log($"[CardUI] Applied health upgrade: {upgrade.upgradeName}");
+        }
+    }
+
+    private void ApplyMovementUpgrade()
+    {
+        var upgrade = UpgradeManager.Instance?.GetRandomMovementUpgrade();
+        if (upgrade != null)
+        {
+            UpgradeManager.Instance?.ApplyMovementUpgrade(upgrade);
+            Debug.Log($"[CardUI] Applied movement upgrade: {upgrade.upgradeName}");
         }
     }
 
