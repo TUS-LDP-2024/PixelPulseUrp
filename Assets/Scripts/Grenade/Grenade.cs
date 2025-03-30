@@ -4,34 +4,30 @@ using UnityEngine;
 public class Grenade : MonoBehaviour
 {
     [Header("Explosion Settings")]
-    public float destroyDelay = 3f;        // Delay before destroying each child object.
-    public float minForce = 150f;          // Minimum explosion force for child pieces.
-    public float maxForce = 200f;          // Maximum explosion force for child pieces.
-    public float explosionRadius = 5f;     // Radius in which enemies take damage.
-    public float forceRadius = 5f;         // Radius for applying explosion force.
-    public float explosionDelay = 2f;      // Delay after collision before explosion.
+    public float explosionDelay = 2f;     // Delay after trigger before explosion.
+    public float explosionRadius = 5f;    // Radius for applying explosion damage/effects.
+    public float forceRadius = 5f;        // Radius for explosion force.
+    public float minForce = 150f;         // Minimum force for fragments.
+    public float maxForce = 200f;         // Maximum force for fragments.
+    public float destroyDelay = 3f;       // Time after explosion to destroy the grenade.
 
-    [Header("Smoke FX Settings")]
-    public GameObject smoke;
-    public int maximumSmokes = 30;
+    [Header("FX Settings")]
+    public ParticleSystem vfx_Explosion;  // Explosion effect (ensure it's not set to Play On Awake)
 
     [Header("Collision Settings")]
-    public string[] explosionTags = { "Enemy", "Floor" };
+    public string[] explosionTags = { "Enemy", "Floor" };  // Adjust these tags as needed
 
-    private bool hasCollided = false;
+    private bool hasTriggered = false;
 
-    void OnCollisionEnter(Collision collision)
+    // Use OnTriggerEnter because the grenade's collider is set as a trigger.
+    void OnTriggerEnter(Collider other)
     {
-        // Make sure we only trigger once
-        if (hasCollided) return;
-
-        // If the collided object has a matching tag, start the explosion timer
         foreach (string tag in explosionTags)
         {
-            if (collision.gameObject.CompareTag(tag))
+            if (!hasTriggered && other.gameObject.CompareTag(tag))
             {
-                Debug.Log("Grenade collided with: " + collision.gameObject.name);
-                hasCollided = true;
+                Debug.Log("Grenade triggered by " + other.gameObject.name + " (Tag: " + other.gameObject.tag + ")");
+                hasTriggered = true;
                 StartCoroutine(ExplosionTimer());
                 break;
             }
@@ -46,7 +42,27 @@ public class Grenade : MonoBehaviour
 
     public void Explode()
     {
-        // 1) Damage enemies within explosionRadius
+        // Play the explosion effect.
+        if (vfx_Explosion != null)
+        {
+            vfx_Explosion.Play();
+            // Optional: Detach the effect so it persists even after the grenade is destroyed.
+            // vfx_Explosion.transform.parent = null;
+        }
+
+        // Enable physics on child fragments by setting them to non-kinematic.
+        foreach (Transform child in transform)
+        {
+            Rigidbody childRb = child.GetComponent<Rigidbody>();
+            if (childRb != null)
+            {
+                childRb.isKinematic = false;
+                float randomForce = Random.Range(minForce, maxForce);
+                childRb.AddExplosionForce(randomForce, transform.position, forceRadius);
+            }
+        }
+
+        // Optionally, damage nearby enemies.
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, explosionRadius);
         foreach (Collider hit in hitColliders)
         {
@@ -56,33 +72,7 @@ public class Grenade : MonoBehaviour
             }
         }
 
-        // 2) Child pieces: apply explosion force & optionally spawn smoke
-        int smokeCounter = 0;
-        foreach (Transform child in transform)
-        {
-            Rigidbody rb = child.GetComponent<Rigidbody>();
-            if (rb != null)
-            {
-                float randomForce = Random.Range(minForce, maxForce);
-                rb.AddExplosionForce(randomForce, transform.position, forceRadius);
-            }
-
-            if (smoke != null && smokeCounter < maximumSmokes)
-            {
-                // 25% chance to spawn smoke on this child
-                if (Random.Range(1, 5) == 1)
-                {
-                    GameObject smokeFX = Instantiate(smoke, child.position, Quaternion.identity);
-                    smokeCounter++;
-                    Destroy(smokeFX, 5f);
-                }
-            }
-
-            // Destroy child pieces after a delay
-            Destroy(child.gameObject, destroyDelay);
-        }
-
-        // Finally, destroy the grenade
-        Destroy(gameObject);
+        // Destroy the grenade after a short delay.
+        Destroy(gameObject, destroyDelay);
     }
 }
