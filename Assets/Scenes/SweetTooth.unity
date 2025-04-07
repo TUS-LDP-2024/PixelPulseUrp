@@ -14995,7 +14995,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 244.99976, y: 0}
+  m_AnchoredPosition: {x: -3, y: 0}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!4 &829016002 stripped
@@ -19971,7 +19971,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1257796601
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22163,7 +22163,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 244.99976, y: 0}
+  m_AnchoredPosition: {x: -1, y: 0}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1437304942
@@ -26834,7 +26834,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 244.99976, y: 0}
+  m_AnchoredPosition: {x: -1, y: 0}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1884454119
@@ -31809,7 +31809,7 @@ PrefabInstance:
     - target: {fileID: 798112048127940379, guid: 6bbf999c48168aa4a855abe2d8a4b3de,
         type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1096642679870556885, guid: 6bbf999c48168aa4a855abe2d8a4b3de,
         type: 3}
@@ -31894,7 +31894,7 @@ PrefabInstance:
     - target: {fileID: 3011057067294026235, guid: 6bbf999c48168aa4a855abe2d8a4b3de,
         type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3260360571766708547, guid: 6bbf999c48168aa4a855abe2d8a4b3de,
         type: 3}
@@ -31969,7 +31969,7 @@ PrefabInstance:
     - target: {fileID: 4822869033377734733, guid: 6bbf999c48168aa4a855abe2d8a4b3de,
         type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4875654346461124440, guid: 6bbf999c48168aa4a855abe2d8a4b3de,
         type: 3}
@@ -31994,7 +31994,7 @@ PrefabInstance:
     - target: {fileID: 5178068452896519982, guid: 6bbf999c48168aa4a855abe2d8a4b3de,
         type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5380788243709338666, guid: 6bbf999c48168aa4a855abe2d8a4b3de,
         type: 3}
@@ -32074,7 +32074,7 @@ PrefabInstance:
     - target: {fileID: 6802037675773068008, guid: 6bbf999c48168aa4a855abe2d8a4b3de,
         type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6920513046793742651, guid: 6bbf999c48168aa4a855abe2d8a4b3de,
         type: 3}
@@ -32149,7 +32149,7 @@ PrefabInstance:
     - target: {fileID: 8008014008484626657, guid: 6bbf999c48168aa4a855abe2d8a4b3de,
         type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8013971458557403005, guid: 6bbf999c48168aa4a855abe2d8a4b3de,
         type: 3}
@@ -34851,6 +34851,7 @@ MonoBehaviour:
   currentHealth: 0
   regenRate: 0
   damageReduction: 0
+  uiManager: {fileID: 1257796605}
   bloodOverlayImage: {fileID: 1116004495}
   bloodOverlayImage2: {fileID: 1884454119}
   regenDelay: 5

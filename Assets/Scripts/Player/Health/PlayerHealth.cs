@@ -12,6 +12,7 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private float damageReduction = 0f;
 
     [Header("Visual Effects")]
+    public UIManager uiManager;
     public Image bloodOverlayImage;
     public Image bloodOverlayImage2;
 
@@ -66,6 +67,11 @@ public class PlayerHealth : MonoBehaviour
         float reducedDamage = damage * (1f - damageReduction);
         currentHealth -= reducedDamage;
 
+        if (uiManager != null)
+        {
+            uiManager.DamageFlash();
+        }
+
         if (currentHealth <= 0)
         {
             Die();
@@ -76,6 +82,7 @@ public class PlayerHealth : MonoBehaviour
             StartCoroutine(DamageCooldown());
         }
     }
+
 
     private IEnumerator DamageCooldown()
     {
