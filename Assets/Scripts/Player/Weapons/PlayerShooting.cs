@@ -204,23 +204,55 @@ public class PlayerShooting : MonoBehaviour
 
     private void FireTracerAndRaycast(Vector3 startPosition, Vector3 direction)
     {
-        RaycastHit hit;
-        bool hasHit = Physics.Raycast(startPosition, direction, out hit, range);
-        Vector3 endPosition = hasHit ? hit.point : startPosition + (direction * range);
+        RaycastHit[] hits = Physics.RaycastAll(startPosition, direction, range, ~0, QueryTriggerInteraction.Collide);
+        Array.Sort(hits, (h1, h2) => h1.distance.CompareTo(h2.distance));
 
+        Vector3 endPosition = startPosition + direction * range;
+        bool validHitFound = false;
+
+        foreach (var hit in hits)
+        {
+            Collider col = hit.collider;
+
+            // Ignore "IgnoreShoot" tagged objects
+            if (col.CompareTag("IgnoreShoot"))
+            {
+                continue;
+            }
+
+            // Ignore trigger BoxColliders that are floor or ground layer
+            if (col is BoxCollider && col.isTrigger)
+            {
+                if (col.CompareTag("Floor") || col.gameObject.layer == LayerMask.NameToLayer("GroundLayer"))
+                {
+                    continue;
+                }
+            }
+
+            // Valid hit found
+            endPosition = hit.point;
+            validHitFound = true;
+            HandleHit(hit);
+            break;
+        }
+
+        // Draw debug ray
+        Debug.DrawLine(startPosition, endPosition, validHitFound ? Color.red : Color.green, 1f);
+
+        // Tracer effect
         if (tracerEffect != null)
         {
             GameObject tracer = Instantiate(tracerEffect, startPosition, Quaternion.LookRotation(direction));
             TracerController controller = tracer.GetComponent<TracerController>();
             if (controller != null)
             {
-                // Very short duration for instant appearance
                 controller.Initialize(startPosition, endPosition, 0.1f);
             }
         }
-
-        if (hasHit) HandleHit(hit);
     }
+
+
+
 
     private Vector3 GetRandomDirectionWithinSpread(Vector3 direction, float spreadAngle)
     {

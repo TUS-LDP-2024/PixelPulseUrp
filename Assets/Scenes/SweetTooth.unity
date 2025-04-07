@@ -7841,7 +7841,7 @@ GameObject:
   - component: {fileID: 311268013}
   m_Layer: 0
   m_Name: PolyShape
-  m_TagString: Untagged
+  m_TagString: IgnoreShoot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -10224,7 +10224,7 @@ GameObject:
   - component: {fileID: 467189157}
   m_Layer: 0
   m_Name: PolyShape
-  m_TagString: Untagged
+  m_TagString: IgnoreShoot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -10924,7 +10924,7 @@ GameObject:
   - component: {fileID: 483278317}
   m_Layer: 0
   m_Name: PolyShape
-  m_TagString: Untagged
+  m_TagString: IgnoreShoot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -13364,7 +13364,7 @@ GameObject:
   - component: {fileID: 628549148}
   m_Layer: 2
   m_Name: Door Zone 2
-  m_TagString: Untagged
+  m_TagString: IgnoreShoot
   m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -13951,7 +13951,7 @@ GameObject:
   - component: {fileID: 694278988}
   m_Layer: 2
   m_Name: Door Zone 3
-  m_TagString: Untagged
+  m_TagString: IgnoreShoot
   m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -16415,6 +16415,12 @@ MonoBehaviour:
   useCost: 1
   cost: 100
   promptText: {fileID: 974283156}
+--- !u!198 &928288563 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 2084692438249395025, guid: 54a3cebd2fdff814195b05e9392cdbeb,
+    type: 3}
+  m_PrefabInstance: {fileID: 1846179125}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &945329446
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17958,7 +17964,7 @@ GameObject:
   - component: {fileID: 1045084455}
   m_Layer: 2
   m_Name: Door Zone 1
-  m_TagString: Untagged
+  m_TagString: IgnoreShoot
   m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -24036,7 +24042,7 @@ GameObject:
   - component: {fileID: 1600150179}
   m_Layer: 0
   m_Name: Door Zones
-  m_TagString: Untagged
+  m_TagString: IgnoreShoot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -32126,6 +32132,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 5eade011bc401ad40b52920e25889c4d, type: 2}
+    - target: {fileID: 7477848502344837205, guid: 6bbf999c48168aa4a855abe2d8a4b3de,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7507620797382059134, guid: 6bbf999c48168aa4a855abe2d8a4b3de,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -34742,16 +34753,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 671232729165770465, guid: fd1b0fc421f0e2c40b97714c57f159bf,
+    - target: {fileID: -24469401385839924, guid: fd1b0fc421f0e2c40b97714c57f159bf,
         type: 3}
-      propertyPath: m_Drag
-      value: 0.93
-      objectReference: {fileID: 0}
-    - target: {fileID: 671232729165770465, guid: fd1b0fc421f0e2c40b97714c57f159bf,
-        type: 3}
-      propertyPath: m_AngularDrag
-      value: 0.56
-      objectReference: {fileID: 0}
+      propertyPath: vfx_Explosion
+      value: 
+      objectReference: {fileID: 928288563}
     - target: {fileID: 5950741655133274864, guid: fd1b0fc421f0e2c40b97714c57f159bf,
         type: 3}
       propertyPath: m_Name
@@ -34968,19 +34974,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 7061295419527947848}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 603f7b10f05a97243a19fdc34c0a242e, type: 3}
+  m_Script: {fileID: 11500000, guid: b28bc9930c2150246b0bd386d78532c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   grenadePrefab: {fileID: 682015129}
   grenadeSpawnPoint: {fileID: 435453114}
   grenadeCount: 5
-  maxThrowForce: 20
-  minThrowForce: 5
-  forceChargeRate: 10
+  throwForce: 15
   upwardModifier: 0.5
-  trajectoryLine: {fileID: 0}
-  numTrajectoryPoints: 30
-  trajectoryTimeStep: 0.1
   throwGrenadeAction: {fileID: -8176901907558038425, guid: 4419d82f33d36e848b3ed5af4c8da37e,
     type: 3}
 --- !u!4 &7785409185588552771 stripped
