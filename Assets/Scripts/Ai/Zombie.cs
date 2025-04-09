@@ -14,6 +14,8 @@ public class Zombie : MonoBehaviour
     public float AttackCooldown = 1f; // Time between attacks
     private float _lastAttackTime; // Time when the last attack occurred
 
+    public AudioClip attackSound; // Assign via Inspector
+
     private void Awake()
     {
         Agent = GetComponent<NavMeshAgent>();
@@ -39,6 +41,7 @@ public class Zombie : MonoBehaviour
             if (distanceToPlayer <= AttackRange && Time.time >= _lastAttackTime + AttackCooldown)
             {
                 Attack();
+                SoundManager.Instance.PlaySound(attackSound, transform.position);
             }
         }
     }
