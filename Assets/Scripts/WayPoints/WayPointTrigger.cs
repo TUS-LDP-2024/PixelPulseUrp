@@ -2,17 +2,19 @@ using UnityEngine;
 
 public class WaypointTrigger : MonoBehaviour
 {
-    private WaypointManager waypointManager;
+    public WaypointManager waypointManager; 
 
     void Start()
     {
-        // Assume the manager is in the scene with a tag "WaypointManager"
-        waypointManager = GameObject.FindWithTag("WaypointManager").GetComponent<WaypointManager>();
+        if (waypointManager == null)
+        {
+            Debug.LogWarning("WaypointManager not assigned! Please assign it in the Inspector.");
+        }
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && waypointManager != null)
         {
             waypointManager.AdvanceWaypoint();
         }

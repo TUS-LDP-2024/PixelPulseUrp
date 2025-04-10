@@ -3703,7 +3703,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 2, y: 2, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
@@ -4506,7 +4506,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 2, y: 2, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
@@ -5700,9 +5700,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 199114999}
+  - component: {fileID: 199115000}
   m_Layer: 0
   m_Name: -- WAYPOINTS
-  m_TagString: Untagged
+  m_TagString: WaypointManger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5732,6 +5733,31 @@ Transform:
   - {fileID: 132653812}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &199115000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 199114998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87a27173e40ad454a82bea1e8722634b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waypointPositions:
+  - {fileID: 1615017479}
+  - {fileID: 1250308603}
+  - {fileID: 1925582651}
+  - {fileID: 1188406377}
+  - {fileID: 35985759}
+  - {fileID: 1253988546}
+  - {fileID: 210179090}
+  - {fileID: 498807289}
+  - {fileID: 541918147}
+  - {fileID: 132653812}
+  waypointPrefab: {fileID: 5988380256886423664, guid: 40e7b85abc84646489cd46ce61b1d57f,
+    type: 3}
 --- !u!1 &200236262 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2429390161688101634, guid: 6bbf999c48168aa4a855abe2d8a4b3de,
@@ -5920,7 +5946,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 2, y: 2, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
@@ -11996,7 +12022,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 2, y: 2, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
@@ -12399,7 +12425,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 2, y: 2, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
@@ -19117,7 +19143,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 2, y: 2, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
@@ -19683,7 +19709,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 2, y: 2, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
@@ -19860,7 +19886,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 2, y: 2, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
@@ -22719,6 +22745,57 @@ Transform:
   - {fileID: 1665744249}
   m_Father: {fileID: 1348591457}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1476804474
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1476804476}
+  - component: {fileID: 1476804475}
+  m_Layer: 0
+  m_Name: TutorialManager_GO
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1476804475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1476804474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64740b2f995995f4cb86f155919536fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tutorialPanel: {fileID: 974283154}
+  tutorialText: {fileID: 0}
+  tutorialImage: {fileID: 0}
+  waypointManager: {fileID: 0}
+  tutorialZombieSpawner: {fileID: 1502196076}
+  tutorialZombieKilledClip: {fileID: 0}
+  IsTutorialActive: 1
+--- !u!4 &1476804476
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1476804474}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.792001, y: 2.0890183, z: 8.083573}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &1481659985
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -23645,6 +23722,7 @@ MonoBehaviour:
   roundText: {fileID: 1919674258}
   countdownText: {fileID: 1378144416}
   cardSelectionUI: {fileID: 1257796607}
+  tutorialMode: 1
 --- !u!1001 &1538266040
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24211,7 +24289,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 2, y: 2, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
@@ -27532,7 +27610,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 2, y: 2, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
@@ -35278,3 +35356,4 @@ SceneRoots:
   - {fileID: 7127468368628839009}
   - {fileID: 199114999}
   - {fileID: 8681101698113830174}
+  - {fileID: 1476804476}
