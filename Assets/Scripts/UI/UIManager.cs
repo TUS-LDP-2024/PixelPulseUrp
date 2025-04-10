@@ -4,13 +4,10 @@ using System.Collections;
 
 public class UIManager : MonoBehaviour
 {
-    // Canvas image for the health-up flash effect.
     public Image flashImage;
-    // Canvas images for the damage flash effect.
     public Image damageFlashImage;
-    public Image damageFlashImage2; // Second canvas for damage flash.
+    public Image damageFlashImage2;
 
-    // Set baseline alpha to 0 so the images are hidden by default.
     private float baselineAlpha = 0f;
 
     private void Awake()
@@ -37,7 +34,6 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    // Call this method to trigger the health-up flash effect.
     public void Flash()
     {
         if (flashImage != null)
@@ -46,7 +42,6 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    // Call this method to trigger the damage flash effect on both canvases.
     public void DamageFlash()
     {
         if (damageFlashImage != null)
@@ -59,14 +54,11 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    // General coroutine to flash a given image.
     private IEnumerator FlashEffect(Image image)
     {
-        // Set the flash target alpha to 30/255 (~0.1176).
         Color color = image.color;
         float flashTargetAlpha = 30f / 255f;
 
-        // Immediately set the image's alpha to the flash target.
         color.a = flashTargetAlpha;
         image.color = color;
 
@@ -75,13 +67,37 @@ public class UIManager : MonoBehaviour
         while (timer < duration)
         {
             timer += Time.deltaTime;
-            // Fade from flashTargetAlpha back to baselineAlpha (0) over duration.
             color.a = Mathf.Lerp(flashTargetAlpha, baselineAlpha, timer / duration);
             image.color = color;
             yield return null;
         }
-        // Ensure it ends hidden.
         color.a = baselineAlpha;
         image.color = color;
+    }
+
+    // HUD FADE-IN
+    public void FadeInHUD()
+    {
+        CanvasGroup cg = GetComponent<CanvasGroup>();
+        if (cg != null)
+        {
+            StartCoroutine(FadeCanvasGroup(cg, cg.alpha, 1f, 1f));
+        }
+        else
+        {
+            Debug.LogWarning("UIManager: No CanvasGroup found for HUD fade.");
+        }
+    }
+
+    private IEnumerator FadeCanvasGroup(CanvasGroup cg, float start, float end, float duration)
+    {
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            cg.alpha = Mathf.Lerp(start, end, elapsed / duration);
+            yield return null;
+        }
+        cg.alpha = end;
     }
 }

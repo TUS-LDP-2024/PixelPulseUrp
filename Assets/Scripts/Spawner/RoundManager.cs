@@ -27,6 +27,8 @@ public class RoundManager : MonoBehaviour
     public bool IsRoundActive { get; private set; } = false;
     public bool IsSelectingUpgrade { get; private set; } = false;
 
+    public bool tutorialMode = true; // flag
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -40,12 +42,19 @@ public class RoundManager : MonoBehaviour
     private void Start()
     {
         ZombiesToSpawnThisRound = baseZombies;
-        StartNewRound();
+
+        if (!tutorialMode)
+        {
+            StartNewRound();
+        }
+        else
+        {
+            Debug.Log("Tutorial active: Waiting to start rounds until tutorial completes.");
+        }
     }
 
     public void StartNewRound()
     {
-        // Hide the countdown text during active gameplay.
         countdownText.gameObject.SetActive(false);
 
         currentRound++;
@@ -62,13 +71,11 @@ public class RoundManager : MonoBehaviour
         roundText.text = $"ROUND {currentRound}";
         Debug.Log($"Started Round {currentRound}. Zombies to spawn: {ZombiesToSpawnThisRound}");
 
-        // Enable all spawners.
         foreach (var spawner in AllSpawners)
         {
             spawner.enabled = true;
         }
     }
-
 
     public void IncrementSpawnedCount()
     {
@@ -111,16 +118,10 @@ public class RoundManager : MonoBehaviour
         IsRoundActive = false;
         IsSelectingUpgrade = true;
 
-        // Phase 1: Smoothly slow down from full speed to 20% speed.
         yield return StartCoroutine(SmoothTimeScaleTransition(0.2f, 0.5f));
-
-        // Wait 1.5 seconds in real time at 20% speed.
         yield return new WaitForSecondsRealtime(1.5f);
-
-        // Phase 2: Smoothly transition from 20% to a complete pause.
         yield return StartCoroutine(SmoothTimeScaleTransition(0f, 0.2f));
 
-        // Show the upgrade cards now that the game is fully paused.
         if (cardSelectionUI != null)
         {
             cardSelectionUI.ShowRandomUpgrade();
@@ -128,10 +129,8 @@ public class RoundManager : MonoBehaviour
             yield return new WaitWhile(() => IsSelectingUpgrade);
         }
 
-        // Enable the countdown text so it becomes visible.
         countdownText.gameObject.SetActive(true);
 
-        // Countdown to next round using unscaled time.
         float timer = timeBetweenRounds;
         while (timer > 0)
         {
@@ -140,12 +139,10 @@ public class RoundManager : MonoBehaviour
             yield return null;
         }
 
-        // Smoothly restore normal game speed.
         yield return StartCoroutine(SmoothTimeScaleTransition(1f, 0.5f));
 
         StartNewRound();
     }
-
 
     public void ResumeAfterCardSelection()
     {

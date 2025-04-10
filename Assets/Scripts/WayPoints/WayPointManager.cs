@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class WaypointManager : MonoBehaviour
 {
-    public Transform[] waypointPositions;  // Set these in the Inspector
-    public GameObject waypointPrefab;       // The visual marker prefab
+    public Transform[] waypointPositions;
+    public GameObject waypointPrefab;
     private int currentWaypointIndex = 0;
     private GameObject currentWaypointMarker;
 
@@ -11,12 +11,10 @@ public class WaypointManager : MonoBehaviour
     {
         if (waypointPositions.Length > 0)
         {
-            // Instantiate the first waypoint marker
             currentWaypointMarker = Instantiate(waypointPrefab, waypointPositions[currentWaypointIndex].position, Quaternion.identity);
         }
     }
 
-    // This method is called when the player triggers the current waypoint
     public void AdvanceWaypoint()
     {
         Destroy(currentWaypointMarker);
@@ -28,7 +26,11 @@ public class WaypointManager : MonoBehaviour
         else
         {
             Debug.Log("All waypoints completed!");
-            // Optionally, trigger an event that the level is complete or the next area is reached.
+        }
+
+        if (TutorialManager.Instance != null && TutorialManager.Instance.IsTutorialActive)
+        {
+            TutorialManager.Instance.OnTutorialWaypointReached(currentWaypointIndex);
         }
     }
 }
