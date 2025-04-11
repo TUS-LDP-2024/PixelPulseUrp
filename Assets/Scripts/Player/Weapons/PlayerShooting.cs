@@ -137,10 +137,10 @@ public class PlayerShooting : MonoBehaviour
         PerformRaycast();
         ApplyRecoil();
 
-        // Trigger VFX
+        // Trigger the muzzle flash effect (send the "OnShoot" event)
         if (muzzleFlashVFX != null)
         {
-            muzzleFlashVFX.Play();
+            muzzleFlashVFX.SendEvent("OnShoot");  // Trigger the event in the VFX Graph
         }
 
         if (cameraShake != null)
@@ -155,6 +155,7 @@ public class PlayerShooting : MonoBehaviour
 
         currentAmmo--;
     }
+
 
     public void AddAmmo(int amount)
     {
