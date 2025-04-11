@@ -45,7 +45,15 @@ public class TutorialManager : MonoBehaviour
     public MonoBehaviour[] movementScriptsToDisable;
     public Camera mainCamera;
 
+    [Header("UI Elements")]
+    public GameObject crosshair;
+    public GameObject ammoCounter;
+    public GameObject roundDisplayText;
+
+
     public bool IsTutorialActive = true;
+    
+
 
     private GameObject tutorialZombie;
     private List<Image> previouslyShownImages = new List<Image>();
@@ -60,6 +68,12 @@ public class TutorialManager : MonoBehaviour
             return;
         }
         Instance = this;
+
+        if (roundDisplayText != null)
+        {
+            roundDisplayText.SetActive(false);
+        }
+
     }
 
     void Start()
@@ -83,16 +97,16 @@ public class TutorialManager : MonoBehaviour
             return;
         }
 
-        if (index == 2)
+        if (index == 3)
         {
             SpawnTutorialZombie();
         }
 
         if (index == steps.Count - 1)
         {
-            finalCheckpointReached = true;
-            TryEndTutorial();
+            EndTutorial();
         }
+
     }
 
     void ShowTutorialStep(int index)
@@ -117,7 +131,7 @@ public class TutorialManager : MonoBehaviour
         if (tutorialText != null && textCanvasGroup != null)
         {
             tutorialText.text = step.message;
-            StartCoroutine(FadeCanvasGroup(textCanvasGroup, 0f, 1f, 0.5f));
+            StartCoroutine(FadeCanvasGroup(textCanvasGroup, 0f, 1f, 0.3f));
         }
 
         foreach (var assignment in step.imageAssignments)
@@ -136,9 +150,31 @@ public class TutorialManager : MonoBehaviour
                 }
 
                 cg.alpha = 0f;
-                StartCoroutine(FadeCanvasGroup(cg, 0f, 1f, 0.5f));
+                StartCoroutine(FadeCanvasGroup(cg, 0f, 1f, 0.3f));
 
                 previouslyShownImages.Add(assignment.targetUIElement);
+            }
+        }
+
+        StartCoroutine(AutoFadeStepUI());
+    }
+
+    IEnumerator AutoFadeStepUI()
+    {
+        yield return new WaitForSeconds(2.5f);
+
+        if (textCanvasGroup != null)
+            StartCoroutine(FadeCanvasGroup(textCanvasGroup, 1f, 0f, 0.5f));
+
+        foreach (var img in previouslyShownImages)
+        {
+            if (img != null)
+            {
+                CanvasGroup cg = img.GetComponent<CanvasGroup>();
+                if (cg != null)
+                {
+                    StartCoroutine(FadeCanvasGroup(cg, 1f, 0f, 0.5f));
+                }
             }
         }
     }
@@ -164,34 +200,16 @@ public class TutorialManager : MonoBehaviour
 
         SoundManager.Instance.PlaySound(tutorialZombieKilledClip, zombie.transform.position);
         zombieKilled = true;
-        TryEndTutorial();
+   
     }
 
-    void TryEndTutorial()
-    {
-        if (zombieKilled && finalCheckpointReached)
-        {
-            StartCoroutine(FinalStepDelayAndHide());
-        }
-    }
+
 
     IEnumerator FinalStepDelayAndHide()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(1f);
 
-        if (textCanvasGroup != null)
-            StartCoroutine(FadeCanvasGroup(textCanvasGroup, 1f, 0f, 1f));
-
-        foreach (var img in previouslyShownImages)
-        {
-            CanvasGroup cg = img.GetComponent<CanvasGroup>();
-            if (cg != null)
-            {
-                StartCoroutine(FadeCanvasGroup(cg, 1f, 0f, 1f));
-            }
-        }
-
-        yield return new WaitForSeconds(1.2f);
+        tutorialPanel?.SetActive(false);
 
         foreach (var img in previouslyShownImages)
         {
@@ -202,34 +220,27 @@ public class TutorialManager : MonoBehaviour
         }
         previouslyShownImages.Clear();
 
-        tutorialPanel?.SetActive(false);
         EndTutorial();
     }
 
     void PlayCutscene()
     {
-        foreach (var script in movementScriptsToDisable)
-        {
-            script.enabled = false;
-        }
+        if (crosshair != null)
+            crosshair.SetActive(false);
+
+        if (ammoCounter != null)
+            ammoCounter.SetActive(false);
 
         if (mainCamera != null)
             mainCamera.gameObject.SetActive(false);
 
         if (cutscenePrefab != null && cutsceneSpawnPoint != null)
         {
-            GameObject cutsceneInstance = Instantiate(cutscenePrefab, cutsceneSpawnPoint.position, cutsceneSpawnPoint.rotation);
-
-            Camera cutsceneCam = cutsceneInstance.GetComponentInChildren<Camera>();
-            if (cutsceneCam != null)
-            {
-                cutsceneCam.enabled = true;
-                AudioListener listener = cutsceneCam.GetComponent<AudioListener>();
-                if (listener != null)
-                    listener.enabled = true;
-            }
+            Instantiate(cutscenePrefab, cutsceneSpawnPoint.position, cutsceneSpawnPoint.rotation);
         }
     }
+
+
 
     public void ResumeAfterCutscene()
     {
@@ -241,21 +252,37 @@ public class TutorialManager : MonoBehaviour
         if (mainCamera != null)
         {
             mainCamera.gameObject.SetActive(true);
-            Camera cam = mainCamera.GetComponent<Camera>();
+
+            var cam = mainCamera.GetComponent<Camera>();
             if (cam != null) cam.enabled = true;
 
-            AudioListener listener = mainCamera.GetComponent<AudioListener>();
+            var listener = mainCamera.GetComponent<AudioListener>();
             if (listener != null) listener.enabled = true;
         }
+
+        if (crosshair != null)
+            crosshair.SetActive(true);
+
+        if (ammoCounter != null)
+            ammoCounter.SetActive(true);
     }
+
+
 
     void EndTutorial()
     {
         IsTutorialActive = false;
 
+        if (roundDisplayText != null)
+        {
+            roundDisplayText.SetActive(true);
+        }
+
         RoundManager.Instance.tutorialMode = false;
         RoundManager.Instance.StartNewRound();
     }
+
+
 
     IEnumerator FadeCanvasGroup(CanvasGroup cg, float startAlpha, float endAlpha, float duration)
     {
