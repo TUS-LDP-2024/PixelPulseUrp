@@ -24,9 +24,10 @@ MonoBehaviour:
     type: 3}
   shootSound: {fileID: 8300000, guid: 3367924b99b01344ba6cecc68d20259d, type: 3}
   reloadSound: {fileID: 8300000, guid: 70825f52c13df72479e400d229310539, type: 3}
-  magEjectBlendShapeIndex: 3
-  roundCycleBlendShapeIndex: 0
-  blendShapeSpeed: 240
+  magEjectBlendShapeIndex: 7
+  roundCycleBlendShapeIndex: 6
+  blendShapeSpeed: 5
   isShotgun: 0
+  shellReloadInterval: 0.5
   spreadAngle: 10
   pelletCount: 8

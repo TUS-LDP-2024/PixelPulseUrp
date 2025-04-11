@@ -30,8 +30,8 @@ public class PlayerShooting : MonoBehaviour
 
     [Header("Blend Shape Settings")]
     public SkinnedMeshRenderer pistolMeshRenderer;
-    public int magEjectBlendShapeIndex = 0;
-    public int roundCycleBlendShapeIndex = 1;
+    public int magEjectBlendShapeIndex = 7;
+    public int roundCycleBlendShapeIndex = 6;
     public float blendShapeSpeed = 5f;
 
     private int _currentAmmo;
