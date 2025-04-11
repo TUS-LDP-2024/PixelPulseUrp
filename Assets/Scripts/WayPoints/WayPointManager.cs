@@ -11,7 +11,7 @@ public class WaypointManager : MonoBehaviour
     {
         if (waypointPositions.Length > 0)
         {
-            currentWaypointMarker = Instantiate(waypointPrefab, waypointPositions[currentWaypointIndex].position, Quaternion.identity);
+            SpawnWaypointMarker(currentWaypointIndex);
         }
     }
 
@@ -19,9 +19,10 @@ public class WaypointManager : MonoBehaviour
     {
         Destroy(currentWaypointMarker);
         currentWaypointIndex++;
+
         if (currentWaypointIndex < waypointPositions.Length)
         {
-            currentWaypointMarker = Instantiate(waypointPrefab, waypointPositions[currentWaypointIndex].position, Quaternion.identity);
+            SpawnWaypointMarker(currentWaypointIndex);
         }
         else
         {
@@ -31,6 +32,25 @@ public class WaypointManager : MonoBehaviour
         if (TutorialManager.Instance != null && TutorialManager.Instance.IsTutorialActive)
         {
             TutorialManager.Instance.OnTutorialWaypointReached(currentWaypointIndex);
+        }
+    }
+
+    private void SpawnWaypointMarker(int index)
+    {
+        currentWaypointMarker = Instantiate(
+            waypointPrefab,
+            waypointPositions[index].position,
+            Quaternion.identity
+        );
+
+        WaypointTrigger trigger = currentWaypointMarker.GetComponent<WaypointTrigger>();
+        if (trigger != null)
+        {
+            trigger.waypointManager = this;
+        }
+        else
+        {
+            Debug.LogWarning("Spawned waypoint prefab is missing a WaypointTrigger component!");
         }
     }
 }

@@ -4,9 +4,14 @@ using System.Collections;
 
 public class UIManager : MonoBehaviour
 {
+    [Header("Flash Effects")]
     public Image flashImage;
     public Image damageFlashImage;
     public Image damageFlashImage2;
+
+    [Header("HUD Management")]
+    public CanvasGroup[] tutorialHiddenGroups; // HUD groups to hide during tutorial
+    public GameObject crosshair; // Crosshair should always stay visible
 
     private float baselineAlpha = 0f;
 
@@ -71,21 +76,33 @@ public class UIManager : MonoBehaviour
             image.color = color;
             yield return null;
         }
+
         color.a = baselineAlpha;
         image.color = color;
     }
 
-    // HUD FADE-IN
-    public void FadeInHUD()
+    // Called at the start of the tutorial to hide HUD sections except the crosshair
+    public void HideTutorialHUD()
     {
-        CanvasGroup cg = GetComponent<CanvasGroup>();
-        if (cg != null)
+        foreach (var cg in tutorialHiddenGroups)
         {
-            StartCoroutine(FadeCanvasGroup(cg, cg.alpha, 1f, 1f));
+            cg.alpha = 0f;
+            cg.interactable = false;
+            cg.blocksRaycasts = false;
         }
-        else
+
+        if (crosshair != null)
         {
-            Debug.LogWarning("UIManager: No CanvasGroup found for HUD fade.");
+            crosshair.SetActive(true);
+        }
+    }
+
+    // Called at the end of the tutorial to fade in the rest of the HUD
+    public void FadeInTutorialHUD()
+    {
+        foreach (var cg in tutorialHiddenGroups)
+        {
+            StartCoroutine(FadeCanvasGroup(cg, 0f, 1f, 1f));
         }
     }
 
@@ -98,6 +115,9 @@ public class UIManager : MonoBehaviour
             cg.alpha = Mathf.Lerp(start, end, elapsed / duration);
             yield return null;
         }
+
         cg.alpha = end;
+        cg.interactable = true;
+        cg.blocksRaycasts = true;
     }
 }

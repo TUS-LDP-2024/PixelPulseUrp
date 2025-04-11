@@ -2,15 +2,7 @@ using UnityEngine;
 
 public class WaypointTrigger : MonoBehaviour
 {
-    public WaypointManager waypointManager; 
-
-    void Start()
-    {
-        if (waypointManager == null)
-        {
-            Debug.LogWarning("WaypointManager not assigned! Please assign it in the Inspector.");
-        }
-    }
+    public WaypointManager waypointManager; // Assigned at runtime by WaypointManager
 
     void OnTriggerEnter(Collider other)
     {
