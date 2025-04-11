@@ -25,7 +25,7 @@ public class TutorialManager : MonoBehaviour
 
     [Header("Tutorial UI")]
     public GameObject tutorialPanel;
-    public Text tutorialText;
+    public TMPro.TextMeshProUGUI tutorialText;
     public CanvasGroup textCanvasGroup;
 
     [Header("Step System")]
@@ -42,6 +42,7 @@ public class TutorialManager : MonoBehaviour
     public GameObject player;
     public MonoBehaviour[] movementScriptsToDisable;
     public Camera mainCamera;
+
 
     public AudioClip tutorialZombieKilledClip;
 
@@ -217,7 +218,19 @@ public class TutorialManager : MonoBehaviour
             mainCamera.gameObject.SetActive(false);
 
         if (cutscenePrefab != null && cutsceneSpawnPoint != null)
-            Instantiate(cutscenePrefab, cutsceneSpawnPoint.position, cutsceneSpawnPoint.rotation);
+        {
+            GameObject cutsceneInstance = Instantiate(cutscenePrefab, cutsceneSpawnPoint.position, cutsceneSpawnPoint.rotation);
+
+            // Enable the cutscene camera if present
+            Camera cutsceneCam = cutsceneInstance.GetComponentInChildren<Camera>();
+            if (cutsceneCam != null)
+            {
+                cutsceneCam.enabled = true;
+                AudioListener listener = cutsceneCam.GetComponent<AudioListener>();
+                if (listener != null)
+                    listener.enabled = true;
+            }
+        }
     }
 
     public void ResumeAfterCutscene()
@@ -228,7 +241,14 @@ public class TutorialManager : MonoBehaviour
         }
 
         if (mainCamera != null)
+        {
             mainCamera.gameObject.SetActive(true);
+            Camera cam = mainCamera.GetComponent<Camera>();
+            if (cam != null) cam.enabled = true;
+
+            AudioListener listener = mainCamera.GetComponent<AudioListener>();
+            if (listener != null) listener.enabled = true;
+        }
     }
 
     void EndTutorial()
