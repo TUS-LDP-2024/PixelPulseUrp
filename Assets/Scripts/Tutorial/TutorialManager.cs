@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Playables;
+using TMPro;
 
 [System.Serializable]
 public class TutorialImageAssignment
 {
-    public Image targetUIElement; // UI Image on canvas
-    public Sprite spriteToShow;   // Sprite to assign
+    public Image targetUIElement;
+    public Sprite spriteToShow;
 }
 
 [System.Serializable]
@@ -25,7 +27,7 @@ public class TutorialManager : MonoBehaviour
 
     [Header("Tutorial UI")]
     public GameObject tutorialPanel;
-    public TMPro.TextMeshProUGUI tutorialText;
+    public TextMeshProUGUI tutorialText;
     public CanvasGroup textCanvasGroup;
 
     [Header("Step System")]
@@ -34,7 +36,7 @@ public class TutorialManager : MonoBehaviour
     [Header("Zombie")]
     public GameObject zombiePrefab;
     public Transform zombieSpawnPoint;
-    private GameObject tutorialZombie;
+    public AudioClip tutorialZombieKilledClip;
 
     [Header("Cutscene")]
     public GameObject cutscenePrefab;
@@ -43,12 +45,12 @@ public class TutorialManager : MonoBehaviour
     public MonoBehaviour[] movementScriptsToDisable;
     public Camera mainCamera;
 
-
-    public AudioClip tutorialZombieKilledClip;
-
     public bool IsTutorialActive = true;
 
+    private GameObject tutorialZombie;
     private List<Image> previouslyShownImages = new List<Image>();
+    private bool zombieKilled = false;
+    private bool finalCheckpointReached = false;
 
     void Awake()
     {
@@ -73,7 +75,6 @@ public class TutorialManager : MonoBehaviour
         if (index >= steps.Count) return;
 
         var step = steps[index];
-
         ShowTutorialStep(index);
 
         if (step.triggerCutscene)
@@ -82,14 +83,15 @@ public class TutorialManager : MonoBehaviour
             return;
         }
 
-        if (index == 3)
+        if (index == 2)
         {
             SpawnTutorialZombie();
         }
 
-        if (index == 4)
+        if (index == steps.Count - 1)
         {
-            StartCoroutine(FinalStepDelayAndHide());
+            finalCheckpointReached = true;
+            TryEndTutorial();
         }
     }
 
@@ -99,12 +101,11 @@ public class TutorialManager : MonoBehaviour
 
         var step = steps[index];
 
-        // Fully hide all previously shown image objects
         foreach (var img in previouslyShownImages)
         {
             if (img != null)
             {
-                img.gameObject.SetActive(false); // Disable GameObject
+                img.gameObject.SetActive(false);
                 var cg = img.GetComponent<CanvasGroup>();
                 if (cg != null) cg.alpha = 0f;
             }
@@ -113,14 +114,12 @@ public class TutorialManager : MonoBehaviour
 
         tutorialPanel?.SetActive(true);
 
-        // Show and fade in text
         if (tutorialText != null && textCanvasGroup != null)
         {
             tutorialText.text = step.message;
             StartCoroutine(FadeCanvasGroup(textCanvasGroup, 0f, 1f, 0.5f));
         }
 
-        // Show and fade in assigned images
         foreach (var assignment in step.imageAssignments)
         {
             if (assignment.targetUIElement == null) continue;
@@ -144,39 +143,6 @@ public class TutorialManager : MonoBehaviour
         }
     }
 
-    IEnumerator FinalStepDelayAndHide()
-    {
-        yield return new WaitForSeconds(5f);
-
-        if (textCanvasGroup != null)
-            StartCoroutine(FadeCanvasGroup(textCanvasGroup, 1f, 0f, 1f));
-
-        foreach (var img in previouslyShownImages)
-        {
-            CanvasGroup cg = img.GetComponent<CanvasGroup>();
-            if (cg != null)
-            {
-                StartCoroutine(FadeCanvasGroup(cg, 1f, 0f, 1f));
-            }
-        }
-
-        yield return new WaitForSeconds(1.2f);
-
-        // Fully deactivate them
-        foreach (var img in previouslyShownImages)
-        {
-            if (img != null)
-            {
-                img.gameObject.SetActive(false);
-            }
-        }
-        previouslyShownImages.Clear();
-
-        tutorialPanel?.SetActive(false);
-
-        EndTutorial();
-    }
-
     void SpawnTutorialZombie()
     {
         if (tutorialZombie == null && zombieSpawnPoint != null && zombiePrefab != null)
@@ -197,13 +163,46 @@ public class TutorialManager : MonoBehaviour
         }
 
         SoundManager.Instance.PlaySound(tutorialZombieKilledClip, zombie.transform.position);
+        zombieKilled = true;
+        TryEndTutorial();
+    }
 
-        UIManager ui = FindObjectOfType<UIManager>();
-        if (ui != null)
+    void TryEndTutorial()
+    {
+        if (zombieKilled && finalCheckpointReached)
         {
-            ui.FadeInTutorialHUD();
+            StartCoroutine(FinalStepDelayAndHide());
+        }
+    }
+
+    IEnumerator FinalStepDelayAndHide()
+    {
+        yield return new WaitForSeconds(5f);
+
+        if (textCanvasGroup != null)
+            StartCoroutine(FadeCanvasGroup(textCanvasGroup, 1f, 0f, 1f));
+
+        foreach (var img in previouslyShownImages)
+        {
+            CanvasGroup cg = img.GetComponent<CanvasGroup>();
+            if (cg != null)
+            {
+                StartCoroutine(FadeCanvasGroup(cg, 1f, 0f, 1f));
+            }
         }
 
+        yield return new WaitForSeconds(1.2f);
+
+        foreach (var img in previouslyShownImages)
+        {
+            if (img != null)
+            {
+                img.gameObject.SetActive(false);
+            }
+        }
+        previouslyShownImages.Clear();
+
+        tutorialPanel?.SetActive(false);
         EndTutorial();
     }
 
@@ -221,7 +220,6 @@ public class TutorialManager : MonoBehaviour
         {
             GameObject cutsceneInstance = Instantiate(cutscenePrefab, cutsceneSpawnPoint.position, cutsceneSpawnPoint.rotation);
 
-            // Enable the cutscene camera if present
             Camera cutsceneCam = cutsceneInstance.GetComponentInChildren<Camera>();
             if (cutsceneCam != null)
             {
