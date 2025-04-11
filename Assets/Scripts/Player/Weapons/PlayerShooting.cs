@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 using System;
 using TMPro;
 using System.Collections;
+using UnityEngine.VFX;
 
 public class PlayerShooting : MonoBehaviour
 {
@@ -52,6 +53,7 @@ public class PlayerShooting : MonoBehaviour
     public GameObject tracerEffect;
     public float tracerDuration = 0.2f;
     public float tracerWidth = 0.05f;
+    private VisualEffect muzzleFlashVFX;
 
     [Header("References")]
     public PointsManager pointsManager;
@@ -123,16 +125,8 @@ public class PlayerShooting : MonoBehaviour
 
     private void OnShoot(InputAction.CallbackContext context)
     {
-        if (isReloading || isRecoiling)
-        {
-            return;
-        }
-
-        if (Time.time < nextFireTime)
-        {
-            return;
-        }
-
+        if (isReloading || isRecoiling) return;
+        if (Time.time < nextFireTime) return;
         if (currentAmmo <= 0)
         {
             Reload();
@@ -142,6 +136,12 @@ public class PlayerShooting : MonoBehaviour
         nextFireTime = Time.time + 1f / fireRate;
         PerformRaycast();
         ApplyRecoil();
+
+        // Trigger VFX
+        if (muzzleFlashVFX != null)
+        {
+            muzzleFlashVFX.Play();
+        }
 
         if (cameraShake != null)
         {
@@ -395,5 +395,12 @@ public class PlayerShooting : MonoBehaviour
 
         originalWeaponPosition = weaponManager.currentWeaponModel.transform.localPosition;
         originalWeaponRotation = weaponManager.currentWeaponModel.transform.localRotation;
+
+        // Get the VisualEffect from the weapon model
+        var muzzleFlashTransform = weaponManager.currentWeaponModel.transform.Find("GunBarrel/MuzzleFlashVFX");
+        if (muzzleFlashTransform != null)
+        {
+            muzzleFlashVFX = muzzleFlashTransform.GetComponent<VisualEffect>();
+        }
     }
 }
