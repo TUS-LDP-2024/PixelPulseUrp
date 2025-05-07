@@ -15,6 +15,7 @@ public class PlayerShooting : MonoBehaviour
     public float reloadTime = 2f;
     public int maxStoredAmmo = 100;
     public int storedAmmo = 100;
+    public bool isFullyAuto = false;
 
     [Header("Shotgun Settings")]
     public bool isShotgun = false;
@@ -47,6 +48,8 @@ public class PlayerShooting : MonoBehaviour
     }
     private bool isReloading = false;
     private bool isRecoiling = false;
+    private bool isFiring = false;
+    private Coroutine firingCoroutine;
 
     [Header("Shooting Effects")]
     public GameObject impactEffect;
@@ -99,11 +102,14 @@ public class PlayerShooting : MonoBehaviour
     private void OnEnable()
     {
         fireAction.performed += OnShoot;
+        fireAction.canceled += OnShootEnd;
     }
 
     private void OnDisable()
     {
         fireAction.performed -= OnShoot;
+        fireAction.canceled -= OnShootEnd;
+        StopFiring();
     }
 
     private void Update()
@@ -126,21 +132,72 @@ public class PlayerShooting : MonoBehaviour
     private void OnShoot(InputAction.CallbackContext context)
     {
         if (isReloading || isRecoiling) return;
-        if (Time.time < nextFireTime) return;
-        if (currentAmmo <= 0)
-        {
-            Reload();
-            return;
-        }
 
+        if (weaponManager?.currentWeapon?.isFullyAuto ?? false)
+        {
+            if (!isFiring)
+            {
+                isFiring = true;
+                firingCoroutine = StartCoroutine(AutoFireCoroutine());
+            }
+        }
+        else
+        {
+            if (Time.time < nextFireTime) return;
+            if (currentAmmo <= 0)
+            {
+                Reload();
+                return;
+            }
+
+            FireWeapon();
+        }
+    }
+
+    private void OnShootEnd(InputAction.CallbackContext context)
+    {
+        StopFiring();
+    }
+
+    private void StopFiring()
+    {
+        if (firingCoroutine != null)
+        {
+            StopCoroutine(firingCoroutine);
+            firingCoroutine = null;
+        }
+        isFiring = false;
+    }
+
+    private IEnumerator AutoFireCoroutine()
+    {
+        while (isFiring)
+        {
+            if (currentAmmo <= 0)
+            {
+                Reload();
+                StopFiring();
+                yield break;
+            }
+
+            if (Time.time >= nextFireTime)
+            {
+                FireWeapon();
+            }
+
+            yield return null;
+        }
+    }
+
+    private void FireWeapon()
+    {
         nextFireTime = Time.time + 1f / fireRate;
         PerformRaycast();
         ApplyRecoil();
 
-        // Trigger the muzzle flash effect (send the "OnShoot" event)
         if (muzzleFlashVFX != null)
         {
-            muzzleFlashVFX.SendEvent("OnShoot");  // Trigger the event in the VFX Graph
+            muzzleFlashVFX.SendEvent("OnShoot");
         }
 
         if (cameraShake != null)
@@ -155,7 +212,6 @@ public class PlayerShooting : MonoBehaviour
 
         currentAmmo--;
     }
-
 
     public void AddAmmo(int amount)
     {
@@ -215,13 +271,11 @@ public class PlayerShooting : MonoBehaviour
         {
             Collider col = hit.collider;
 
-            // Ignore "IgnoreShoot" tagged objects
             if (col.CompareTag("IgnoreShoot"))
             {
                 continue;
             }
 
-            // Ignore trigger BoxColliders that are floor or ground layer
             if (col is BoxCollider && col.isTrigger)
             {
                 if (col.CompareTag("Floor") || col.gameObject.layer == LayerMask.NameToLayer("GroundLayer"))
@@ -230,17 +284,14 @@ public class PlayerShooting : MonoBehaviour
                 }
             }
 
-            // Valid hit found
             endPosition = hit.point;
             validHitFound = true;
             HandleHit(hit);
             break;
         }
 
-        // Draw debug ray
         Debug.DrawLine(startPosition, endPosition, validHitFound ? Color.red : Color.green, 1f);
 
-        // Tracer effect
         if (tracerEffect != null)
         {
             GameObject tracer = Instantiate(tracerEffect, startPosition, Quaternion.LookRotation(direction));
@@ -251,9 +302,6 @@ public class PlayerShooting : MonoBehaviour
             }
         }
     }
-
-
-
 
     private Vector3 GetRandomDirectionWithinSpread(Vector3 direction, float spreadAngle)
     {
@@ -291,7 +339,9 @@ public class PlayerShooting : MonoBehaviour
         }
     }
 
-    public void UpdateWeaponStats(int newDamage, float newRange, float newFireRate, int newMaxAmmo, float newReloadTime, bool isShotgun, float spreadAngle, int pelletCount, float recoilForce, float recoilIntensity)
+    public void UpdateWeaponStats(int newDamage, float newRange, float newFireRate, int newMaxAmmo,
+        float newReloadTime, bool isShotgun, float spreadAngle, int pelletCount,
+        float recoilForce, float recoilIntensity, bool isFullyAuto)
     {
         damage = newDamage;
         range = newRange;
@@ -303,6 +353,7 @@ public class PlayerShooting : MonoBehaviour
         this.isShotgun = isShotgun;
         this.spreadAngle = spreadAngle;
         this.pelletCount = pelletCount;
+        this.isFullyAuto = isFullyAuto;
         ResetAmmo();
     }
 
@@ -397,7 +448,6 @@ public class PlayerShooting : MonoBehaviour
         originalWeaponPosition = weaponManager.currentWeaponModel.transform.localPosition;
         originalWeaponRotation = weaponManager.currentWeaponModel.transform.localRotation;
 
-        // Get the VisualEffect from the weapon model
         var muzzleFlashTransform = weaponManager.currentWeaponModel.transform.Find("GunBarrel/MuzzleFlashVFX");
         if (muzzleFlashTransform != null)
         {

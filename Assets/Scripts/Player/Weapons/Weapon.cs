@@ -10,6 +10,9 @@ public class Weapon : ScriptableObject
     public float range;       // Range of the weapon
     public float fireRate;    // Time between shots
 
+    [Header("Firing Mode")]
+    public bool isFullyAuto = false; // If true, weapon will fire continuously while fire button is held
+
     [Header("Ammo Settings")]
     public int maxAmmo = 30;  // Maximum ammo capacity
     public float reloadTime = 2f; // Time it takes to reload (full magazine)

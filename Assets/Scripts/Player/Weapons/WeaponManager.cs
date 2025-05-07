@@ -112,7 +112,8 @@ public class WeaponManager : MonoBehaviour
                 currentWeapon.spreadAngle,
                 currentWeapon.pelletCount,
                 currentWeapon.recoilForce,
-                currentWeapon.recoilIntensity
+                currentWeapon.recoilIntensity,
+                currentWeapon.isFullyAuto
             );
             playerShooting.ResetAmmo();
         }
@@ -124,7 +125,6 @@ public class WeaponManager : MonoBehaviour
 
         currentWeaponModel = currentWeapon.InstantiateModel(weaponParent);
 
-        // Reset weapon position/rotation if needed
         if (playerShooting != null)
         {
             playerShooting.CancelReload();
@@ -157,7 +157,6 @@ public class WeaponManager : MonoBehaviour
             currentWeapon.reloadTime *= (1 - reloadSpeedBoost);
         }
 
-        // Refresh weapon with new stats
         EquipWeapon(currentWeaponIndex);
     }
 
@@ -189,7 +188,6 @@ public class WeaponManager : MonoBehaviour
         }
         else
         {
-            // Replace current weapon
             playerInventory[currentWeaponIndex] = newWeapon;
             EquipWeapon(currentWeaponIndex);
         }
