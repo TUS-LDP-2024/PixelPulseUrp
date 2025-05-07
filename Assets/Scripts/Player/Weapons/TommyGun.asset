@@ -15,7 +15,7 @@ MonoBehaviour:
   weaponName: Tommy Gun
   damage: 10
   range: 50
-  fireRate: 30
+  fireRate: 10
   isFullyAuto: 1
   maxAmmo: 30
   reloadTime: 2
@@ -23,8 +23,8 @@ MonoBehaviour:
   recoilIntensity: 1
   modelPrefab: {fileID: 3898265999762542194, guid: 9e1c28f15e5d2024eaa7e84d7941de70,
     type: 3}
-  shootSound: {fileID: 0}
-  reloadSound: {fileID: 0}
+  shootSound: {fileID: 8300000, guid: 3367924b99b01344ba6cecc68d20259d, type: 3}
+  reloadSound: {fileID: 8300000, guid: 70825f52c13df72479e400d229310539, type: 3}
   magEjectBlendShapeIndex: 0
   roundCycleBlendShapeIndex: 1
   blendShapeSpeed: 5

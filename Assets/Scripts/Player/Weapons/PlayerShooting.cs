@@ -49,7 +49,6 @@ public class PlayerShooting : MonoBehaviour
     private bool isReloading = false;
     private bool isRecoiling = false;
     private bool isFiring = false;
-    private Coroutine firingCoroutine;
 
     [Header("Shooting Effects")]
     public GameObject impactEffect;
@@ -101,19 +100,17 @@ public class PlayerShooting : MonoBehaviour
 
     private void OnEnable()
     {
-        fireAction.performed += OnShoot;
-        fireAction.canceled += OnShootEnd;
+        // Input events removed for pass-through handling
     }
 
     private void OnDisable()
     {
-        fireAction.performed -= OnShoot;
-        fireAction.canceled -= OnShootEnd;
-        StopFiring();
+        // Input events removed for pass-through handling
     }
 
     private void Update()
     {
+        // Handle recoil recovery
         if (weaponManager != null && weaponManager.currentWeaponModel != null && isRecoiling)
         {
             weaponManager.currentWeaponModel.transform.localRotation = Quaternion.Lerp(
@@ -127,65 +124,52 @@ public class PlayerShooting : MonoBehaviour
                 isRecoiling = false;
             }
         }
-    }
 
-    private void OnShoot(InputAction.CallbackContext context)
-    {
-        if (isReloading || isRecoiling) return;
+        // Pass-through input handling
+        float fireInput = fireAction.ReadValue<float>();
 
-        if (weaponManager?.currentWeapon?.isFullyAuto ?? false)
+        if (fireInput > 0.5f) // Button is pressed
         {
-            if (!isFiring)
+            if (isReloading || isRecoiling) return;
+
+            if (weaponManager?.currentWeapon?.isFullyAuto ?? false)
             {
-                isFiring = true;
-                firingCoroutine = StartCoroutine(AutoFireCoroutine());
+                // Automatic fire
+                if (Time.time >= nextFireTime)
+                {
+                    if (currentAmmo > 0)
+                    {
+                        FireWeapon();
+                    }
+                    else
+                    {
+                        Reload();
+                    }
+                }
+            }
+            else
+            {
+                // Semi-auto fire
+                if (!isFiring)
+                {
+                    if (Time.time >= nextFireTime)
+                    {
+                        if (currentAmmo > 0)
+                        {
+                            FireWeapon();
+                            isFiring = true;
+                        }
+                        else
+                        {
+                            Reload();
+                        }
+                    }
+                }
             }
         }
-        else
+        else // Button is released
         {
-            if (Time.time < nextFireTime) return;
-            if (currentAmmo <= 0)
-            {
-                Reload();
-                return;
-            }
-
-            FireWeapon();
-        }
-    }
-
-    private void OnShootEnd(InputAction.CallbackContext context)
-    {
-        StopFiring();
-    }
-
-    private void StopFiring()
-    {
-        if (firingCoroutine != null)
-        {
-            StopCoroutine(firingCoroutine);
-            firingCoroutine = null;
-        }
-        isFiring = false;
-    }
-
-    private IEnumerator AutoFireCoroutine()
-    {
-        while (isFiring)
-        {
-            if (currentAmmo <= 0)
-            {
-                Reload();
-                StopFiring();
-                yield break;
-            }
-
-            if (Time.time >= nextFireTime)
-            {
-                FireWeapon();
-            }
-
-            yield return null;
+            isFiring = false;
         }
     }
 
@@ -307,7 +291,6 @@ public class PlayerShooting : MonoBehaviour
     {
         float randomAngleX = UnityEngine.Random.Range(-spreadAngle, spreadAngle);
         float randomAngleY = UnityEngine.Random.Range(-spreadAngle, spreadAngle);
-        float randomAngleZ = UnityEngine.Random.Range(-spreadAngle, spreadAngle);
         Quaternion spreadRotation = Quaternion.Euler(randomAngleX, randomAngleY, 0);
         return spreadRotation * direction;
     }
