@@ -274,7 +274,7 @@ public class PlayerShooting : MonoBehaviour
             break;
         }
 
-        Debug.DrawLine(startPosition, endPosition, validHitFound ? Color.red : Color.green, 1f);
+       /* Debug.DrawLine(startPosition, endPosition, validHitFound ? Color.red : Color.green, 1f);
 
         if (tracerEffect != null)
         {
@@ -284,7 +284,7 @@ public class PlayerShooting : MonoBehaviour
             {
                 controller.Initialize(startPosition, endPosition, 0.1f);
             }
-        }
+        } */
     }
 
     private Vector3 GetRandomDirectionWithinSpread(Vector3 direction, float spreadAngle)
